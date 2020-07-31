@@ -65,6 +65,7 @@ void display()
 	//--------------------------------
 	//Testing GitHub
 	//Testing by lky1020
+	//Testing by Lky1120
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
