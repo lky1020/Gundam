@@ -63,7 +63,8 @@ void display()
 	//--------------------------------
 	//	OpenGL drawing
 	//--------------------------------
-	//Testing GitHub
+	//Testing GitHub 1
+	//Testing GitHub 2
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
