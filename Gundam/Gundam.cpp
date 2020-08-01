@@ -15,13 +15,29 @@ void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxX
 //leg - data type
 float initialLegRotate = 0.0f;
 float legRotate = 0.0f;
-float initialUpperLegSpeed = 0.0f;
-float upperLegSpeed = 0.0f;
-float initialLowerLegSpeed = 0.0f;
-float lowerLegSpeed = 0.0f;
+
+//left leg
+float upperLeftMinAngle = 0.0f;
+float upperLeftMaxAngle = 0.0f;
+float lowerLeftMinAngle = 0.0f;
+float lowerLeftMaxAngle = 0.0f;
+float initialUpperLeftLegSpeed = 0.0f;
+float upperLeftLegSpeed = 0.0f;
+float initialLowerLeftLegSpeed = 0.0f;
+float lowerLeftLegSpeed = 0.0f;
+
+//right leg
+float upperRightMinAngle = 0.0f;
+float upperRightMaxAngle = 0.0f;
+float lowerRightMinAngle = 0.0f;
+float lowerRightMaxAngle = 0.0f;
+float initialUpperRightLegSpeed = 0.0f;
+float upperRightLegSpeed = 0.0f;
+float initialLowerRightLegSpeed = 0.0f;
+float lowerRightLegSpeed = 0.0f;
 
 //leg
-void drawLeg();
+void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpeed, float *lowerSpeed, float *upperMinAngle, float *upperMaxAngle, float *lowerMinAngle, float *lowerMaxAngle);
 void drawLegKnee(float radius, int slices, int stacks);
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -34,13 +50,90 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) PostQuitMessage(0);
+		else if (wParam == VK_SHIFT) {
+
+			//initialize left leg
+			upperLeftMaxAngle = 90.0f;
+			lowerLeftMaxAngle = 85.0f;
+
+			//left leg
+			upperLeftLegSpeed = 0.01f;
+			lowerLeftLegSpeed = 0.01f;
+		}
 		else if (wParam == VK_UP) {
-			upperLegSpeed = 0.01f;
-			lowerLegSpeed = 0.01f;
+			//initialize right leg
+			upperRightMaxAngle = 90.0f;
+			lowerRightMaxAngle = 85.0f;
+
+			//right leg
+			upperRightLegSpeed = 0.01f;
+			lowerRightLegSpeed = 0.01f;
+		}
+		else if (wParam == VK_CONTROL) {
+			//initialize left leg
+			upperLeftMinAngle = 0.0f;
+			lowerLeftMinAngle = 0.0f;
+
+			//left leg
+			upperLeftLegSpeed = -0.01f;
+			lowerLeftLegSpeed = -0.01f;
 		}
 		else if (wParam == VK_DOWN) {
-			upperLegSpeed = -0.01f;
-			lowerLegSpeed = -0.01f;
+			//initialize right leg
+			upperRightMinAngle = 0.0f;
+			lowerRightMinAngle = 0.0f;
+
+			//right leg
+			upperRightLegSpeed = -0.01f;
+			lowerRightLegSpeed = -0.01f;
+		}
+		//'W' to walk
+		else if (wParam ==  0x57) {
+			//initialize angle
+			upperLeftMaxAngle = 30.0f;
+			lowerLeftMaxAngle = 25.0f;
+			upperRightMaxAngle = 30.0f;
+			lowerRightMaxAngle = 25.0f;
+
+			//walk
+			if (initialUpperRightLegSpeed == 0.0f) {
+				upperLeftLegSpeed = 0.01f;
+				lowerLeftLegSpeed = 0.01f;
+				upperRightLegSpeed = -0.01f;
+			    lowerRightLegSpeed = -0.01f;
+			}
+			
+			if (initialUpperLeftLegSpeed == upperLeftMaxAngle) {
+				upperLeftLegSpeed = -0.01f;
+				lowerLeftLegSpeed = -0.01f;
+				upperRightLegSpeed = 0.01f;
+				lowerRightLegSpeed = 0.01f;
+			}
+
+			if (initialUpperRightLegSpeed == upperRightMaxAngle) {
+				upperLeftLegSpeed = 0.01f;
+				lowerLeftLegSpeed = 0.01f;
+				upperRightLegSpeed = -0.01f;
+				lowerRightLegSpeed = -0.01f;
+			}
+			
+		}
+		//'S' to stand
+		else if (wParam == 0x53) {
+			//initialize angle
+			upperLeftMinAngle = 0.0f;
+			lowerLeftMinAngle = 0.0f;
+			upperRightMinAngle = 0.0f;
+			lowerRightMinAngle = 0.0f;
+
+			//walk
+			//left
+			upperLeftLegSpeed = -0.01f;
+			lowerLeftLegSpeed = -0.01f;
+
+			//right
+			upperRightLegSpeed = -0.01f;
+			lowerRightLegSpeed = -0.01f;
 		}
 		else if (wParam == VK_LEFT) {
 			legRotate = 0.01f;
@@ -48,19 +141,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_RIGHT) {
 			legRotate = -0.01f;
 		}
-		//'S' - stop
-		else if (wParam == 0x53) {
+		//'Tab' - stop
+		else if (wParam == VK_TAB) {
 			legRotate = 0.0f;
-			upperLegSpeed = 0.0f;
-			lowerLegSpeed = 0.0f;
+
+			//left leg
+			upperLeftLegSpeed = 0.0f;
+			lowerLeftLegSpeed = 0.0f;
+
+			//right leg
+			upperRightLegSpeed = 0.0f;
+			lowerRightLegSpeed = 0.0f;
 		}
+		//'Space' - Reset all
 		else if (wParam == VK_SPACE) {
 			initialLegRotate = 0.0f;
 			legRotate = 0.0f;
-			initialUpperLegSpeed = 0.0f;
-			upperLegSpeed = 0.0f;
-			initialLowerLegSpeed = 0.0f;
-			lowerLegSpeed = 0.0f;
+
+			//left leg
+			initialUpperLeftLegSpeed = 0.0f;
+			upperLeftLegSpeed = 0.0f;
+			initialLowerLeftLegSpeed = 0.0f;
+			lowerLeftLegSpeed = 0.0f;
+
+			//right leg
+			initialUpperRightLegSpeed = 0.0f;
+			upperRightLegSpeed = 0.0f;
+			initialLowerRightLegSpeed = 0.0f;
+			lowerRightLegSpeed = 0.0f;
 		}
 		break;
 
@@ -121,13 +229,13 @@ void display()
 		//draw right leg
 		glPushMatrix();
 			glTranslatef(-0.5f, 0.0f, 0.0f);
-			drawLeg();
+			drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightMinAngle, &upperRightMaxAngle, &lowerRightMinAngle, &lowerRightMaxAngle);
 		glPopMatrix();
 
 		//draw left leg
 		glPushMatrix();
 			glTranslatef(0.0f, 0.0f, 0.0f);
-			drawLeg();
+			drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftMinAngle, &upperLeftMaxAngle, &lowerLeftMinAngle, &lowerLeftMaxAngle);
 		glPopMatrix();
 
 	glPopMatrix();
@@ -238,57 +346,56 @@ void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxX
 }
 
 //leg
-void drawLeg() {
-
+void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpeed, float *lowerSpeed, float *upperMinAngle, float *upperMaxAngle, float *lowerMinAngle, float *lowerMaxAngle) {
 	glPushMatrix();
 		//draw Upper leg
 		glTranslatef(-0.5f, 0.5f, 0.0f);
-			glRotatef(initialUpperLegSpeed, -0.5f, 0.0f, 0.0f);
+			glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
 		glTranslatef(0.5f, -0.5f, 0.0f);
 
-		initialUpperLegSpeed += upperLegSpeed;
+		*initialUpperSpeed += *upperSpeed;
 
-		if (initialUpperLegSpeed >= 90.0f) {
-			initialUpperLegSpeed = 90.0f;
-			upperLegSpeed = 0.0f;
+		if (*initialUpperSpeed >= *upperMaxAngle) {
+			*initialUpperSpeed = *upperMaxAngle;
+			*upperSpeed = 0.0f;
 		}
 
-		if (initialUpperLegSpeed <= 0.0f) {
-			initialUpperLegSpeed = 0.0f;
-			upperLegSpeed = 0.0f;
+		if (*initialUpperSpeed <= *upperMinAngle) {
+			*initialUpperSpeed = *upperMinAngle;
+			*upperSpeed = 0.0f;
 		}
-				
+
 		drawRectangle(0.0f, 0.2f, 0.55f, 0.0f, 0.0f, 0.2f);
 
 		glPushMatrix();
-			//rotate knee to lower leg
-			glTranslatef(0.155f, -0.10f, 0.1f);
-			glRotatef(-initialLowerLegSpeed, -0.5f, 0.0f, 0.0f);
-			glTranslatef(-0.155f, 0.10f, -0.1f);
+		//rotate knee to lower leg
+		glTranslatef(0.155f, -0.10f, 0.1f);
+			glRotatef(-*initialLowerSpeed, -0.5f, 0.0f, 0.0f);
+		glTranslatef(-0.155f, 0.10f, -0.1f);
 
-			initialLowerLegSpeed += lowerLegSpeed;
+		*initialLowerSpeed += *lowerSpeed;
 
-			if (initialLowerLegSpeed >= 85.0f) {
-				initialLowerLegSpeed = 85.0f;
-				lowerLegSpeed = 0.0f;
-			}
+		if (*initialLowerSpeed >= *lowerMaxAngle) {
+			*initialLowerSpeed = *lowerMaxAngle;
+			*lowerSpeed = 0.0f;
+		}
 
-			if (initialLowerLegSpeed <= 0.0f) {
-				initialLowerLegSpeed = 0.0f;
-				lowerLegSpeed = 0.0f;
-			}
+		if (*initialLowerSpeed <= *lowerMinAngle) {
+			*initialLowerSpeed = *lowerMinAngle;
+			*lowerSpeed = 0.0f;
+		}
 
-			glPushMatrix();
-				glTranslatef(0.1f, -0.10f, 0.1f);
-				glScalef(0.65f, 0.65f, 0.65f);
-				drawLegKnee(0.15f, 20, 10);
-			glPopMatrix();
-		
-			//draw lower leg (will rotate with knee)
-			drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
-			
-			//draw leg sole
-			drawTrapezium(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
+		glPushMatrix();
+			glTranslatef(0.1f, -0.10f, 0.1f);
+			glScalef(0.65f, 0.65f, 0.65f);
+			drawLegKnee(0.15f, 20, 10);
+		glPopMatrix();
+
+		//draw lower leg (will rotate with knee)
+		drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
+
+		//draw leg sole
+		drawTrapezium(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
 
 		glPopMatrix();
 	glPopMatrix();
