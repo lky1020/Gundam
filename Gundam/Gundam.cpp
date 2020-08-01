@@ -8,6 +8,21 @@
 
 #define WINDOW_TITLE "OpenGL Window"
 
+//Draw Shape
+void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
+
+//leg - data type
+float initialLegRotate = 0.0f;
+float legRotate = 0.0f;
+float initialUpperLegSpeed = 0.0f;
+float upperLegSpeed = 0.0f;
+float initialLowerLegSpeed = 0.0f;
+float lowerLegSpeed = 0.0f;
+
+//leg
+void drawLeg();
+void drawLegKnee(float radius, int slices, int stacks);
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -19,6 +34,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) PostQuitMessage(0);
+		else if (wParam == VK_UP) {
+			upperLegSpeed = 0.01f;
+			lowerLegSpeed = 0.01f;
+		}
+		else if (wParam == VK_DOWN) {
+			upperLegSpeed = -0.01f;
+			lowerLegSpeed = -0.01f;
+		}
+		else if (wParam == VK_LEFT) {
+			legRotate = 0.01f;
+		}
+		else if (wParam == VK_RIGHT) {
+			legRotate = -0.01f;
+		}
+		//'S' - stop
+		else if (wParam == 0x53) {
+			legRotate = 0.0f;
+			upperLegSpeed = 0.0f;
+			lowerLegSpeed = 0.0f;
+		}
+		else if (wParam == VK_SPACE) {
+			initialLegRotate = 0.0f;
+			legRotate = 0.0f;
+			initialUpperLegSpeed = 0.0f;
+			upperLegSpeed = 0.0f;
+			initialLowerLegSpeed = 0.0f;
+			lowerLegSpeed = 0.0f;
+		}
 		break;
 
 	default:
@@ -66,14 +109,197 @@ void display()
 	//--------------------------------
 	//	OpenGL drawing
 	//--------------------------------
-	//Testing GitHub
-	//Testing by lky1020
-	//Testing by Lky1120
+
+	glEnable(GL_DEPTH);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glPushMatrix();
+
+		glRotatef(initialLegRotate, 0.0f, 0.5f, 0.0f);
+		initialLegRotate += legRotate;
+
+		//draw right leg
+		glPushMatrix();
+			glTranslatef(-0.5f, 0.0f, 0.0f);
+			drawLeg();
+		glPopMatrix();
+
+		//draw left leg
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.0f);
+			drawLeg();
+		glPopMatrix();
+
+	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
 }
 //--------------------------------------------------------------------
+
+//Draw Shape
+void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+	//Back
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, maxY, minZ);
+	glEnd();
+
+	//Bottom
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, minY, maxZ);
+	glEnd();
+
+	//Left
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(minX, minY, maxZ);
+	glEnd();
+
+	//Top
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(maxX, maxY, minZ);
+	glVertex3f(maxX, maxY, maxZ);
+	glEnd();
+
+	//Right
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, maxY, maxZ);
+	glVertex3f(maxX, maxY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, minY, maxZ);
+	glEnd();
+
+	//Front
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, maxY, maxZ);
+	glEnd();
+}
+void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
+	//Back
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(minXTop, yTop, minZTop);
+		glVertex3f(minXBottom, yBottom, minZBottom);
+		glVertex3f(maxXBottom, yBottom, minZBottom);
+		glVertex3f(maxXTop, yTop, minZTop);
+	glEnd();
+
+	//Bottom
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(minXBottom, yBottom, minZBottom);
+		glVertex3f(maxXBottom, yBottom, minZBottom);
+		glVertex3f(maxXBottom, yBottom, maxZBottom);
+		glVertex3f(minXBottom, yBottom, maxZBottom);
+	glEnd();
+
+	//Left
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(maxXTop, yTop, minZTop);
+		glVertex3f(maxXBottom, yBottom, minZBottom);
+		glVertex3f(maxXBottom, yBottom, maxZBottom);
+		glVertex3f(maxXTop, yTop, maxZTop);
+	glEnd();
+
+	//Top
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(maxXTop, yTop, minZTop);
+		glVertex3f(minXTop, yTop, minZTop);
+		glVertex3f(minXTop, yTop, maxZTop);
+		glVertex3f(maxXTop, yTop, maxZTop);
+	glEnd();
+
+	//Right
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(minXTop, yTop, minZTop);
+		glVertex3f(minXBottom, yBottom, minZBottom);
+		glVertex3f(minXBottom, yBottom, maxZBottom);
+		glVertex3f(minXTop, yTop, maxZTop);
+	glEnd();
+
+	//Front
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(minXTop, yTop, maxZTop);
+		glVertex3f(minXBottom, yBottom, maxZBottom);
+		glVertex3f(maxXBottom, yBottom, maxZBottom);
+		glVertex3f(maxXTop, yTop, maxZTop);
+	glEnd();
+}
+
+//leg
+void drawLeg() {
+
+	glPushMatrix();
+		//draw Upper leg
+		glTranslatef(-0.5f, 0.5f, 0.0f);
+			glRotatef(initialUpperLegSpeed, -0.5f, 0.0f, 0.0f);
+		glTranslatef(0.5f, -0.5f, 0.0f);
+
+		initialUpperLegSpeed += upperLegSpeed;
+
+		if (initialUpperLegSpeed >= 90.0f) {
+			initialUpperLegSpeed = 90.0f;
+			upperLegSpeed = 0.0f;
+		}
+
+		if (initialUpperLegSpeed <= 0.0f) {
+			initialUpperLegSpeed = 0.0f;
+			upperLegSpeed = 0.0f;
+		}
+				
+		drawRectangle(0.0f, 0.2f, 0.55f, 0.0f, 0.0f, 0.2f);
+
+		glPushMatrix();
+			//rotate knee to lower leg
+			glTranslatef(0.155f, -0.10f, 0.1f);
+			glRotatef(-initialLowerLegSpeed, -0.5f, 0.0f, 0.0f);
+			glTranslatef(-0.155f, 0.10f, -0.1f);
+
+			initialLowerLegSpeed += lowerLegSpeed;
+
+			if (initialLowerLegSpeed >= 85.0f) {
+				initialLowerLegSpeed = 85.0f;
+				lowerLegSpeed = 0.0f;
+			}
+
+			if (initialLowerLegSpeed <= 0.0f) {
+				initialLowerLegSpeed = 0.0f;
+				lowerLegSpeed = 0.0f;
+			}
+
+			glPushMatrix();
+				glTranslatef(0.1f, -0.10f, 0.1f);
+				glScalef(0.65f, 0.65f, 0.65f);
+				drawLegKnee(0.15f, 20, 10);
+			glPopMatrix();
+		
+			//draw lower leg (will rotate with knee)
+			drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
+			
+			//draw leg sole
+			drawTrapezium(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
+
+		glPopMatrix();
+	glPopMatrix();
+}
+void drawLegKnee(float radius, int slices, int stacks) {
+	GLUquadricObj *knee = NULL;
+	knee = gluNewQuadric();
+	gluQuadricDrawStyle(knee, GLU_LINE);
+	gluSphere(knee, radius, slices, stacks);
+	gluDeleteQuadric(knee);
+}
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
@@ -89,7 +315,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 	if (!RegisterClassEx(&wc)) return false;
 
 	HWND hWnd = CreateWindow(WINDOW_TITLE, WINDOW_TITLE, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		CW_USEDEFAULT, CW_USEDEFAULT, 800, 800,
 		NULL, NULL, wc.hInstance, NULL);
 
 	//--------------------------------
