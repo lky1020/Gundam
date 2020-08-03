@@ -37,8 +37,11 @@ float initialLowerRightLegSpeed = 0.0f;
 float lowerRightLegSpeed = 0.0f;
 
 //leg
+void constructleg();
+void drawPelvicGirdle();
 void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpeed, float *lowerSpeed, float *upperMinAngle, float *upperMaxAngle, float *lowerMinAngle, float *lowerMaxAngle);
 void drawLegKnee(float radius, int slices, int stacks);
+void drawLegPivot();
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -59,11 +62,19 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			//left leg
 			upperLeftLegSpeed = 0.01f;
 			lowerLeftLegSpeed = 0.01f;
+
+			//right leg
+			upperRightLegSpeed = -0.01f;
+			lowerRightLegSpeed = -0.01f;
 		}
 		else if (wParam == VK_UP) {
 			//initialize right leg
 			upperRightMaxAngle = 90.0f;
 			lowerRightMaxAngle = 85.0f;
+
+			//left leg
+			upperLeftLegSpeed = -0.01f;
+			lowerLeftLegSpeed = -0.01f;
 
 			//right leg
 			upperRightLegSpeed = 0.01f;
@@ -222,22 +233,8 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glPushMatrix();
-
-		glRotatef(initialLegRotate, 0.0f, 0.5f, 0.0f);
-		initialLegRotate += legRotate;
-
-		//draw right leg
-		glPushMatrix();
-			glTranslatef(-0.5f, 0.0f, 0.0f);
-			drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightMinAngle, &upperRightMaxAngle, &lowerRightMinAngle, &lowerRightMaxAngle);
-		glPopMatrix();
-
-		//draw left leg
-		glPushMatrix();
-			glTranslatef(0.0f, 0.0f, 0.0f);
-			drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftMinAngle, &upperLeftMaxAngle, &lowerLeftMinAngle, &lowerLeftMaxAngle);
-		glPopMatrix();
-
+		//glScalef(0.5f, 0.5f, 0.5f);
+		constructleg();
 	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
@@ -346,12 +343,101 @@ void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxX
 }
 
 //leg
+void constructleg() {
+	glPushMatrix();
+		//just for rotation (need delete afterwards)
+		glRotatef(initialLegRotate, 0.0f, 0.5f, 0.0f);
+		initialLegRotate += legRotate;
+
+		//draw Pelvic Girdle
+		drawPelvicGirdle();
+
+		//draw right leg pivot
+		glPushMatrix();
+			drawLegPivot();
+		glPopMatrix();
+
+		//draw right leg
+		glPushMatrix();
+			glTranslatef(-0.5f, 0.0f, 0.0f);
+			drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightMinAngle, &upperRightMaxAngle, &lowerRightMinAngle, &lowerRightMaxAngle);
+		glPopMatrix();
+
+		//draw right leg pivot
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.0f, 0.2f);
+			glRotatef(180.0f, 0.0f, 0.5f, 0.0f);
+			drawLegPivot();
+		glPopMatrix();
+
+		//draw left leg
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.0f);
+			drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftMinAngle, &upperLeftMaxAngle, &lowerLeftMinAngle, &lowerLeftMaxAngle);
+		glPopMatrix();
+
+	glPopMatrix();
+}
+void drawPelvicGirdle() {
+	glPushMatrix();
+		//draw "/"
+		glPushMatrix();
+			//rotate vertical
+			glRotatef(-90.0f, 0.0f, 0.5f, 0.0f);
+
+			//translate trapezium
+			glTranslatef(0.25f, 0.35f, 0.4f);
+
+			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+		glPopMatrix();
+	
+		//draw "|"
+		glPushMatrix();
+			//draw front
+			glPushMatrix();
+				//rotate vertical
+				glRotatef(90.0f, 0.5f, 0.0f, 0.0f);
+
+				//translate trapezium
+				glTranslatef(0.0f, -0.075f, -0.65f);
+
+				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.2f, 0.30f, 0.45f, -0.15f, 0.35f, -0.05f, 0.225f);
+			glPopMatrix();
+
+			//draw middle
+			drawRectangle(-0.25f, -0.05f, 0.30f, 0.80f, -0.025f, 0.225f);
+
+			//draw back
+			glPushMatrix();
+				//rotate vertical
+				glRotatef(90.0f, -0.5f, 0.0f, 0.0f);
+
+				//translate trapezium
+				glTranslatef(0.0f, -0.275f, 0.30f);
+
+				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.20f, 0.30f, 0.45f, 0.0f, 0.5f, 0.125f, 0.4f);
+			glPopMatrix();
+		glPopMatrix();
+
+		//draw "\"
+		glPushMatrix();
+			//rotate vertical
+			glRotatef(90.0f, 0.0f, 0.5f, 0.0f);
+
+			//translate trapezium
+			glTranslatef(0.05f, 0.35f, 0.1f);
+
+			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+		glPopMatrix();
+
+	glPopMatrix();
+}
 void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpeed, float *lowerSpeed, float *upperMinAngle, float *upperMaxAngle, float *lowerMinAngle, float *lowerMaxAngle) {
 	glPushMatrix();
 		//draw Upper leg
-		glTranslatef(-0.5f, 0.5f, 0.0f);
+		glTranslatef(-0.5f, 0.5f, 0.1f);
 			glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
-		glTranslatef(0.5f, -0.5f, 0.0f);
+		glTranslatef(0.5f, -0.5f, -0.1f);
 
 		*initialUpperSpeed += *upperSpeed;
 
@@ -406,6 +492,21 @@ void drawLegKnee(float radius, int slices, int stacks) {
 	gluQuadricDrawStyle(knee, GLU_LINE);
 	gluSphere(knee, radius, slices, stacks);
 	gluDeleteQuadric(knee);
+}
+void drawLegPivot() {
+	glPushMatrix();
+		glLineWidth(5);
+		glBegin(GL_LINES);
+			glVertex3f(-0.05f, 0.45f, 0.1f);
+			glVertex3f(0.05f, 0.45f, 0.1f);
+		glEnd();
+		glLineWidth(1);
+
+		glPushMatrix();
+			glTranslatef(0.10f, 0.45f, 0.1f);
+			drawLegKnee(0.05f, 10, 5);
+		glPopMatrix();
+	glPopMatrix();
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
