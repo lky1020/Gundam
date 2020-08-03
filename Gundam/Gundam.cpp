@@ -101,10 +101,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//'W' to walk
 		else if (wParam ==  0x57) {
 			//initialize angle
-			upperLeftMaxAngle = 30.0f;
-			lowerLeftMaxAngle = 25.0f;
-			upperRightMaxAngle = 30.0f;
-			lowerRightMaxAngle = 25.0f;
+			upperLeftMaxAngle = 40.0f;
+			lowerLeftMaxAngle = 35.0f;
+			upperRightMaxAngle = 40.0f;
+			lowerRightMaxAngle = 35.0f;
 
 			//walk
 			if (initialUpperRightLegSpeed == 0.0f) {
@@ -233,7 +233,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glPushMatrix();
-		//glScalef(0.5f, 0.5f, 0.5f);
+		glScalef(0.5f, 0.5f, 0.5f);
 		constructleg();
 	glPopMatrix();
 	//--------------------------------
@@ -246,50 +246,50 @@ void display()
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, maxY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, maxY, minZ);
 	glEnd();
 
 	//Bottom
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, minY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, minY, maxZ);
 	glEnd();
 
 	//Left
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, minY, maxZ);
 	glEnd();
 
 	//Top
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 
 	//Right
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, minY, maxZ);
 	glEnd();
 
 	//Front
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 }
 void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
@@ -435,9 +435,9 @@ void drawPelvicGirdle() {
 void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpeed, float *lowerSpeed, float *upperMinAngle, float *upperMaxAngle, float *lowerMinAngle, float *lowerMaxAngle) {
 	glPushMatrix();
 		//draw Upper leg
-		glTranslatef(-0.5f, 0.5f, 0.1f);
+		glTranslatef(-0.5f, 0.45f, 0.1f);
 			glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
-		glTranslatef(0.5f, -0.5f, -0.1f);
+		glTranslatef(0.5f, -0.45f, -0.1f);
 
 		*initialUpperSpeed += *upperSpeed;
 
