@@ -646,57 +646,6 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 	glEnd();
 
 }
-void drawCuboid(float size, float size2) {
-
-	//glLineWidth(4);
-	// Face 1 :base
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glVertex3f(size, size2, 0.0f);
-	glVertex3f(0.0f, size2, 0.0f);
-	glEnd();
-
-	// Face 2 : back
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, size2, 0.0f);
-	glVertex3f(0.0f, size2, size2);
-	glVertex3f(size, size2, size2);
-	glVertex3f(size, size2, 0.0f);
-	glEnd();
-
-	// Face 3 : left
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(size, size2, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glVertex3f(size, 0.0f, size2);
-	glVertex3f(size, size2, size2);
-	glEnd();
-
-	// Face 4 : top
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(size, size2, size2);
-	glVertex3f(size, 0.0f, size2);
-	glVertex3f(0.0f, 0.0f, size2);
-	glVertex3f(0.0f, size2, size2);
-	glEnd();
-
-	// Face 5 : right
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, size2, size2);
-	glVertex3f(0.0f, size2, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, size2);
-	glEnd();
-
-	// Face 5 : front
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, 0.0f, size2);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glVertex3f(size, 0.0f, size2);
-	glEnd();
-}
 
 //leg
 void constructleg() {
