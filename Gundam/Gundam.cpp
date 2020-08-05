@@ -20,20 +20,20 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 
 //leg - data type
 //left leg
-float upperLeftMinAngle = 0.0f;
-float upperLeftMaxAngle = 0.0f;
-float lowerLeftMinAngle = 0.0f;
-float lowerLeftMaxAngle = 0.0f;
+float upperLeftLegMinAngle = 0.0f;
+float upperLeftLegMaxAngle = 0.0f;
+float lowerLeftLegMinAngle = 0.0f;
+float lowerLeftLegMaxAngle = 0.0f;
 float initialUpperLeftLegSpeed = 0.0f;
 float upperLeftLegSpeed = 0.0f;
 float initialLowerLeftLegSpeed = 0.0f;
 float lowerLeftLegSpeed = 0.0f;
 
 //right leg
-float upperRightMinAngle = 0.0f;
-float upperRightMaxAngle = 0.0f;
-float lowerRightMinAngle = 0.0f;
-float lowerRightMaxAngle = 0.0f;
+float upperRightLegMinAngle = 0.0f;
+float upperRightLegMaxAngle = 0.0f;
+float lowerRightLegMinAngle = 0.0f;
+float lowerRightLegMaxAngle = 0.0f;
 float initialUpperRightLegSpeed = 0.0f;
 float upperRightLegSpeed = 0.0f;
 float initialLowerRightLegSpeed = 0.0f;
@@ -63,13 +63,13 @@ float initialThumbMove = 0.0f;
 float thumbMove = 0.0f;
 float initialArmRotate = 0.0f;
 float move_inFront = 0.0f, move_inFront_lowerArm = 0.0f, move_inFront_hand = 0.0f;
-float move_Left_inFront = 0.0f, move_Left_inFront_hand = 0.0f;
 float move_Right_inFront = 0.0f, move_Right_inFront_hand = 0.0f;
+float move_Left_inFront = 0.0f, move_Left_inFront_hand = 0.0f;
 float activate = 0.0f; //need to change
-float initialRightUpperArmSpeed = 0.0f, upperRightArmSpeed = 0.0f, upperRightArmMaxAngle = 0.0f, upperRightArmMinAngle = 0.0f;
-float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArmMaxAngle = 0.0f, lowerRightArmMinAngle = 0.0f;
 float initialLeftUpperArmSpeed = 0.0f, upperLeftArmSpeed = 0.0f, upperLeftArmMaxAngle = 0.0f, upperLeftArmMinAngle = 0.0f;
 float initialLeftLowerArmSpeed = 0.0f, lowerLeftArmSpeed = 0.0f, lowerLeftArmMaxAngle = 0.0f, lowerLeftArmMinAngle = 0.0f;
+float initialRightUpperArmSpeed = 0.0f, upperRightArmSpeed = 0.0f, upperRightArmMaxAngle = 0.0f, upperRightArmMinAngle = 0.0f;
+float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArmMaxAngle = 0.0f, lowerRightArmMinAngle = 0.0f;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -84,8 +84,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_SHIFT) {
 
 			//initialize left leg
-			upperLeftMaxAngle = 90.0f;
-			lowerLeftMaxAngle = 85.0f;
+			upperLeftLegMaxAngle = 90.0f;
+			lowerLeftLegMaxAngle = 85.0f;
 
 			//left leg
 			upperLeftLegSpeed = 0.01f;
@@ -94,14 +94,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			//right leg
 			upperRightLegSpeed = -0.01f;
 			lowerRightLegSpeed = -0.01f;
-
-
 			
 		}
 		else if (wParam == VK_UP) {
 			//initialize right leg
-			upperRightMaxAngle = 90.0f;
-			lowerRightMaxAngle = 85.0f;
+			upperRightLegMaxAngle = 90.0f;
+			lowerRightLegMaxAngle = 85.0f;
 
 			//left leg
 			upperLeftLegSpeed = -0.01f;
@@ -114,8 +112,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else if (wParam == VK_CONTROL) {
 			//initialize left leg
-			upperLeftMinAngle = 0.0f;
-			lowerLeftMinAngle = 0.0f;
+			upperLeftLegMinAngle = 0.0f;
+			lowerLeftLegMinAngle = 0.0f;
 
 			//left leg
 			upperLeftLegSpeed = -0.01f;
@@ -124,8 +122,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else if (wParam == VK_DOWN) {
 			//initialize right leg
-			upperRightMinAngle = 0.0f;
-			lowerRightMinAngle = 0.0f;
+			upperRightLegMinAngle = 0.0f;
+			lowerRightLegMinAngle = 0.0f;
 
 			//right leg
 			upperRightLegSpeed = -0.01f;
@@ -134,10 +132,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//'W' to walk
 		else if (wParam ==  0x57) {
 			//initialize angle
-			upperLeftMaxAngle = 40.0f;
-			lowerLeftMaxAngle = 35.0f;
-			upperRightMaxAngle = 40.0f;
-			lowerRightMaxAngle = 35.0f;
+			upperLeftLegMaxAngle = 40.0f;
+			lowerLeftLegMaxAngle = 35.0f;
+			upperRightLegMaxAngle = 40.0f;
+			lowerRightLegMaxAngle = 35.0f;
 
 			//walk
 			if (initialUpperRightLegSpeed == 0.0f) {
@@ -147,14 +145,14 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			    lowerRightLegSpeed = -0.01f;
 			}
 			
-			if (initialUpperLeftLegSpeed == upperLeftMaxAngle) {
+			if (initialUpperLeftLegSpeed == upperLeftLegMaxAngle) {
 				upperLeftLegSpeed = -0.01f;
 				lowerLeftLegSpeed = -0.01f;
 				upperRightLegSpeed = 0.01f;
 				lowerRightLegSpeed = 0.01f;
 			}
 
-			if (initialUpperRightLegSpeed == upperRightMaxAngle) {
+			if (initialUpperRightLegSpeed == upperRightLegMaxAngle) {
 				upperLeftLegSpeed = 0.01f;
 				lowerLeftLegSpeed = 0.01f;
 				upperRightLegSpeed = -0.01f;
@@ -162,31 +160,31 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 
 			//'W' key" to let the walk - hand and leg move
-			lowerRightArmMaxAngle = 35.0f;
 			lowerLeftArmMaxAngle = 35.0f;
-			upperRightArmMaxAngle = 45.0f;
+			lowerRightArmMaxAngle = 35.0f;
 			upperLeftArmMaxAngle = 45.0f;
+			upperRightArmMaxAngle = 45.0f;
 
-			if (initialLeftUpperArmSpeed == 0.0f || (initialLeftUpperArmSpeed != 0.0f && initialLeftUpperArmSpeed < upperLeftArmMaxAngle)) {
-				upperRightArmSpeed = -0.01f;
-				upperLeftArmSpeed = 0.01f;
-				lowerRightArmSpeed = -0.01f;
-				lowerLeftArmSpeed = 0.01f;
+			if (initialRightUpperArmSpeed == 0.0f /*|| (initialRightUpperArmSpeed != 0.0f && initialRightUpperArmSpeed < upperRightArmMaxAngle)*/) {
+				upperLeftArmSpeed = -0.01f;
+				upperRightArmSpeed = 0.01f;
+				lowerLeftArmSpeed = -0.01f;
+				lowerRightArmSpeed = 0.01f;
 
 			}
 			
-			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
-				upperRightArmSpeed = 0.01f;
-				upperLeftArmSpeed = -0.01f;
-				lowerRightArmSpeed = 0.01f;
-				lowerLeftArmSpeed = -0.01f;
+			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
+				upperLeftArmSpeed = 0.01f;
+				upperRightArmSpeed = -0.01f;
+				lowerLeftArmSpeed = 0.01f;
+				lowerRightArmSpeed = -0.01f;
 
 			}
-			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
-				upperRightArmSpeed = -0.01f;
-				upperLeftArmSpeed = 0.01f;
-				lowerRightArmSpeed = -0.01f;
-				lowerLeftArmSpeed = 0.01f;
+			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
+				upperLeftArmSpeed = -0.01f;
+				upperRightArmSpeed = 0.01f;
+				lowerLeftArmSpeed = -0.01f;
+				lowerRightArmSpeed = 0.01f;
 
 			}
 
@@ -194,20 +192,20 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//'S' to stand
 		else if (wParam == 0x53) {
 			//initialize leg angle
-			upperLeftMinAngle = 0.0f;
-			lowerLeftMinAngle = 0.0f;
-			upperRightMinAngle = 0.0f;
-			lowerRightMinAngle = 0.0f;
+			upperLeftLegMinAngle = 0.0f;
+			lowerLeftLegMinAngle = 0.0f;
+			upperRightLegMinAngle = 0.0f;
+			lowerRightLegMinAngle = 0.0f;
 
 			//initialize arm angle
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
-			lowerRightArmMaxAngle = 0.0f;
+			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMaxAngle = 0.0f;
-			upperRightArmMinAngle = 0.0f;
+			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 0.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 0.0f;
+			upperRightArmMaxAngle = 0.0f;
 
 			//walk
 			//left leg
@@ -221,9 +219,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			//left arm
 			upperLeftArmSpeed = -0.01f;
 			lowerLeftArmSpeed = -0.01f;
+
 			//right arm
 			upperRightArmSpeed = -0.01f;
 			lowerRightArmSpeed = -0.01f;
+			
 		}
 		else if (wParam == VK_LEFT) {
 			bodyRotate = 0.01f;
@@ -250,6 +250,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			//right hand
 			upperRightArmSpeed = 0.0f;
 			lowerRightArmSpeed = 0.0f;
+
 		}
 		//'Space' - Reset all
 		else if (wParam == VK_SPACE) {
@@ -285,43 +286,44 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			initialRightLowerArmSpeed = 0.0f;
 			move_Right_inFront = 0.0f;
 			move_Right_inFront_hand = 0.0f;
+			
 		}
-		//'H' - activate upper arm
+		//'H' - activate upper arm (left and right)
 		else if (wParam == 0x48) {
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
-			lowerRightArmMaxAngle = 0.0f;
+			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMaxAngle = 0.0f;
-			upperRightArmMinAngle = 0.0f;
+			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 80.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 80.0f;
+			upperRightArmMaxAngle = 80.0f;
 
-			if (initialRightUpperArmSpeed == 0.0f || (initialRightUpperArmSpeed != 0 && initialRightUpperArmSpeed < upperRightArmMaxAngle)) {
-				upperRightArmSpeed = 0.01f;
-				upperLeftArmSpeed = -0.01f;
-			}
-			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
-				upperRightArmSpeed = 0.01f;
-				upperLeftArmSpeed = -0.01f;
+			if (initialLeftUpperArmSpeed == 0.0f /*|| (initialLeftUpperArmSpeed != 0 && initialLeftUpperArmSpeed < upperLeftArmMaxAngle)*/) {
+				upperLeftArmSpeed = 0.01f;
+				upperRightArmSpeed = -0.01f;
 			}
 			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
-				upperRightArmSpeed = -0.01f;
 				upperLeftArmSpeed = 0.01f;
+				upperRightArmSpeed = -0.01f;
+			}
+			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
+				upperLeftArmSpeed = -0.01f;
+				upperRightArmSpeed = 0.01f;
 			}
 		}
 		// 'K' - to move left upper arm up and down
 		else if (wParam == 0x4B) {
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
-			lowerRightArmMaxAngle = 0.0f;
+			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMaxAngle = 0.0f;
-			upperRightArmMinAngle = 0.0f;
+			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 0.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 80.0f;
+			upperRightArmMaxAngle = 0.0f;
 
-			if (initialLeftUpperArmSpeed == 0.0f || (initialLeftUpperArmSpeed != 0.0f && initialLeftUpperArmSpeed < upperLeftArmMaxAngle)) {
+			if (initialLeftUpperArmSpeed == 0.0f /*|| (initialLeftUpperArmSpeed != 0.0 && initialLeftUpperArmSpeed < upperLeftArmMaxAngle)*/) {
 
 				upperLeftArmSpeed = 0.01f;
 
@@ -334,25 +336,25 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		// 'P' - to move right upper arm up and down
 		else if (wParam == 0x50) {
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
-			lowerRightArmMaxAngle = 0.0f;
+			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMaxAngle = 0.0f;
-			upperRightArmMinAngle = 0.0f;
+			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 80.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 0.0f;
+			upperRightArmMaxAngle = 80.0f;
 
-		if (initialRightUpperArmSpeed == 0.0f || (initialRightUpperArmSpeed != 0.0 && initialRightUpperArmSpeed < upperRightArmMaxAngle)) {
+			if (initialRightUpperArmSpeed == 0.0f /*|| (initialRightUpperArmSpeed != 0.0f && initialRightUpperArmSpeed < upperRightArmMaxAngle)*/) {
 
-			upperRightArmSpeed = 0.01f;
+				upperRightArmSpeed = 0.01f;
 
-		}
-		if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
+			}
+			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
 
-			upperRightArmSpeed = -0.01f;
+				upperRightArmSpeed = -0.01f;
 
-		}
+			}
 		}
 		//'F' - move both finger (activate and deactivate)
 		else if (wParam == 0x46) { 
@@ -370,16 +372,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == 0x56) {
 			//'V' to activate left lower arm
 			// press 'V' to up and down
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
-			lowerRightArmMaxAngle = 90.0f;
+			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMaxAngle = 90.0f;
-			upperRightArmMinAngle = 0.0f;
+			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 0.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 0.0f;
+			upperRightArmMaxAngle = 0.0f;
 
-			if (initialLeftLowerArmSpeed == 0.0f || (initialLeftLowerArmSpeed != 0.0f && initialLeftLowerArmSpeed < lowerLeftArmMaxAngle)) {
+			if (initialLeftLowerArmSpeed == 0.0f /*|| (initialLeftLowerArmSpeed != 0.0 && initialLeftLowerArmSpeed < lowerLeftArmMaxAngle)*/) {
 
 				lowerLeftArmSpeed = 0.01f;
 
@@ -389,21 +391,20 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerLeftArmSpeed = -0.01f;
 
 			}
-
 		}
 		else if (wParam == 0x5A) {
 			//'Z' to activate right lower arm
 			// 'Z' to up and down
-			lowerRightArmMinAngle = 0.0f;
 			lowerLeftArmMinAngle = 0.0f;
+			lowerRightArmMinAngle = 0.0f;
+			lowerLeftArmMaxAngle = 90.0f;
 			lowerRightArmMaxAngle = 90.0f;
-			lowerLeftArmMaxAngle = 0.0f;
-			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
-			upperRightArmMaxAngle = 0.0f;
+			upperRightArmMinAngle = 0.0f;
 			upperLeftArmMaxAngle = 0.0f;
+			upperRightArmMaxAngle = 0.0f;
 
-			if (initialRightLowerArmSpeed == 0.0f || (initialRightLowerArmSpeed != 0.0 && initialRightLowerArmSpeed < lowerRightArmMaxAngle)) {
+			if (initialRightLowerArmSpeed == 0.0f /*|| (initialRightLowerArmSpeed != 0.0f && initialRightLowerArmSpeed < lowerRightArmMaxAngle)*/) {
 
 				lowerRightArmSpeed = 0.01f;
 
@@ -413,6 +414,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerRightArmSpeed = -0.01f;
 
 			}
+
 		}
 		//for finger moving
 		if (activate == 1.0f) {
@@ -662,7 +664,7 @@ void constructleg() {
 		//draw right leg
 		glPushMatrix();
 			glTranslatef(-0.5f, 0.0f, 0.0f);
-			drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightMinAngle, &upperRightMaxAngle, &lowerRightMinAngle, &lowerRightMaxAngle);
+			drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightLegMinAngle, &upperRightLegMaxAngle, &lowerRightLegMinAngle, &lowerRightLegMaxAngle);
 		glPopMatrix();
 
 		//draw right leg pivot
@@ -675,7 +677,7 @@ void constructleg() {
 		//draw left leg
 		glPushMatrix();
 			glTranslatef(0.0f, 0.0f, 0.0f);
-			drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftMinAngle, &upperLeftMaxAngle, &lowerLeftMinAngle, &lowerLeftMaxAngle);
+			drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftLegMinAngle, &upperLeftLegMaxAngle, &lowerLeftLegMinAngle, &lowerLeftLegMaxAngle);
 		glPopMatrix();
 
 	glPopMatrix();
@@ -943,12 +945,12 @@ void drawRobotHand() {
 
 				glPushMatrix();
 
-					glTranslatef(-0.725f, -0.1f, 0.23f);
-					glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+					glTranslatef(-0.525f, -0.1f, 0.025f);
+					glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
 					glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-					arm(&initialLeftUpperArmSpeed, &initialLeftLowerArmSpeed,
-					&move_Left_inFront_hand, &upperLeftArmSpeed, &upperLeftArmMaxAngle,
-					&upperLeftArmMinAngle, &lowerLeftArmSpeed, &lowerLeftArmMaxAngle, &lowerLeftArmMinAngle);
+					arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
+					&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
+					&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle);
 				
 				glPopMatrix();
 	
@@ -971,9 +973,9 @@ void drawRobotHand() {
 						glTranslatef(-0.725f, -0.1f, 0.23f);
 						glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 						glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-						arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
-						&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
-						&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle);
+						arm(&initialLeftUpperArmSpeed, &initialLeftLowerArmSpeed,
+						&move_Left_inFront_hand, &upperLeftArmSpeed, &upperLeftArmMaxAngle,
+						&upperLeftArmMinAngle, &lowerLeftArmSpeed, &lowerLeftArmMaxAngle, &lowerLeftArmMinAngle);
 					
 					glPopMatrix();
 
