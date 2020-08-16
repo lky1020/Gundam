@@ -17,6 +17,10 @@ void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, f
 void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawSphere(float radius);
 void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, float maxZ, float divideX, float divideZ);
+void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void rectangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void DrawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 
 //leg - data type
 //left leg
@@ -56,6 +60,11 @@ void adjustFingerMove(float translateX, float translateY, float translateZ, floa
 void armJoint();
 void drawRobotHand();
 
+//head function
+void drawBackHead();
+void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rotateHZ, float* rotateHSpeed, float* rotateHMaxAngle, float* rotateHMinAngle);
+
+
 //Hand Variable
 float initialFingerMove = 0.0f;
 float fingerMove = 0.0f;
@@ -71,6 +80,8 @@ float initialLeftUpperArmSpeed = 0.0f, upperLeftArmSpeed = 0.0f, upperLeftArmMax
 float initialLeftLowerArmSpeed = 0.0f, lowerLeftArmSpeed = 0.0f, lowerLeftArmMaxAngle = 0.0f, lowerLeftArmMinAngle = 0.0f;
 float initialRightUpperArmSpeed = 0.0f, upperRightArmSpeed = 0.0f, upperRightArmMaxAngle = 0.0f, upperRightArmMinAngle = 0.0f;
 float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArmMaxAngle = 0.0f, lowerRightArmMinAngle = 0.0f;
+float rotateH = 0.0f, rotateHX = 0.0f, rotateHY = 0.0f, rotateHZ = 0.0f;
+float rotateHSpeed = 0.0f, rotateHMaxAngle = 0.0f, rotateHMinAngle = 0.0f;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -264,6 +275,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			upperRightArmSpeed = 0.0f;
 			lowerRightArmSpeed = 0.0f;
 
+			//head
+			rotateHSpeed = 0.0f;
 		}
 		//'Space' - Reset all
 		else if (wParam == VK_SPACE) {
@@ -300,6 +313,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			move_Right_inFront = 0.0f;
 			move_Right_inFront_hand = 0.0f;
 			
+			//head
+			rotateH = 0.0f;
+			rotateHSpeed = 0.0f;
 		}
 		//'H' - activate upper arm (left and right)
 		else if (wParam == 0x48) {
@@ -407,6 +423,42 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			lowerLeftArmSpeed = -0.01f;
 		}
+		//'N' - to move head to left
+		else if (wParam == 'N') {
+
+			rotateHX = 0.0f;
+			rotateHY = 0.5f;
+			rotateHZ = 0.0f;
+			rotateHMaxAngle = 90.0f;
+			rotateHMinAngle = 0.0f;
+
+			if (rotateH == 0.0f) {
+
+				rotateHSpeed = 0.01f;
+			}
+			else if (rotateH >= rotateHMaxAngle) {
+
+				rotateHSpeed = -0.01f;
+			}
+
+		}
+		//'M' to move head to right
+		else if (wParam == 'M') {
+			rotateHX = 0.0f;
+			rotateHY = -0.5f;
+			rotateHZ = 0.0f;
+			rotateHMaxAngle = 90.0f;
+			rotateHMinAngle = 0.0f;
+
+			if (rotateH == 0.0f) {
+	
+				rotateHSpeed = 0.01f;
+			}
+			else if (rotateH >= rotateHMaxAngle) {
+
+				rotateHSpeed = -0.01f;
+			}
+		}
 		//for finger moving
 		if (activate == 1.0f) {
 
@@ -477,13 +529,21 @@ void display()
 		initialBodyRotate += bodyRotate;
 
 		glPushMatrix();
-			glScalef(0.5f, 0.5f, 0.5f);
-			drawRobotHand();
+			glTranslatef(-0.08,0.7,0.0);
+			drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
 		glPopMatrix();
 
 		glPushMatrix();
-			glScalef(0.5f, 0.5f, 0.5f);
-			constructleg();
+		glTranslatef(0.0,-0.3,0.0);
+			glPushMatrix();
+				glScalef(0.5f, 0.5f, 0.5f);
+				drawRobotHand();
+			glPopMatrix();
+
+			glPushMatrix();
+				glScalef(0.5f, 0.5f, 0.5f);
+				constructleg();
+			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();
 	//--------------------------------
@@ -639,7 +699,176 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 	glEnd();
 
 }
+void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 
+	// back endcap
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(minX, maxY, minZ);
+	glEnd();
+
+	// front endcap
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(minX, maxY, maxZ);
+	glEnd();
+
+	// bottom
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(minX, minY, maxZ);
+	glEnd();
+
+	// back
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(minX, minY, maxZ);
+	glEnd();
+
+	// top
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(minX, maxY, maxZ);
+	glEnd();
+}
+void rectangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+	glScalef(0.2, 0.2, 0.2);
+
+	glBegin(GL_LINE_LOOP);
+	// face 1
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, minY, minZ);
+	glEnd();
+	// face 2 
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, maxY, minZ);
+	glVertex3f(maxX, maxY, maxZ);
+	glEnd();
+	// face 3 
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(maxX, maxY, maxZ);
+	glVertex3f(maxX, maxY, minZ);
+	glEnd();
+	// face 4 
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, maxY, maxZ);
+	glVertex3f(minX, maxY, maxZ);
+	glEnd();
+	// face 5 
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, maxZ);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, maxY, maxZ);
+	glEnd();
+	// face 6 
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, minY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, maxY, minZ);
+	glVertex3f(minX, maxY, minZ);
+	glEnd();
+}
+void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+
+	// back endcap
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, -minY, minZ);
+	glVertex3f(minX, -maxY, minZ);
+	glVertex3f(-minX, -maxY, minZ);
+	glVertex3f(-maxX, -minY, minZ);
+	glVertex3f(-maxX, minY, minZ);
+	glVertex3f(-minX, maxY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, minZ);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, minY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, minY, minZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, -minY, maxZ);
+	glVertex3f(maxX, -minY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxX, -minY, minZ);
+	glVertex3f(maxX, -minY, maxZ);
+	glVertex3f(minX, -maxY, maxZ);
+	glVertex3f(minX, -maxY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, -maxY, minZ);
+	glVertex3f(minX, -maxY, maxZ);
+	glVertex3f(-minX, -maxY, maxZ);
+	glVertex3f(-minX, -maxY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-minX, -maxY, minZ);
+	glVertex3f(-minX, -maxY, maxZ);
+	glVertex3f(-maxX, -minY, maxZ);
+	glVertex3f(-maxX, -minY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-maxX, -minY, minZ);
+	glVertex3f(-maxX, -minY, maxZ);
+	glVertex3f(-maxX, minY, maxZ);
+	glVertex3f(-maxX, minY, minZ);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(-maxX, minY, minZ);
+	glVertex3f(-maxX, minY, maxZ);
+	glVertex3f(-minX, maxY, maxZ);
+	glVertex3f(-minX, maxY, minZ);
+	glEnd();
+
+	//front endcap
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(minX, maxY, maxZ);
+	glVertex3f(maxX, minY, maxZ);
+	glVertex3f(maxX, -minY, maxZ);
+	glVertex3f(minX, -maxY, maxZ);
+	glVertex3f(-minX, -maxY, maxZ);
+	glVertex3f(-maxX, -minY, maxZ);
+	glVertex3f(-maxX, minY, maxZ);
+	glVertex3f(-minX, maxY, maxZ);
+	glEnd();
+}
+void DrawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks) {
+	GLUquadricObj* cylinder = NULL;
+	cylinder = gluNewQuadric();
+	gluQuadricDrawStyle(cylinder, GLU_LINE);
+	gluCylinder(cylinder, baseRadius, topRadius, height,
+		slices, stacks);
+	gluDeleteQuadric(cylinder);
+
+}
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -1106,6 +1335,188 @@ void adjustFingerMove(float translateX, float translateY, float translateZ, floa
 	}
 }
 
+//head
+void drawBackHead() {
+	glPushMatrix();
+		glPushMatrix();
+			glTranslatef(-0.05, -0.06, -0.05);
+			rectangularPrism(0.0, 0.5, 0.0, 0.6, 0.0, 0.1);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(-0.05, -0.06, -0.03);
+			glRotatef(45, 0.0, 1.0, 0.0);
+			glTranslatef(0.05, 0.06, 0.03);
+
+			glTranslatef(-0.1, -0.06, -0.05);
+			rectangularPrism(0.0, 0.25, 0.0, 0.6, 0.0, 0.1);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.05, -0.06, -0.03);
+			glRotatef(45, 0.0, -1.0, 0.0);
+			glTranslatef(-0.05, 0.06, 0.03);
+
+			glTranslatef(0.05, -0.06, -0.05);
+			rectangularPrism(0.0, 0.25, 0.0, 0.6, 0.0, 0.1);
+		glPopMatrix();
+
+		glPushMatrix();
+
+			glTranslatef(-0.05, 0.06, -0.03);
+			glRotatef(50, 1.0, 0.0, 0.0);
+			glTranslatef(0.05, -0.06, 0.03);
+
+			glTranslatef(-0.05, 0.05, -0.05);
+			rectangularPrism(0.0, 0.5, 0.0, 0.3, 0.0, 0.1);
+
+		glPopMatrix();
+
+		glPushMatrix();
+
+			glTranslatef(-0.05, -0.06, -0.05);
+			glRotatef(45, -1.0, 0.0, 0.0);
+			glTranslatef(0.05, 0.06, 0.05);
+
+			glTranslatef(-0.05, -0.12, -0.05);
+			rectangularPrism(0.0, 0.5, 0.0, 0.3, 0.0, 0.1);
+
+		glPopMatrix();
+	glPopMatrix();
+}
+void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rotateHZ, float* rotateHSpeed, float* rotateHMaxAngle, float* rotateHMinAngle) {
+
+	glPushMatrix();
+
+	glRotatef(*rotateH, *rotateHX, *rotateHY, *rotateHZ);
+
+	*rotateH += *rotateHSpeed;
+
+	if (*rotateH >= *rotateHMaxAngle) {
+		*rotateH = *rotateHMaxAngle;
+		*rotateHSpeed = 0.0f;
+	}
+
+	if (*rotateH <= *rotateHMinAngle) {
+		*rotateH = *rotateHMinAngle;
+		*rotateHSpeed = 0.0f;
+	}
+
+	glPushMatrix();
+		drawBackHead();
+	glPopMatrix();
+
+	glPushMatrix();
+		octagonalPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.1f);
+
+		glPushMatrix();
+			glRotatef(90.0, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-0.15f, -0.05f, -0.1f);
+			rectangularPrism(0.2f, 0.5f, 0.2f, 0.5f, 0.0f, 1.0f);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(-0.07, -0.15, 0.0);
+			glRotatef(90, 1.0, 0.0, 0.0);
+			glTranslatef(0.07, 0.15, 0.0);
+			glTranslatef(0.05, 0.1, 0.0);
+			glRotatef(225, 0.0, 0.0, 1.0);
+			glTranslatef(-0.05, -0.1, 0.0);
+
+			glTranslatef(0.12, 0.1, -0.13);
+			triangularPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.07f);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(-0.12, -0.02, 0.0);
+			rectangularPrism(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.05, -0.02, 0.0);
+			rectangularPrism(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(240, 1.0, 1.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(0.0, -0.1, 0.05);
+
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(129.8, 0.0, 0.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(0.0, -0.15, 0.0);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.2);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(240, 1.0, 1.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(0.0, -0.1, 0.05);
+
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(129.8, 0.0, 0.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(-0.06, -0.08, 0.0);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.2);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(240, 1.0, 1.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(0.05, 0.1, 0.0);
+			glRotatef(129.8, 0.0, 0.0, 1.0);
+			glTranslatef(-0.05, -0.1, 0.0);
+
+			glTranslatef(0.05, 0.1, 0.0);
+			glRotatef(-60, 1.0, 0.0, 0.0);
+			glTranslatef(-0.05, -0.1, 0.0);
+
+			glTranslatef(-0.18, 0.01, 0.0);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.3);
+		glPopMatrix();
+
+		//right
+		glPushMatrix();
+			glTranslatef(0.05, 0.05, 0.0);
+			glRotatef(240, 1.0, 1.0, 1.0);
+			glTranslatef(-0.05, -0.05, 0.0);
+
+			glTranslatef(0.05, 0.1, 0.0);
+			glRotatef(129.8, 0.0, 0.0, 1.0);
+			glTranslatef(-0.05, -0.1, 0.0);
+
+			glTranslatef(0.05, 0.1, 0.0);
+			glRotatef(60, 0.0, 1.0, 0.0);
+			glTranslatef(-0.05, -0.1, 0.0);
+			
+			glTranslatef(-0.1, 0.0, -0.1);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.3);
+		glPopMatrix();
+
+		glPushMatrix();
+			glRotatef(-90, 1.0, 0.0, 0.0);
+			glTranslatef(0.0, 0.0, 0.1);
+			DrawCylinder(0.005, 0.005, 0.1, 10, 10);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(-0.018, 0.1, 0.0);
+			rectangularPrism(0.0, 0.2, 0.0, 0.2, 0.0, 0.5);
+		glPopMatrix();
+
+	glPopMatrix();
+
+	glPopMatrix();
+}
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
 	WNDCLASSEX wc;
