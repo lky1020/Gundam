@@ -12,6 +12,12 @@
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
 
+//projection
+float tz = 0.0f, tSpeed = 1.0f;
+bool isOrtho = true;
+float Ry = 0.0, rSpeed = 1.0;
+float Tx = 0.0, TxSpeed = 1.0;
+int x = 0.0, y = 0.0, z = 0.0;
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
@@ -43,6 +49,8 @@ float upperRightLegSpeed = 0.0f;
 float initialLowerRightLegSpeed = 0.0f;
 float lowerRightLegSpeed = 0.0f;
 
+//projection
+void projection();
 //leg
 void constructleg();
 void drawPelvicGirdle();
@@ -459,6 +467,48 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				rotateHSpeed = -0.01f;
 			}
 		}
+
+		else if (wParam == '3') {
+
+			if (isOrtho) {
+				if (tz < 1.0) {
+					tz += tSpeed;
+				}
+			}
+			else {
+				if (tz < 3.0) {
+					tz += tSpeed;
+				}
+			}
+
+		}
+		else if (wParam == '4') {
+			if (isOrtho) {
+				if (tz > -1.0) {
+					tz -= tSpeed;
+				}
+
+			}
+			else {
+				if (tz > 0.0) {
+					tz -= tSpeed;
+				}
+			}
+		}
+		else if (wParam == 0x31) {
+			isOrtho = true;
+		}
+		else if (wParam == 0x32) {
+			isOrtho = false;
+		}
+		else if (wParam == '5') {
+			Ry += rSpeed;
+		}
+		else if (wParam == '6') {
+			Ry -= rSpeed;
+		}
+		
+
 		//for finger moving
 		if (activate == 1.0f) {
 
@@ -522,7 +572,11 @@ void display()
 
 	glEnable(GL_DEPTH);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glPushMatrix();
+	projection();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(0.0, 0.0, tz);
 	glPushMatrix();
 		//just for rotation checkign purpose (need delete afterwards)
 		glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
@@ -546,12 +600,33 @@ void display()
 			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();
+	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
 }
 //--------------------------------------------------------------------
+//projection
+void projection() {
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glTranslatef(Tx, 0.0, 0.0);
+	glRotatef(Ry, 0.0, 1.0, 0.0);
+	if (isOrtho) {
+		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+	}
+	else {
+	
+		gluPerspective(20.0, 1.0, -1.0, 1.0);
+		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.8, 3.0);
+	}
+
+
+
+
+}
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
