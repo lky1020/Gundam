@@ -8,6 +8,11 @@
 
 #define WINDOW_TITLE "OpenGL Window"
 
+//Speed
+float speed = 0.01f;
+float fingerSpeed = 0.005f;
+float thumbSpeed = 0.02f;
+
 //Rotation whole body
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
@@ -18,6 +23,7 @@ bool isOrtho = true;
 float Ry = 0.0, rSpeed = 1.0;
 float Tx = 0.0, TxSpeed = 1.0;
 int x = 0.0, y = 0.0, z = 0.0;
+
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
@@ -109,12 +115,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			lowerLeftLegMaxAngle = 85.0f;
 
 			//left leg
-			upperLeftLegSpeed = 0.01f;
-			lowerLeftLegSpeed = 0.01f;
+			upperLeftLegSpeed = speed;
+			lowerLeftLegSpeed = speed;
 
 			//right leg
-			upperRightLegSpeed = -0.01f;
-			lowerRightLegSpeed = -0.01f;
+			upperRightLegSpeed = -speed;
+			lowerRightLegSpeed = -speed;
 			
 		}
 		//'Upwards' - to move right leg up
@@ -126,12 +132,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerRightLegMaxAngle = 85.0f;
 
 				//left leg
-				upperLeftLegSpeed = -0.01f;
-				lowerLeftLegSpeed = -0.01f;
+				upperLeftLegSpeed = -speed;
+				lowerLeftLegSpeed = -speed;
 
 				//right leg
-				upperRightLegSpeed = 0.01f;
-				lowerRightLegSpeed = 0.01f;
+				upperRightLegSpeed = speed;
+				lowerRightLegSpeed = speed;
 			}
 
 		}
@@ -142,8 +148,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			lowerLeftLegMinAngle = 0.0f;
 
 			//left leg
-			upperLeftLegSpeed = -0.01f;
-			lowerLeftLegSpeed = -0.01f;
+			upperLeftLegSpeed = -speed;
+			lowerLeftLegSpeed = -speed;
 
 		}
 		//'Downwards' - to move right leg down
@@ -155,8 +161,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerRightLegMinAngle = 0.0f;
 
 				//right leg
-				upperRightLegSpeed = -0.01f;
-				lowerRightLegSpeed = -0.01f;
+				upperRightLegSpeed = -speed;
+				lowerRightLegSpeed = -speed;
 			}
 		}
 		//'W' to walk
@@ -169,24 +175,24 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			//walk
 			if (initialUpperRightLegSpeed == 0.0f) {
-				upperLeftLegSpeed = 0.01f;
-				lowerLeftLegSpeed = 0.01f;
-				upperRightLegSpeed = -0.01f;
-			    lowerRightLegSpeed = -0.01f;
+				upperLeftLegSpeed = speed;
+				lowerLeftLegSpeed = speed;
+				upperRightLegSpeed = -speed;
+			    lowerRightLegSpeed = -speed;
 			}
 			
 			if (initialUpperLeftLegSpeed == upperLeftLegMaxAngle) {
-				upperLeftLegSpeed = -0.01f;
-				lowerLeftLegSpeed = -0.01f;
-				upperRightLegSpeed = 0.01f;
-				lowerRightLegSpeed = 0.01f;
+				upperLeftLegSpeed = -speed;
+				lowerLeftLegSpeed = -speed;
+				upperRightLegSpeed = speed;
+				lowerRightLegSpeed = speed;
 			}
 
 			if (initialUpperRightLegSpeed == upperRightLegMaxAngle) {
-				upperLeftLegSpeed = 0.01f;
-				lowerLeftLegSpeed = 0.01f;
-				upperRightLegSpeed = -0.01f;
-				lowerRightLegSpeed = -0.01f;
+				upperLeftLegSpeed = speed;
+				lowerLeftLegSpeed = speed;
+				upperRightLegSpeed = -speed;
+				lowerRightLegSpeed = -speed;
 			}
 
 			//'W' key" to let the walk - hand and leg move
@@ -196,25 +202,25 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			upperRightArmMaxAngle = 45.0f;
 
 			if (initialRightUpperArmSpeed == 0.0f) {
-				upperLeftArmSpeed = -0.01f;
-				upperRightArmSpeed = 0.01f;
-				lowerLeftArmSpeed = -0.01f;
-				lowerRightArmSpeed = 0.01f;
+				upperLeftArmSpeed = -speed;
+				upperRightArmSpeed = speed;
+				lowerLeftArmSpeed = -speed;
+				lowerRightArmSpeed = speed;
 
 			}
 			
 			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
-				upperLeftArmSpeed = 0.01f;
-				upperRightArmSpeed = -0.01f;
-				lowerLeftArmSpeed = 0.01f;
-				lowerRightArmSpeed = -0.01f;
+				upperLeftArmSpeed = speed;
+				upperRightArmSpeed = -speed;
+				lowerLeftArmSpeed = speed;
+				lowerRightArmSpeed = -speed;
 
 			}
 			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
-				upperLeftArmSpeed = -0.01f;
-				upperRightArmSpeed = 0.01f;
-				lowerLeftArmSpeed = -0.01f;
-				lowerRightArmSpeed = 0.01f;
+				upperLeftArmSpeed = -speed;
+				upperRightArmSpeed = speed;
+				lowerLeftArmSpeed = -speed;
+				lowerRightArmSpeed = speed;
 
 			}
 
@@ -239,29 +245,29 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			//walk
 			//left leg
-			upperLeftLegSpeed = -0.01f;
-			lowerLeftLegSpeed = -0.01f;
+			upperLeftLegSpeed = -speed;
+			lowerLeftLegSpeed = -speed;
 
 			//right leg
-			upperRightLegSpeed = -0.01f;
-			lowerRightLegSpeed = -0.01f;
+			upperRightLegSpeed = -speed;
+			lowerRightLegSpeed = -speed;
 
 			//left arm
-			upperLeftArmSpeed = -0.01f;
-			lowerLeftArmSpeed = -0.01f;
+			upperLeftArmSpeed = -speed;
+			lowerLeftArmSpeed = -speed;
 
 			//right arm
-			upperRightArmSpeed = -0.01f;
-			lowerRightArmSpeed = -0.01f;
+			upperRightArmSpeed = -speed;
+			lowerRightArmSpeed = -speed;
 			
 		}
 		//'Leftwards' - rotate body left
 		else if (wParam == VK_LEFT) {
-			bodyRotate = 0.01f;
+			bodyRotate = speed;
 		}
 		//'Rightwards' - rotate body right
 		else if (wParam == VK_RIGHT) {
-			bodyRotate = -0.01f;
+			bodyRotate = -speed;
 		}
 		//'Tab' - stop
 		else if (wParam == VK_TAB) {
@@ -337,16 +343,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			upperRightArmMaxAngle = 80.0f;
 
 			if (initialLeftUpperArmSpeed == 0.0f) {
-				upperLeftArmSpeed = 0.01f;
-				upperRightArmSpeed = -0.01f;
+				upperLeftArmSpeed = speed;
+				upperRightArmSpeed = -speed;
 			}
 			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
-				upperLeftArmSpeed = 0.01f;
-				upperRightArmSpeed = -0.01f;
+				upperLeftArmSpeed = speed;
+				upperRightArmSpeed = -speed;
 			}
 			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
-				upperLeftArmSpeed = -0.01f;
-				upperRightArmSpeed = 0.01f;
+				upperLeftArmSpeed = -speed;
+				upperRightArmSpeed = speed;
 			}
 		}
 		// 'K' - to move left upper arm up and down
@@ -355,16 +361,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (initialLeftUpperArmSpeed == 0.0f) {
 
-				upperLeftArmSpeed = 0.01f;
+				upperLeftArmSpeed = speed;
 
 			}
 			if (initialLeftUpperArmSpeed == upperLeftArmMaxAngle) {
 
-				upperLeftArmSpeed = -0.01f;
+				upperLeftArmSpeed = -speed;
 
 			}
 
-			upperRightArmSpeed = -0.01f;
+			upperRightArmSpeed = -speed;
 		}
 		// 'P' - to move right upper arm up and down
 		else if (wParam == 0x50) {
@@ -373,16 +379,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (initialRightUpperArmSpeed == 0.0f) {
 
-				upperRightArmSpeed = 0.01f;
+				upperRightArmSpeed = speed;
 
 			}
 			if (initialRightUpperArmSpeed == upperRightArmMaxAngle) {
 
-				upperRightArmSpeed = -0.01f;
+				upperRightArmSpeed = -speed;
 
 			}
 
-			upperLeftArmSpeed = -0.01f;
+			upperLeftArmSpeed = -speed;
 		}
 		//'F' - to move both finger (activate and deactivate)
 		else if (wParam == 0x46) { 
@@ -403,16 +409,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (initialLeftLowerArmSpeed == 0.0f) {
 
-				lowerLeftArmSpeed = 0.01f;
+				lowerLeftArmSpeed = speed;
 
 			}
 			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
 
-				lowerLeftArmSpeed = -0.01f;
+				lowerLeftArmSpeed = -speed;
 
 			}
 
-			lowerRightArmSpeed = -0.01f;
+			lowerRightArmSpeed = -speed;
 		}
 		//'Z' - to move right lower arm up and down
 		else if (wParam == 0x5A) {
@@ -420,16 +426,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (initialRightLowerArmSpeed == 0.0f) {
 
-				lowerRightArmSpeed = 0.01f;
+				lowerRightArmSpeed = speed;
 
 			}
 			if (initialRightLowerArmSpeed == lowerRightArmMaxAngle) {
 
-				lowerRightArmSpeed = -0.01f;
+				lowerRightArmSpeed = -speed;
 
 			}
 
-			lowerLeftArmSpeed = -0.01f;
+			lowerLeftArmSpeed = -speed;
 		}
 		//'N' - to move head to left
 		else if (wParam == 'N') {
@@ -442,11 +448,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (rotateH == 0.0f) {
 
-				rotateHSpeed = 0.01f;
+				rotateHSpeed = speed;
 			}
 			else if (rotateH >= rotateHMaxAngle) {
 
-				rotateHSpeed = -0.01f;
+				rotateHSpeed = -speed;
 			}
 
 		}
@@ -460,11 +466,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (rotateH == 0.0f) {
 	
-				rotateHSpeed = 0.01f;
+				rotateHSpeed = speed;
 			}
 			else if (rotateH >= rotateHMaxAngle) {
 
-				rotateHSpeed = -0.01f;
+				rotateHSpeed = -speed;
 			}
 		}
 
@@ -513,13 +519,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (activate == 1.0f) {
 
 			if (wParam == VK_UP) {
-				fingerMove = 0.005f;
-				thumbMove = 0.02f;
+				fingerMove = fingerSpeed;
+				thumbMove = thumbSpeed;
 			}
 
 			else if (wParam == VK_DOWN) {
-				fingerMove = -0.005f;
-				thumbMove = -0.02f;
+				fingerMove = -fingerSpeed;
+				thumbMove = -thumbSpeed;
 			}
 		}
 		break;
