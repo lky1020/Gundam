@@ -296,6 +296,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//'Space' - Reset all
 		else if (wParam == VK_SPACE) {
+			//Projection
+			isOrtho = true;
+			tz = 0.0f;
+			Ry = 0.0f;
+
+			//Body Rotate
 			initialBodyRotate = 0.0f;
 			bodyRotate = 0.0f;
 
@@ -475,13 +481,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				rotateHSpeed = -speed;
 			}
 		}
-		else if (wParam == '1') {
+		else if (wParam == '1' || wParam == VK_NUMPAD1) {
 			isOrtho = true;
 		}
-		else if (wParam == '2') {
+		else if (wParam == '2' || wParam == VK_NUMPAD2) {
 			isOrtho = false;
 		}
-		else if (wParam == '3') {
+		else if (wParam == '3' || wParam == VK_NUMPAD3) {
 
 			if (isOrtho) {
 				if (tz < 1.0) {
@@ -495,7 +501,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 
 		}
-		else if (wParam == '4') {
+		else if (wParam == '4' || wParam == VK_NUMPAD4) {
 			if (isOrtho) {
 				if (tz > -1.0) {
 					tz -= tSpeed;
@@ -508,10 +514,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 		}
-		else if (wParam == '5') {
+		else if (wParam == '5' || wParam == VK_NUMPAD5) {
 			Ry += rSpeed;
 		}
-		else if (wParam == '6') {
+		else if (wParam == '6' || wParam == VK_NUMPAD6) {
 			Ry -= rSpeed;
 		}
 		
