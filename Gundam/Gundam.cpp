@@ -32,7 +32,7 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void rectangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void DrawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
+void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 
 //leg - data type
 //left leg
@@ -445,7 +445,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			rotateHX = 0.0f;
 			rotateHY = 0.5f;
 			rotateHZ = 0.0f;
-			rotateHMaxAngle = 90.0f;
+			rotateHMaxAngle = 45.0f;
 			rotateHMinAngle = 0.0f;
 
 			if (rotateH == 0.0f) {
@@ -463,7 +463,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			rotateHX = 0.0f;
 			rotateHY = -0.5f;
 			rotateHZ = 0.0f;
-			rotateHMaxAngle = 90.0f;
+			rotateHMaxAngle = 45.0f;
 			rotateHMinAngle = 0.0f;
 
 			if (rotateH == 0.0f) {
@@ -475,7 +475,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				rotateHSpeed = -speed;
 			}
 		}
-
+		else if (wParam == '1') {
+			isOrtho = true;
+		}
+		else if (wParam == '2') {
+			isOrtho = false;
+		}
 		else if (wParam == '3') {
 
 			if (isOrtho) {
@@ -502,12 +507,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					tz -= tSpeed;
 				}
 			}
-		}
-		else if (wParam == 0x31) {
-			isOrtho = true;
-		}
-		else if (wParam == 0x32) {
-			isOrtho = false;
 		}
 		else if (wParam == '5') {
 			Ry += rSpeed;
@@ -585,12 +584,15 @@ void display()
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+
 		glTranslatef(0.0, 0.0, tz);
 
 		glPushMatrix();
 			//just for rotation checking purpose (need delete afterwards)
 			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
 			initialBodyRotate += bodyRotate;
+
+			glTranslatef(0.0f, -0.1f, 0.0f);
 
 			//head
 			glPushMatrix();
@@ -599,6 +601,7 @@ void display()
 			glPopMatrix();
 
 			glPushMatrix();
+				//translate whole body (combine with head)
 				glTranslatef(0.0, -0.3, 0.0);
 
 				//Body
@@ -627,6 +630,7 @@ void display()
 	//--------------------------------
 }
 //--------------------------------------------------------------------
+
 //projection
 void projection() {
 
@@ -635,19 +639,18 @@ void projection() {
 
 	glTranslatef(Tx, 0.0, 0.0);
 	glRotatef(Ry, 0.0, 1.0, 0.0);
+
 	if (isOrtho) {
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 	}
 	else {
 	
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
-		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.8, 3.0);
+		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
 	}
 
-
-
-
 }
+
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
@@ -1257,7 +1260,7 @@ void drawRobotHand() {
 		glPushMatrix();
 
 			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(0.5f, -0.1f, -0.9f);
+			glTranslatef(0.5f, -0.1f, -1.0f);
 			shoulder();
 
 				glPushMatrix();
@@ -1276,7 +1279,7 @@ void drawRobotHand() {
 		glPushMatrix();
 
 			glRotatef(-180.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(-0.9f, 0.0f, -0.75f);
+			glTranslatef(-1.0f, 0.0f, -0.75f);
 
 				glPushMatrix();
 
@@ -1624,10 +1627,11 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 
 		glPushMatrix();
 			glTranslatef(-0.07, -0.15, 0.0);
-			glRotatef(90, 1.0, 0.0, 0.0);
+				glRotatef(90, 1.0, 0.0, 0.0);
 			glTranslatef(0.07, 0.15, 0.0);
+
 			glTranslatef(0.05, 0.1, 0.0);
-			glRotatef(225, 0.0, 0.0, 1.0);
+				glRotatef(225, 0.0, 0.0, 1.0);
 			glTranslatef(-0.05, -0.1, 0.0);
 
 			glTranslatef(0.12, 0.1, -0.13);
@@ -1644,65 +1648,68 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 			rectangularPrism(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
 		glPopMatrix();
 
+		//inner left
 		glPushMatrix();
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(240, 1.0, 1.0, 1.0);
+				glRotatef(240, 1.0, 1.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(0.0, -0.1, 0.05);
 
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(129.8, 0.0, 0.0, 1.0);
+				glRotatef(129.8, 0.0, 0.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(0.0, -0.15, 0.0);
-			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.2);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.125);
 		glPopMatrix();
 
+		//inner right
 		glPushMatrix();
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(240, 1.0, 1.0, 1.0);
+				glRotatef(240, 1.0, 1.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(0.0, -0.1, 0.05);
 
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(129.8, 0.0, 0.0, 1.0);
+				glRotatef(129.8, 0.0, 0.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(-0.06, -0.08, 0.0);
-			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.2);
+			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.125);
 		glPopMatrix();
 
+		//outer right
 		glPushMatrix();
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(240, 1.0, 1.0, 1.0);
+				glRotatef(240, 1.0, 1.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(0.05, 0.1, 0.0);
-			glRotatef(129.8, 0.0, 0.0, 1.0);
+				glRotatef(129.8, 0.0, 0.0, 1.0);
 			glTranslatef(-0.05, -0.1, 0.0);
 
 			glTranslatef(0.05, 0.1, 0.0);
-			glRotatef(-60, 1.0, 0.0, 0.0);
+				glRotatef(-60, 1.0, 0.0, 0.0);
 			glTranslatef(-0.05, -0.1, 0.0);
 
 			glTranslatef(-0.18, 0.01, 0.0);
 			triangularPrism(0.05, 0.08, 0.05, 0.08, 0.0, 0.3);
 		glPopMatrix();
 
-		//right
+		//outer left
 		glPushMatrix();
 			glTranslatef(0.05, 0.05, 0.0);
-			glRotatef(240, 1.0, 1.0, 1.0);
+				glRotatef(240, 1.0, 1.0, 1.0);
 			glTranslatef(-0.05, -0.05, 0.0);
 
 			glTranslatef(0.05, 0.1, 0.0);
-			glRotatef(129.8, 0.0, 0.0, 1.0);
+				glRotatef(129.8, 0.0, 0.0, 1.0);
 			glTranslatef(-0.05, -0.1, 0.0);
 
 			glTranslatef(0.05, 0.1, 0.0);
-			glRotatef(60, 0.0, 1.0, 0.0);
+				glRotatef(60, 0.0, 1.0, 0.0);
 			glTranslatef(-0.05, -0.1, 0.0);
 			
 			glTranslatef(-0.1, 0.0, -0.1);
@@ -1724,6 +1731,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 
 	glPopMatrix();
 }
+
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
 	WNDCLASSEX wc;
