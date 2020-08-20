@@ -26,7 +26,7 @@ int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
+void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop); 
 void drawSphere(float radius);
 void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, float maxZ, float divideX, float divideZ);
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
@@ -57,6 +57,7 @@ float lowerRightLegSpeed = 0.0f;
 
 //projection
 void projection();
+
 //leg
 void constructleg();
 void drawPelvicGirdle();
@@ -73,11 +74,6 @@ void drawHand(char direction);
 void adjustFingerMove(float translateX, float translateY, float translateZ, float rotateX, float rotateY, float rotateZ, float maxAngle, float minAngle, char direction);
 void armJoint();
 void drawRobotHand();
-
-//head function
-void drawBackHead();
-void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rotateHZ, float* rotateHSpeed, float* rotateHMaxAngle, float* rotateHMinAngle);
-
 
 //Hand Variable
 float initialFingerMove = 0.0f;
@@ -96,6 +92,16 @@ float initialRightUpperArmSpeed = 0.0f, upperRightArmSpeed = 0.0f, upperRightArm
 float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArmMaxAngle = 0.0f, lowerRightArmMinAngle = 0.0f;
 float rotateH = 0.0f, rotateHX = 0.0f, rotateHY = 0.0f, rotateHZ = 0.0f;
 float rotateHSpeed = 0.0f, rotateHMaxAngle = 0.0f, rotateHMinAngle = 0.0f;
+
+//Body
+void drawBody();
+void drawOverallBody();
+void drawBackPack();
+void drawRocket();
+
+//head function
+void drawBackHead();
+void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rotateHZ, float* rotateHSpeed, float* rotateHMaxAngle, float* rotateHMinAngle);
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -236,12 +242,8 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			//initialize arm angle
 			lowerLeftArmMinAngle = 0.0f;
 			lowerRightArmMinAngle = 0.0f;
-			lowerLeftArmMaxAngle = 0.0f;
-			lowerRightArmMaxAngle = 0.0f;
 			upperLeftArmMinAngle = 0.0f;
 			upperRightArmMinAngle = 0.0f;
-			upperLeftArmMaxAngle = 0.0f;
-			upperRightArmMaxAngle = 0.0f;
 
 			//walk
 			//left leg
@@ -355,7 +357,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				upperRightArmSpeed = speed;
 			}
 		}
-		// 'K' - to move left upper arm up and down
+		//'K' - to move left upper arm up and down
 		else if (wParam == 0x4B) {
 			upperLeftArmMaxAngle = 80.0f;
 
@@ -372,7 +374,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			upperRightArmSpeed = -speed;
 		}
-		// 'P' - to move right upper arm up and down
+		//'P' - to move right upper arm up and down
 		else if (wParam == 0x50) {
 
 			upperRightArmMaxAngle = 80.0f;
@@ -514,7 +516,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			Ry -= rSpeed;
 		}
 		
-
 		//for finger moving
 		if (activate == 1.0f) {
 
@@ -578,34 +579,48 @@ void display()
 
 	glEnable(GL_DEPTH);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glPushMatrix();
-	projection();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef(0.0, 0.0, tz);
-	glPushMatrix();
-		//just for rotation checkign purpose (need delete afterwards)
-		glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
-		initialBodyRotate += bodyRotate;
+		projection();
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glTranslatef(0.0, 0.0, tz);
 
 		glPushMatrix();
-			glTranslatef(-0.08,0.7,0.0);
-			drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
-		glPopMatrix();
+			//just for rotation checking purpose (need delete afterwards)
+			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
+			initialBodyRotate += bodyRotate;
 
-		glPushMatrix();
-		glTranslatef(0.0,-0.3,0.0);
+			//head
 			glPushMatrix();
-				glScalef(0.5f, 0.5f, 0.5f);
-				drawRobotHand();
+				glTranslatef(-0.08,0.7,0.0);
+				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
 			glPopMatrix();
 
 			glPushMatrix();
-				glScalef(0.5f, 0.5f, 0.5f);
-				constructleg();
+				glTranslatef(0.0, -0.3, 0.0);
+
+				//Body
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					drawBody();
+				glPopMatrix();
+
+				//hand
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					drawRobotHand();
+				glPopMatrix();
+
+				//leg
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					constructleg();
+				glPopMatrix();
 			glPopMatrix();
 		glPopMatrix();
-	glPopMatrix();
+
 	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
@@ -683,53 +698,53 @@ void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, f
 		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 }
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float yBottom, float yTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
+void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
 	//Back
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(minXTop, yTop, minZTop);
-		glVertex3f(minXBottom, yBottom, minZBottom);
-		glVertex3f(maxXBottom, yBottom, minZBottom);
-		glVertex3f(maxXTop, yTop, minZTop);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glVertex3f(maxXTop, maxYTop, minZTop);
 	glEnd();
 
 	//Bottom
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(minXBottom, yBottom, minZBottom);
-		glVertex3f(maxXBottom, yBottom, minZBottom);
-		glVertex3f(maxXBottom, yBottom, maxZBottom);
-		glVertex3f(minXBottom, yBottom, maxZBottom);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
 	glEnd();
 
 	//Left
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(maxXTop, yTop, minZTop);
-		glVertex3f(maxXBottom, yBottom, minZBottom);
-		glVertex3f(maxXBottom, yBottom, maxZBottom);
-		glVertex3f(maxXTop, yTop, maxZTop);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 
 	//Top
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(maxXTop, yTop, minZTop);
-		glVertex3f(minXTop, yTop, minZTop);
-		glVertex3f(minXTop, yTop, maxZTop);
-		glVertex3f(maxXTop, yTop, maxZTop);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 
 	//Right
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(minXTop, yTop, minZTop);
-		glVertex3f(minXBottom, yBottom, minZBottom);
-		glVertex3f(minXBottom, yBottom, maxZBottom);
-		glVertex3f(minXTop, yTop, maxZTop);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glVertex3f(minXTop, minYTop, maxZTop);
 	glEnd();
 
 	//Front
 	glBegin(GL_LINE_LOOP);
-		glVertex3f(minXTop, yTop, maxZTop);
-		glVertex3f(minXBottom, yBottom, maxZBottom);
-		glVertex3f(maxXBottom, yBottom, maxZBottom);
-		glVertex3f(maxXTop, yTop, maxZTop);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 }
 void drawSphere(float radius) {
@@ -784,164 +799,165 @@ void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ,
 
 	// back endcap
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, maxY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, maxY, minZ);
 	glEnd();
 
 	// front endcap
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(minX, maxY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
 	glEnd();
 
 	// bottom
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(minX, minY, maxZ);
 	glEnd();
 
 	// back
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
 	glEnd();
 
 	// top
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
 	glEnd();
 }
 void rectangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	glScalef(0.2, 0.2, 0.2);
 
-	glBegin(GL_LINE_LOOP);
 	// face 1
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, minY, minZ);
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, minY, minZ);
 	glEnd();
+
 	// face 2 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 	// face 3 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, minZ);
 	glEnd();
 	// face 4 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
 	glEnd();
 	// face 5 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, maxY, maxZ);
 	glEnd();
 	// face 6 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(minX, maxY, minZ);
 	glEnd();
 }
 void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 
 	// back endcap
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, -minY, minZ);
-	glVertex3f(minX, -maxY, minZ);
-	glVertex3f(-minX, -maxY, minZ);
-	glVertex3f(-maxX, -minY, minZ);
-	glVertex3f(-maxX, minY, minZ);
-	glVertex3f(-minX, maxY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, -minY, minZ);
+		glVertex3f(minX, -maxY, minZ);
+		glVertex3f(-minX, -maxY, minZ);
+		glVertex3f(-maxX, -minY, minZ);
+		glVertex3f(-maxX, minY, minZ);
+		glVertex3f(-minX, maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, minZ);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, minY, minZ);
+		glVertex3f(minX, maxY, minZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, minY, minZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, -minY, maxZ);
-	glVertex3f(maxX, -minY, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, -minY, maxZ);
+		glVertex3f(maxX, -minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, -minY, minZ);
-	glVertex3f(maxX, -minY, maxZ);
-	glVertex3f(minX, -maxY, maxZ);
-	glVertex3f(minX, -maxY, minZ);
+		glVertex3f(maxX, -minY, minZ);
+		glVertex3f(maxX, -minY, maxZ);
+		glVertex3f(minX, -maxY, maxZ);
+		glVertex3f(minX, -maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, -maxY, minZ);
-	glVertex3f(minX, -maxY, maxZ);
-	glVertex3f(-minX, -maxY, maxZ);
-	glVertex3f(-minX, -maxY, minZ);
+		glVertex3f(minX, -maxY, minZ);
+		glVertex3f(minX, -maxY, maxZ);
+		glVertex3f(-minX, -maxY, maxZ);
+		glVertex3f(-minX, -maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-minX, -maxY, minZ);
-	glVertex3f(-minX, -maxY, maxZ);
-	glVertex3f(-maxX, -minY, maxZ);
-	glVertex3f(-maxX, -minY, minZ);
+		glVertex3f(-minX, -maxY, minZ);
+		glVertex3f(-minX, -maxY, maxZ);
+		glVertex3f(-maxX, -minY, maxZ);
+		glVertex3f(-maxX, -minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, -minY, minZ);
-	glVertex3f(-maxX, -minY, maxZ);
-	glVertex3f(-maxX, minY, maxZ);
-	glVertex3f(-maxX, minY, minZ);
+		glVertex3f(-maxX, -minY, minZ);
+		glVertex3f(-maxX, -minY, maxZ);
+		glVertex3f(-maxX, minY, maxZ);
+		glVertex3f(-maxX, minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, minY, minZ);
-	glVertex3f(-maxX, minY, maxZ);
-	glVertex3f(-minX, maxY, maxZ);
-	glVertex3f(-minX, maxY, minZ);
+		glVertex3f(-maxX, minY, minZ);
+		glVertex3f(-maxX, minY, maxZ);
+		glVertex3f(-minX, maxY, maxZ);
+		glVertex3f(-minX, maxY, minZ);
 	glEnd();
 
 	//front endcap
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, maxY, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glVertex3f(maxX, -minY, maxZ);
-	glVertex3f(minX, -maxY, maxZ);
-	glVertex3f(-minX, -maxY, maxZ);
-	glVertex3f(-maxX, -minY, maxZ);
-	glVertex3f(-maxX, minY, maxZ);
-	glVertex3f(-minX, maxY, maxZ);
+		glVertex3f(minX, maxY, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glVertex3f(maxX, -minY, maxZ);
+		glVertex3f(minX, -maxY, maxZ);
+		glVertex3f(-minX, -maxY, maxZ);
+		glVertex3f(-maxX, -minY, maxZ);
+		glVertex3f(-maxX, minY, maxZ);
+		glVertex3f(-minX, maxY, maxZ);
 	glEnd();
 }
-void DrawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks) {
+void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks) {
 	GLUquadricObj* cylinder = NULL;
 	cylinder = gluNewQuadric();
 	gluQuadricDrawStyle(cylinder, GLU_LINE);
@@ -950,6 +966,7 @@ void DrawCylinder(float baseRadius, float topRadius, float height, int slices, i
 	gluDeleteQuadric(cylinder);
 
 }
+
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -993,7 +1010,7 @@ void drawPelvicGirdle() {
 			//translate trapezium
 			glTranslatef(0.25f, 0.35f, 0.4f);
 
-			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
 		glPopMatrix();
 	
 		//draw "|"
@@ -1006,7 +1023,7 @@ void drawPelvicGirdle() {
 				//translate trapezium
 				glTranslatef(0.0f, -0.075f, -0.65f);
 
-				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.2f, 0.30f, 0.45f, -0.15f, 0.35f, -0.05f, 0.225f);
+				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.2f, 0.30f, 0.30f, 0.45f, 0.45f, -0.15f, 0.35f, -0.05f, 0.225f);
 			glPopMatrix();
 
 			//draw middle
@@ -1020,7 +1037,7 @@ void drawPelvicGirdle() {
 				//translate trapezium
 				glTranslatef(0.0f, -0.275f, 0.30f);
 
-				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.20f, 0.30f, 0.45f, 0.0f, 0.5f, 0.125f, 0.4f);
+				drawTrapezium(-0.05f, -0.25f, -0.10f, -0.20f, 0.30f, 0.30f, 0.45f, 0.45f, 0.0f, 0.5f, 0.125f, 0.4f);
 			glPopMatrix();
 		glPopMatrix();
 
@@ -1032,7 +1049,7 @@ void drawPelvicGirdle() {
 			//translate trapezium
 			glTranslatef(0.05f, 0.35f, 0.1f);
 
-			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+			drawTrapezium(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
 		glPopMatrix();
 
 	glPopMatrix();
@@ -1086,7 +1103,7 @@ void drawLeg(float *initialUpperSpeed, float *upperSpeed, float *initialLowerSpe
 		drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
 
 		//draw leg sole
-		drawTrapezium(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
+		drawTrapezium(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.875f, -0.75f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
 
 		glPopMatrix();
 	glPopMatrix();
@@ -1416,6 +1433,115 @@ void adjustFingerMove(float translateX, float translateY, float translateZ, floa
 	}
 }
 
+//Body
+void drawBody() {
+	glPushMatrix();
+
+		drawOverallBody();
+
+		//Back Pack
+		drawBackPack();
+
+	glPopMatrix();
+}
+void drawOverallBody() {
+	glPushMatrix();
+		//base
+		drawTrapezium(-0.45f, 0.15f, -0.435f, 0.135f, 0.8f, 0.8f, 1.0f, 1.0f, 0.0f, 0.2f, 0.025f, 0.175f);
+
+		//middle
+		drawTrapezium(-0.475f, 0.175f, -0.5f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f);
+
+		//Top
+		drawTrapezium(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
+
+		//connect left hand
+		drawTrapezium(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
+
+		//connect right hand
+		drawTrapezium(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+	glPopMatrix();
+}
+void drawBackPack() {
+	glPushMatrix();
+		//Backpack
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.2f);
+
+			glPushMatrix();
+				glTranslatef(-0.15f, 1.4875f, -0.085f);
+					glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
+				glTranslatef(0.15f, -1.4875f, 0.085f);
+
+				drawTrapezium(-0.4f, 0.1f, -0.4f, 0.1f, 1.2f, 1.2f, 1.4f, 1.4f, 0.2f, -0.485f, 0.2f, -0.185f);
+			glPopMatrix();
+		glPopMatrix();
+
+		//Rocket
+		glPushMatrix();
+			drawRocket();
+		glPopMatrix();
+
+	glPopMatrix();
+}
+void drawRocket() {
+	glPushMatrix();
+
+		//left up rocket
+		glPushMatrix();
+			glTranslatef(0.0f, 0.75f, -0.55f);
+
+			glPushMatrix();
+				glTranslatef(0.0f, 1.0f, -1.0f);
+					glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -1.0f, 1.0f);
+
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+			glPopMatrix();
+
+		glPopMatrix();
+
+		//left down rocket
+		glPushMatrix();
+			glTranslatef(0.0f, 0.575f, -0.4f);
+
+			glPushMatrix();
+				glTranslatef(0.0f, 0.6f, -0.5f);
+				glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -0.6f, 0.5f);
+
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+			glPopMatrix();
+		glPopMatrix();
+
+		//right up rocket
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.75f, -0.55f);
+
+			glPushMatrix();
+				glTranslatef(0.0f, 1.0f, -1.0f);
+				glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -1.0f, 1.0f);
+
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+			glPopMatrix();
+		glPopMatrix();
+
+		//right down rocket
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.575f, -0.4f);
+
+			glPushMatrix();
+				glTranslatef(0.0f, 0.6f, -0.5f);
+				glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -0.6f, 0.5f);
+
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+			glPopMatrix();
+		glPopMatrix();
+	glPopMatrix();
+}
+
 //head
 void drawBackHead() {
 	glPushMatrix();
@@ -1586,7 +1712,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 		glPushMatrix();
 			glRotatef(-90, 1.0, 0.0, 0.0);
 			glTranslatef(0.0, 0.0, 0.1);
-			DrawCylinder(0.005, 0.005, 0.1, 10, 10);
+			drawCylinder(0.005, 0.005, 0.1, 10, 10);
 		glPopMatrix();
 
 		glPushMatrix();
