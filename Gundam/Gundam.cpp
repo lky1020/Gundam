@@ -9,7 +9,7 @@
 #define WINDOW_TITLE "OpenGL Window"
 
 //Speed
-float speed = 0.01f;
+float speed = 0.05f;
 float fingerSpeed = 0.005f;
 float thumbSpeed = 0.02f;
 
@@ -34,7 +34,6 @@ void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, 
 void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCircle(float xPoint, float yPoint, float radius);
-
 
 //leg - data type
 //left leg
@@ -95,6 +94,7 @@ float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArm
 float rotateH = 0.0f, rotateHX = 0.0f, rotateHY = 0.0f, rotateHZ = 0.0f;
 float rotateHSpeed = 0.0f, rotateHMaxAngle = 0.0f, rotateHMinAngle = 0.0f;
 bool isShield = false;
+bool isRifle = false;
 
 //Body
 void drawBody();
@@ -122,6 +122,7 @@ void controlShield();
 //Weapon
 void drawBazooka();
 void drawLightSword(char position);
+void drawBeamRifle();
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -543,8 +544,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		/////////////////////////////////
 		else if (wParam == VK_F1) {
 			isShield = !isShield;
+			isRifle = !isRifle;
 
-			if (isShield) {
+			if (isShield && isRifle) {
 				fingerMove = fingerSpeed;
 				thumbMove = thumbSpeed;
 			}
@@ -662,28 +664,27 @@ void display()
 				glPopMatrix();
 			glPopMatrix();
 
-				//Weapon - bazooka
+			//Weapon - bazooka
+			glPushMatrix();
+				glTranslatef(0.0f, 0.15f, -0.05f);
+
 				glPushMatrix();
-					glTranslatef(0.0f, 0.15f, -0.05f);
+					glTranslatef(0.0f, -0.1f, 0.0f);
+					glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+					glTranslatef(0.0f, 0.1f, 0.0f);
 
-					glPushMatrix();
-						glTranslatef(0.0f, -0.1f, 0.0f);
-						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-						glTranslatef(0.0f, 0.1f, 0.0f);
-
-						drawBazooka();
-					glPopMatrix();
+					drawBazooka();
 				glPopMatrix();
+			glPopMatrix();
 
-				//weapon - right light sword
-				glPushMatrix();
-					drawLightSword('L');
-				glPopMatrix();
+			//weapon - right light sword
+			glPushMatrix();
+				drawLightSword('L');
+			glPopMatrix();
 
-				//weapon - left light sword
-				glPushMatrix();
-					drawLightSword('R');
-				glPopMatrix();
+			//weapon - left light sword
+			glPushMatrix();
+				drawLightSword('R');
 			glPopMatrix();
 	
 		glPopMatrix();
@@ -1211,53 +1212,74 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 		drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
 		armJoint();
 
-			glPushMatrix();
+		glPushMatrix();
 
-				glTranslatef(0.52f, 0.0f, 0.0f);
-				glRotatef(*initialLowerArmSpeed, 0.0f, -0.1f, 0.0f); //control the lower arm
+			glTranslatef(0.52f, 0.0f, 0.0f);
+			glRotatef(*initialLowerArmSpeed, 0.0f, -0.1f, 0.0f); //control the lower arm
 
-				*initialLowerArmSpeed += *lowerArmSpeed;
+			*initialLowerArmSpeed += *lowerArmSpeed;
 
-				if (*initialLowerArmSpeed >= *lowerArmMaxAngle) {
-					*initialLowerArmSpeed = *lowerArmMaxAngle;
-					*lowerArmSpeed = 0.0f;
-				}
+			if (*initialLowerArmSpeed >= *lowerArmMaxAngle) {
+				*initialLowerArmSpeed = *lowerArmMaxAngle;
+				*lowerArmSpeed = 0.0f;
+			}
 
-				if (*initialLowerArmSpeed <= *lowerArmMinAngle) {
-					*initialLowerArmSpeed = *lowerArmMinAngle;
-					*lowerArmSpeed = 0.0f;
-				}
+			if (*initialLowerArmSpeed <= *lowerArmMinAngle) {
+				*initialLowerArmSpeed = *lowerArmMinAngle;
+				*lowerArmSpeed = 0.0f;
+			}
 
-				drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
-				armJoint();
+			drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+			armJoint();
 
-					glPushMatrix();
-						glTranslatef(0.53f, 0.0f, 0.0f);
-						glRotatef(*move_inFront_hand, 0.0f, 0.0f, 0.1f); //control palm
-						drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+				glPushMatrix();
+					glTranslatef(0.53f, 0.0f, 0.0f);
+					glRotatef(*move_inFront_hand, 0.0f, 0.0f, 0.1f); //control palm
+					drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
 						
-						glPushMatrix();
-							glRotatef(100.0f, 1.0f, 0.0f, 0.0f);
-							glTranslatef(-0.4f, 0.0f, -0.18f);
-							glScalef(0.3f, 0.3f, 0.3f);
-							drawHand(direction);
-						glPopMatrix();
-
+					glPushMatrix();
+						glRotatef(100.0f, 1.0f, 0.0f, 0.0f);
+						glTranslatef(-0.4f, 0.0f, -0.18f);
+						glScalef(0.3f, 0.3f, 0.3f);
+						drawHand(direction);
 					glPopMatrix();
 
-					if (isShield && direction == 'L') {
+				glPopMatrix();
+
+				if (isShield && direction == 'L') {
+					glPushMatrix();
+
+						glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+						//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
+						glTranslatef(0.0f, -0.525f, 0.95f);
+						glScalef(2.0f, 2.0f, 2.0f);
+						controlShield();
+					glPopMatrix();
+				}
+
+				if (isRifle && direction == 'R') {
+					//weapon - beam rifle
+					glPushMatrix();
+						glTranslatef(0.35f, 0.175f, 0.25f);
+
 						glPushMatrix();
+							//rotate to point to ground
+							glTranslatef(0.35f, 0.175f, 0.25f);
+							glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
+							glTranslatef(-0.35f, -0.175f, -0.25f);
 
-							glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-							//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
-							glTranslatef(0.0f, -0.525f, 0.95f);
-							glScalef(2.0f, 2.0f, 2.0f);
-							controlShield();
+							//rotate to fit the hand
+							glTranslatef(0.35f, 0.175f, 0.25f);
+							glRotatef(180.0f, 0.0f, 0.0f, 0.1f);
+							glTranslatef(-0.35f, -0.175f, -0.25f);
+
+							glScalef(0.8f, 0.8f, 0.8f);
+							drawBeamRifle();
 						glPopMatrix();
-					}
-			glPopMatrix();
+					glPopMatrix();
+				}
 
-		
+		glPopMatrix();
 
 	glPopMatrix();
 
@@ -1336,7 +1358,7 @@ void drawRobotHand() {
 					arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
 					&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
 					&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle, 'R');
-				
+
 				glPopMatrix();
 	
 		glPopMatrix();
@@ -2373,6 +2395,85 @@ void drawLightSword(char position) {
 
 			glPopMatrix();
 		}
+	glPopMatrix();
+}
+void drawBeamRifle() {
+	glPushMatrix();
+		//front 
+		glPushMatrix();
+			glTranslatef(-0.8f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.02f, 0.02f, 0.1f, 10, 10);
+		glPopMatrix();
+
+		//drawRectangle(-0.5f, -0.4f, 0.0f, 0.06f, 0.0f, 0.05f);
+	
+		//middle
+		glPushMatrix();
+			glTranslatef(-0.7f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.035f, 0.035f, 0.3f, 10, 10);
+		glPopMatrix();
+
+		//middle-back
+		drawRectangle(-0.395f, 0.4f, -0.06f, 0.06f, -0.02f, 0.07f);
+
+		//back-up
+		drawTrapezium(0.4f, 0.7f, 0.4f, 0.8, 0.02f, 0.02f, 0.08f, 0.08f, -0.02f, 0.07f, -0.02f, 0.07f);
+
+		//back-bottom
+		drawRectangle(0.4f, 0.7f, -0.08f, 0.02f, -0.02f, 0.07f);
+
+		//sight
+		glPushMatrix();
+			glTranslatef(-0.1f, 0.102f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.04f, 0.04f, 0.15f, 10, 10);
+		glPopMatrix();
+
+		//Clip
+		glPushMatrix();
+			drawRectangle(-0.225f, -0.125f, -0.06f, -0.3f, -0.00f, 0.05f);
+
+			//Design
+			drawSquareLineLoop(-0.2245f, -0.09f, -0.00f, -0.2245f, -0.09f, 0.05f, -0.1245f, -0.09f, 0.05f, -0.1245f, -0.09f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.12f, -0.00f, -0.2245f, -0.12f, 0.05f, -0.1245f, -0.12f, 0.05f, -0.1245f, -0.12f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.15f, -0.00f, -0.2245f, -0.15f, 0.05f, -0.1245f, -0.15f, 0.05f, -0.1245f, -0.15f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.18f, -0.00f, -0.2245f, -0.18f, 0.05f, -0.1245f, -0.18f, 0.05f, -0.1245f, -0.18f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.21f, -0.00f, -0.2245f, -0.21f, 0.05f, -0.1245f, -0.21f, 0.05f, -0.1245f, -0.21f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.24f, -0.00f, -0.2245f, -0.24f, 0.05f, -0.1245f, -0.24f, 0.05f, -0.1245f, -0.24f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.27f, -0.00f, -0.2245f, -0.27f, 0.05f, -0.1245f, -0.27f, 0.05f, -0.1245f, -0.27f, -0.00f);
+
+		glPopMatrix();
+
+		//Grip - back
+		drawRectangle(0.345f, 0.375f, -0.06f, -0.45f, -0.00f, 0.05f);
+
+		//Grip - bottom
+		glPushMatrix();
+			glTranslatef(0.36f, -0.475f, 0.0f);
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.34f, -0.465f, 0.05f);
+				glRotatef(8.0f, 0.0f, 0.0f, -0.1f);
+			glTranslatef(-0.34f, 0.465f, -0.05f);
+
+			drawRectangle(0.205f, 0.34f, -0.465f, -0.5f, -0.0f, 0.05f);
+		glPopMatrix();
+
+		//Grip - front
+		glPushMatrix();
+			glTranslatef(0.18f, -0.46f, 0.0f);
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+		glPopMatrix();
+
+		drawRectangle(0.155f, 0.185f, -0.06f, -0.435f, -0.00f, 0.05f);
+
 	glPopMatrix();
 }
 
