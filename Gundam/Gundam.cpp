@@ -9,7 +9,7 @@
 #define WINDOW_TITLE "OpenGL Window"
 
 //Speed
-float speed = 0.05f;
+float speed = 0.025f;
 float fingerSpeed = 0.005f;
 float thumbSpeed = 0.02f;
 
@@ -18,10 +18,10 @@ float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
 
 //projection
-float tz = 0.0f, tSpeed = 1.0f;
+float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
-float Ry = 0.0, rSpeed = 1.0;
-float Tx = 0.0, TxSpeed = 1.0;
+float Ry = 0.0, rSpeed = 0.5;
+float Tx = 0.0, TxSpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
@@ -152,19 +152,21 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//'Upwards' - to move right leg up
 		else if (wParam == VK_UP) {
-			//To prevent leg move when finger move
-			if (activate != 1.0f) {
-				//initialize right leg
-				upperRightLegMaxAngle = 90.0f;
-				lowerRightLegMaxAngle = 85.0f;
+			if (isOrtho) {
+				//To prevent leg move when finger move
+				if (activate != 1.0f) {
+					//initialize right leg
+					upperRightLegMaxAngle = 90.0f;
+					lowerRightLegMaxAngle = 85.0f;
 
-				//left leg
-				upperLeftLegSpeed = -speed;
-				lowerLeftLegSpeed = -speed;
+					//left leg
+					upperLeftLegSpeed = -speed;
+					lowerLeftLegSpeed = -speed;
 
-				//right leg
-				upperRightLegSpeed = speed;
-				lowerRightLegSpeed = speed;
+					//right leg
+					upperRightLegSpeed = speed;
+					lowerRightLegSpeed = speed;
+				}
 			}
 
 		}
@@ -319,8 +321,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_SPACE) {
 			//Projection
 			isOrtho = true;
-			tz = 0.0f;
+			tz = 1.5f;
 			Ry = 0.0f;
+			Tx = 0.0f;
 
 			//Body Rotate
 			initialBodyRotate = 0.0f;
@@ -502,43 +505,53 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				rotateHSpeed = -speed;
 			}
 		}
-		else if (wParam == '1' || wParam == VK_NUMPAD1) {
-			isOrtho = true;
+		//projection
+		else if (wParam == VK_F2) {
+			isOrtho = !isOrtho;
 		}
+		//zoom out
 		else if (wParam == '2' || wParam == VK_NUMPAD2) {
-			isOrtho = false;
-		}
-		else if (wParam == '3' || wParam == VK_NUMPAD3) {
 
-			if (isOrtho) {
-				if (tz < 1.0) {
-					tz += tSpeed;
-				}
-			}
-			else {
+			if (!isOrtho) {
 				if (tz < 3.0) {
 					tz += tSpeed;
 				}
 			}
 
 		}
-		else if (wParam == '4' || wParam == VK_NUMPAD4) {
-			if (isOrtho) {
-				if (tz > -1.0) {
+		//zoom in
+		else if (wParam == '8' || wParam == VK_NUMPAD8) {
+			if (!isOrtho) {
+				if (tz > 0.0) {
 					tz -= tSpeed;
 				}
 
 			}
-			else {
-				if (tz > 0.0) {
-					tz -= tSpeed;
+		}
+		//move left
+		else if (wParam == '4' || wParam == VK_NUMPAD4) {
+			if (!isOrtho) {
+				if (Tx > -1.0) {
+					Tx -= TxSpeed;
 				}
+
 			}
 		}
-		else if (wParam == '5' || wParam == VK_NUMPAD5) {
+		//move right
+		else if (wParam == '6' || wParam == VK_NUMPAD6) {
+			if (!isOrtho) {
+				if (Tx < 1.0) {
+					Tx += TxSpeed;
+				}
+
+			}
+		}
+		//rotate left
+		else if (wParam == '7' || wParam == VK_NUMPAD7) {
 			Ry += rSpeed;
 		}
-		else if (wParam == '6' || wParam == VK_NUMPAD6) {
+		//rotate right
+		else if (wParam == '9' || wParam == VK_NUMPAD9) {
 			Ry -= rSpeed;
 		}
 		/////////////////////////////////
@@ -626,8 +639,10 @@ void display()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	
-		glTranslatef(0.0, 0.0, tz);
-	
+		if (!isOrtho) {
+			glTranslatef(0.0, 0.0, tz);
+		}
+		
 		glPushMatrix();
 			//just for rotation checking purpose (need delete afterwards)
 			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
