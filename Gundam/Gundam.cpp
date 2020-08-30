@@ -32,6 +32,9 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
+void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
+void drawCircle(float xPoint, float yPoint, float radius);
+
 
 //leg - data type
 //left leg
@@ -105,7 +108,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 
 //shield
 void shieldLogo(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void shieldLogoVertical(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void shieldLogoHorizontal(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void logoSideBRight(float minZ, float maxZ);
 void logoSideBLeft(float minZ, float maxZ);
 void logoSideRight(float minZ, float maxZ);
@@ -115,6 +118,11 @@ void shieldPentagon(float minZ, float maxZ);
 void DrawShield();
 void DrawHandle();
 void controlShield();
+
+//Weapon
+void drawBazooka();
+void drawLightSword(char position);
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -630,13 +638,10 @@ void display()
 				glTranslatef(-0.08,0.7,0.0);
 				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
 			glPopMatrix();
-	
-		
-	
+
 			glPushMatrix();
 				//translate whole body (combine with head)
 				glTranslatef(0.0, -0.3, 0.0);
-	
 	
 				//Body
 				glPushMatrix();
@@ -655,14 +660,33 @@ void display()
 					glScalef(0.5f, 0.5f, 0.5f);
 					constructleg();
 				glPopMatrix();
-	
-			
+			glPopMatrix();
 
-				
-				
-		glPopMatrix();
+				//Weapon - bazooka
+				glPushMatrix();
+					glTranslatef(0.0f, 0.15f, -0.05f);
+
+					glPushMatrix();
+						glTranslatef(0.0f, -0.1f, 0.0f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+						glTranslatef(0.0f, 0.1f, 0.0f);
+
+						drawBazooka();
+					glPopMatrix();
+				glPopMatrix();
+
+				//weapon - right light sword
+				glPushMatrix();
+					drawLightSword('L');
+				glPopMatrix();
+
+				//weapon - left light sword
+				glPushMatrix();
+					drawLightSword('R');
+				glPopMatrix();
+			glPopMatrix();
 	
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 	//--------------------------------
@@ -962,6 +986,43 @@ void drawCylinder(float baseRadius, float topRadius, float height, int slices, i
 	gluDeleteQuadric(cylinder);
 
 }
+void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks) {
+
+	GLUquadricObj* cylinder = NULL;
+	cylinder = gluNewQuadric();
+
+	gluQuadricDrawStyle(cylinder, GLU_LINE);
+	gluCylinder(cylinder, baseRadius, topRadius, height, slices, stacks);
+
+	gluDeleteQuadric(cylinder);
+
+	//base cover
+	drawCircle(0.0f, 0.0f, baseRadius);
+
+	//top cover
+	glTranslatef(0.0f, 0.0f, height);
+	drawCircle(0.0f, 0.0f, topRadius);
+}
+void drawCircle(float xPoint, float yPoint, float radius) {
+
+	glBegin(GL_TRIANGLE_FAN);
+	//origin
+	glVertex2f(xPoint, yPoint);
+
+	for (float angle = 0; angle <= 360; angle += 0.1) {
+		glVertex2f(xPoint + radius * cos(angle), yPoint + radius * sin(angle));
+	}
+	glEnd();
+}
+void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(x1, y1, z1);
+	glVertex3f(x2, y2, z2);
+	glVertex3f(x3, y3, z3);
+	glVertex3f(x4, y4, z4);
+	glEnd();
+}
+
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -2200,11 +2261,119 @@ void controlShield() {
 
 	glPushMatrix();
 		glTranslatef(-0.2, 0.23f, -0.15f);
-		glScalef(0.8f, 0.8f, 0.8f);
+		glScalef(0.65f, 0.65f, 0.65f);
 		DrawHandle();
 		DrawShield();
 	glPopMatrix();
 	
+}
+
+//Weapon
+void drawBazooka() {
+	glPushMatrix();
+
+		//Bazooka Body
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			drawCylinder(0.04f, 0.04f, 1.0f, 20, 20);
+		glPopMatrix();
+
+		//Muzzle
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.4f);
+			drawCylinder(0.04f, 0.05f, 0.08f, 15, 15);
+		glPopMatrix();
+
+		//Back Seat
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			drawCoverCylinder(0.05f, 0.05f, 0.1f, 10, 10);
+		glPopMatrix();
+
+		//Clip
+		glPushMatrix();
+			drawRectangle(-0.025f, 0.025f, 0.04f, -0.15f, -0.35f, -0.45f);
+
+			//Design
+			drawSquareLineLoop(-0.0255f, -0.06f, -0.451f, -0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.08f, -0.451f, -0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.10f, -0.451f, -0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.12f, -0.451f, -0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.451f);
+		glPopMatrix();
+
+		//Gusset
+		glPushMatrix();
+
+			//pivot
+			glPushMatrix();
+				glTranslatef(0.0f, 0.0f, 0.04f);
+				drawCylinder(0.045f, 0.045f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			//draw '-' up
+			drawRectangle(-0.0255f, 0.0255f, -0.045f, -0.08f, 0.205f, 0.025f);
+
+			//draw '|'
+			drawRectangle(-0.0255f, 0.0255f, -0.081f, -0.2f, 0.075f, 0.035f);
+
+			//draw '-' down
+			drawTrapezium(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.191f, -0.191f, -0.171f, -0.171f, 0.075f, 0.2f, 0.075f, 0.175f);
+
+			//draw '/' down
+			drawTrapezium(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.21f, -0.21f, -0.171f, -0.171f, 0.225f, 0.275f, 0.175f, 0.225f);
+
+		glPopMatrix();
+
+	glPopMatrix();
+}
+void drawLightSword(char position) {
+	glPushMatrix();
+		if (toupper(position) == 'L') {
+
+			glTranslatef(0.095f, -0.04f, 0.08f);
+
+			glPushMatrix();
+			glTranslatef(-0.3f, 0.5f, -0.1f);
+			glRotatef(90.0f, 0.0f, 0.0f, 0.1f);
+			glTranslatef(0.3f, -0.5f, 0.1f);
+
+			glPushMatrix();
+			glPushMatrix();
+			glTranslatef(-0.2f, 0.5225f, -0.125f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			drawTrapezium(-0.2f, -0.3f, -0.2f, -0.26f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+			glPopMatrix();
+
+			glPopMatrix();
+		}
+		else if (toupper(position) == 'R') {
+
+			glTranslatef(-0.0435f, -0.04f, 0.08f);
+
+			glPushMatrix();
+
+			glTranslatef(0.1f, 0.5f, -0.1f);
+			glRotatef(-90.0f, 0.0f, 0.0f, 0.1f);
+			glTranslatef(-0.1f, -0.5f, 0.1f);
+
+			glPushMatrix();
+			glPushMatrix();
+			glTranslatef(-0.15f, 0.5225f, -0.125f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			drawTrapezium(0.0f, 0.1f, 0.0f, 0.06f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+			glPopMatrix();
+
+			glPopMatrix();
+		}
+	glPopMatrix();
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
