@@ -1184,12 +1184,12 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 
 					glPopMatrix();
 
-					if (isShield && direction == 'R') {
+					if (isShield && direction == 'L') {
 						glPushMatrix();
 
-							glRotatef(90.0f, 0.0f, -1.0f, 0.0f);
-							glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
-							glTranslatef(0.2f, -0.65f, 0.95f);
+							glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+							//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
+							glTranslatef(0.0f, -0.525f, 0.95f);
 							glScalef(2.0f, 2.0f, 2.0f);
 							controlShield();
 						glPopMatrix();
@@ -1752,127 +1752,126 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 void shieldLogo(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(maxX, -maxY, minZ);
-	glVertex3f(minX, -minY, minZ);
-	glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(minX, -minY, minZ);
+		glVertex3f(-maxX, -maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(minX, -minY, maxZ);
-	glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(minX, -minY, maxZ);
+		glVertex3f(-maxX, -maxY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(-maxX, maxY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(-maxX, -maxY, minZ);
-	glVertex3f(-maxX, -maxY, maxZ);
-	glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-maxX, maxY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, -maxY, minZ);
-	glVertex3f(minX, -minY, minZ);
-	glVertex3f(minX, -minY, maxZ);
-	glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(minX, -minY, minZ);
+		glVertex3f(minX, -minY, maxZ);
+		glVertex3f(-maxX, -maxY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, -minY, minZ);
-	glVertex3f(maxX, -maxY, minZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(minX, -minY, maxZ);
+		glVertex3f(minX, -minY, minZ);
+		glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(minX, -minY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, -maxY, minZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
-
 
 }
 void shieldLogoHorizontal(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(maxX, -maxY, minZ);
-	glVertex3f(-maxX, -maxY, minZ);
-	glVertex3f(-minX, minY, minZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(-minX, minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(-maxX, -maxY, maxZ);
-	glVertex3f(-minX, minY, maxZ);
+		glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-minX, minY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(-minX, minY, minZ);
-	glVertex3f(-minX, minY, maxZ);
-	glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(-minX, minY, minZ);
+		glVertex3f(-minX, minY, maxZ);
+		glVertex3f(-maxX, maxY, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, maxY, minZ);
-	glVertex3f(-maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(maxX, maxY, minZ);
+		glVertex3f(-maxX, maxY, minZ);
+		glVertex3f(-maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(maxX, maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, maxY, minZ);
-	glVertex3f(maxX, maxY, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(minX, minY, minZ);
+		glVertex3f(maxX, maxY, minZ);
+		glVertex3f(maxX, maxY, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(minX, minY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(minX, minY, minZ);
-	glVertex3f(minX, minY, maxZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(minX, minY, minZ);
+		glVertex3f(minX, minY, maxZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(maxX, -maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxX, -maxY, minZ);
-	glVertex3f(maxX, -maxY, maxZ);
-	glVertex3f(-maxX, -maxY, maxZ);
-	glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(maxX, -maxY, minZ);
+		glVertex3f(maxX, -maxY, maxZ);
+		glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-maxX, -maxY, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-maxX, -maxY, minZ);
-	glVertex3f(-maxX, -maxY, maxZ);
-	glVertex3f(-minX, minY, maxZ);
-	glVertex3f(-minX, minY, minZ);
+		glVertex3f(-maxX, -maxY, minZ);
+		glVertex3f(-maxX, -maxY, maxZ);
+		glVertex3f(-minX, minY, maxZ);
+		glVertex3f(-minX, minY, minZ);
 	glEnd();
 
 
@@ -1880,244 +1879,243 @@ void shieldLogoHorizontal(float minX, float maxX, float minY, float maxY, float 
 void logoSideUp(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.075f, 0.18f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.09f, 0.195f, minZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 }
 void logoSideLeft(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.09f, 0.195f, minZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
 	glEnd();
 
 }
 void logoSideRight(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.15f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.075f, 0.18f, minZ);
 	glEnd();
 }
 void logoSideBLeft(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.205f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.24f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
 	glEnd();
 }
 void logoSideBRight(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.205f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.24f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.15f, -0.09f, minZ);
 	glEnd();
 }
 void DrawHandle() {
 
-
 	glPushMatrix();
-	drawRectangle(0.0f, 0.3f, 0.0f, 0.05f, 0.0f, 0.05f);
+		drawRectangle(0.0f, 0.3f, 0.0f, 0.05f, 0.0f, 0.05f);
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(60.0f, 0.0f, 0.0f, -1.0f);
-	glTranslatef(-0.2f, 0.0f, 0.0f);
-	drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
+		glRotatef(60.0f, 0.0f, 0.0f, -1.0f);
+		glTranslatef(-0.2f, 0.0f, 0.0f);
+		drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.3f, 0.0f, 0.0f);
-	glRotatef(60.0f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.3f, -0.0f, -0.0f);
-	glTranslatef(0.3f, 0.0f, 0.0f);
-	drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
+		glTranslatef(0.3f, 0.0f, 0.0f);
+		glRotatef(60.0f, 0.0f, 0.0f, 1.0f);
+		glTranslatef(-0.3f, -0.0f, -0.0f);
+		glTranslatef(0.3f, 0.0f, 0.0f);
+		drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
 	glPopMatrix();
 
 }
@@ -2125,93 +2123,90 @@ void DrawShield() {
 
 
 	glPushMatrix();
-	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(0.15f, 0.0f, 0.2f);
-	glScalef(2.0f, 2.0f, 2.0f);
-	shieldPentagon(0.0f, 0.04f);
+		glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+		glTranslatef(0.15f, 0.0f, 0.2f);
+		glScalef(2.0f, 2.0f, 2.0f);
+		shieldPentagon(0.0f, 0.04f);
 
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, 0.04f);
-	shieldLogo(0.0f, 0.025f, 0.125f, 0.15f, 0.0f, 0.01f);
-	shieldLogoHorizontal(0.075f, 0.1f, 0.0f, 0.025f, 0.0f, 0.01f);
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.04f);
+			shieldLogo(0.0f, 0.025f, 0.125f, 0.15f, 0.0f, 0.01f);
+			shieldLogoHorizontal(0.075f, 0.1f, 0.0f, 0.025f, 0.0f, 0.01f);
 
-	logoSideUp(0.0f, 0.01f);
-	logoSideLeft(0.0f, 0.01f);
-	logoSideRight(0.0f, 0.01f);
-	logoSideBLeft(0.0f, 0.01f);
-	logoSideBRight(0.0f, 0.01f);
-
-	glPopMatrix();
-
+			logoSideUp(0.0f, 0.01f);
+			logoSideLeft(0.0f, 0.01f);
+			logoSideRight(0.0f, 0.01f);
+			logoSideBLeft(0.0f, 0.01f);
+			logoSideBRight(0.0f, 0.01f);
+		glPopMatrix();
 	glPopMatrix();
 }
 void shieldPentagon(float minZ, float maxZ) {
 
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.1f, 0.2f, minZ);
-	glVertex3f(0.1f, 0.2f, minZ);
-	glVertex3f(0.16f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.25f, minZ);
-	glVertex3f(-0.16f, -0.09f, minZ);
+		glVertex3f(-0.1f, 0.2f, minZ);
+		glVertex3f(0.1f, 0.2f, minZ);
+		glVertex3f(0.16f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.25f, minZ);
+		glVertex3f(-0.16f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.1f, 0.2f, maxZ);
-	glVertex3f(0.1f, 0.2f, maxZ);
-	glVertex3f(0.16f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.25f, maxZ);
-	glVertex3f(-0.16f, -0.09f, maxZ);
+		glVertex3f(-0.1f, 0.2f, maxZ);
+		glVertex3f(0.1f, 0.2f, maxZ);
+		glVertex3f(0.16f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.25f, maxZ);
+		glVertex3f(-0.16f, -0.09f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.16f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.25f, minZ);
-	glVertex3f(0.0f, -0.25f, maxZ);
-	glVertex3f(-0.16f, -0.09f, maxZ);
+		glVertex3f(-0.16f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.25f, minZ);
+		glVertex3f(0.0f, -0.25f, maxZ);
+		glVertex3f(-0.16f, -0.09f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.16f, -0.09f, minZ);
-	glVertex3f(-0.16f, -0.09f, maxZ);
-	glVertex3f(-0.1f, 0.2f, maxZ);
-	glVertex3f(-0.1f, 0.2f, minZ);
+		glVertex3f(-0.16f, -0.09f, minZ);
+		glVertex3f(-0.16f, -0.09f, maxZ);
+		glVertex3f(-0.1f, 0.2f, maxZ);
+		glVertex3f(-0.1f, 0.2f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.1f, 0.2f, minZ);
-	glVertex3f(-0.1f, 0.2f, maxZ);
-	glVertex3f(0.1f, 0.2f, maxZ);
-	glVertex3f(0.1f, 0.2f, minZ);
+		glVertex3f(-0.1f, 0.2f, minZ);
+		glVertex3f(-0.1f, 0.2f, maxZ);
+		glVertex3f(0.1f, 0.2f, maxZ);
+		glVertex3f(0.1f, 0.2f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.1f, 0.2f, minZ);
-	glVertex3f(0.1f, 0.2f, maxZ);
-	glVertex3f(0.16f, -0.09f, maxZ);
-	glVertex3f(0.16f, -0.09f, minZ);
+		glVertex3f(0.1f, 0.2f, minZ);
+		glVertex3f(0.1f, 0.2f, maxZ);
+		glVertex3f(0.16f, -0.09f, maxZ);
+		glVertex3f(0.16f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.16f, -0.09f, minZ);
-	glVertex3f(0.16f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.25f, maxZ);
-	glVertex3f(0.0f, -0.25f, minZ);
+		glVertex3f(0.16f, -0.09f, minZ);
+		glVertex3f(0.16f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.25f, maxZ);
+		glVertex3f(0.0f, -0.25f, minZ);
 	glEnd();
-
 
 }
 void controlShield() {
 
-	
-		glPushMatrix();
+	glPushMatrix();
 		glTranslatef(-0.2, 0.23f, -0.15f);
 		glScalef(0.8f, 0.8f, 0.8f);
 		DrawHandle();
 		DrawShield();
-		glPopMatrix();
+	glPopMatrix();
 	
 }
+
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
 	WNDCLASSEX wc;
