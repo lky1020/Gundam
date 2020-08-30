@@ -22,6 +22,7 @@ float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
 float Ry = 0.0, rSpeed = 0.5;
 float Tx = 0.0, TxSpeed = 0.01;
+float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
@@ -324,6 +325,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			tz = 1.5f;
 			Ry = 0.0f;
 			Tx = 0.0f;
+			Ty = 0.0f;
 
 			//Body Rotate
 			initialBodyRotate = 0.0f;
@@ -509,7 +511,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_F2) {
 			isOrtho = !isOrtho;
 		}
-		//zoom out
+		//zoom out (robot)
 		else if (wParam == '2' || wParam == VK_NUMPAD2) {
 
 			if (!isOrtho) {
@@ -519,7 +521,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 
 		}
-		//zoom in
+		//zoom in (robot)
 		else if (wParam == '8' || wParam == VK_NUMPAD8) {
 			if (!isOrtho) {
 				if (tz > 0.0) {
@@ -528,7 +530,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			}
 		}
-		//move left
+		//move view left
 		else if (wParam == '4' || wParam == VK_NUMPAD4) {
 			if (!isOrtho) {
 				if (Tx > -1.0) {
@@ -537,7 +539,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			}
 		}
-		//move right
+		//move view right
 		else if (wParam == '6' || wParam == VK_NUMPAD6) {
 			if (!isOrtho) {
 				if (Tx < 1.0) {
@@ -546,11 +548,29 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			}
 		}
-		//rotate left
+		//move view up
+		else if (wParam == '5' || wParam == VK_NUMPAD5) {
+			if (!isOrtho) {
+				if (Ty > -1.0) {
+					Ty -= TySpeed;
+				}
+
+			}
+		}
+		//move view down
+		else if (wParam == '0' || wParam == VK_NUMPAD0) {
+			if (!isOrtho) {
+				if (Ty < 1.0) {
+					Ty += TySpeed;
+				}
+
+			}
+		}
+		//rotate view left
 		else if (wParam == '7' || wParam == VK_NUMPAD7) {
 			Ry += rSpeed;
 		}
-		//rotate right
+		//rotate view right
 		else if (wParam == '9' || wParam == VK_NUMPAD9) {
 			Ry -= rSpeed;
 		}
@@ -717,14 +737,14 @@ void projection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glTranslatef(Tx, 0.0, 0.0);
+	//rotate view
 	glRotatef(Ry, 0.0, 1.0, 0.0);
-
+	
 	if (isOrtho) {
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 	}
 	else {
-	
+		glTranslatef(Tx, Ty, 0.0f);
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
 		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
 	}
