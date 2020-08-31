@@ -18,10 +18,11 @@ float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
 
 //projection
-float tz = 0.0f, tSpeed = 1.0f;
+float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
-float Ry = 0.0, rSpeed = 1.0;
-float Tx = 0.0, TxSpeed = 1.0;
+float Ry = 0.0, rSpeed = 0.5;
+float Tx = 0.0, TxSpeed = 0.01;
+float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
@@ -32,6 +33,8 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
+void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
+void drawCircle(float xPoint, float yPoint, float radius);
 
 //leg - data type
 //left leg
@@ -92,6 +95,7 @@ float initialRightLowerArmSpeed = 0.0f, lowerRightArmSpeed = 0.0f, lowerRightArm
 float rotateH = 0.0f, rotateHX = 0.0f, rotateHY = 0.0f, rotateHZ = 0.0f;
 float rotateHSpeed = 0.0f, rotateHMaxAngle = 0.0f, rotateHMinAngle = 0.0f;
 bool isShield = false;
+bool isRifle = false;
 
 //texture
 BITMAP BMP;
@@ -109,7 +113,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 
 //shield
 void shieldLogo(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void shieldLogoVertical(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+void shieldLogoHorizontal(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void logoSideBRight(float minZ, float maxZ);
 void logoSideBLeft(float minZ, float maxZ);
 void logoSideRight(float minZ, float maxZ);
@@ -119,6 +123,12 @@ void shieldPentagon(float minZ, float maxZ);
 void DrawShield();
 void DrawHandle();
 void controlShield();
+
+//Weapon
+void drawBazooka();
+void drawLightSword(char position);
+void drawBeamRifle();
+
 
 //texture
 GLuint loadTexture(LPCSTR filename);
@@ -150,19 +160,21 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//'Upwards' - to move right leg up
 		else if (wParam == VK_UP) {
-			//To prevent leg move when finger move
-			if (activate != 1.0f) {
-				//initialize right leg
-				upperRightLegMaxAngle = 90.0f;
-				lowerRightLegMaxAngle = 85.0f;
+			if (isOrtho) {
+				//To prevent leg move when finger move
+				if (activate != 1.0f) {
+					//initialize right leg
+					upperRightLegMaxAngle = 90.0f;
+					lowerRightLegMaxAngle = 85.0f;
 
-				//left leg
-				upperLeftLegSpeed = -speed;
-				lowerLeftLegSpeed = -speed;
+					//left leg
+					upperLeftLegSpeed = -speed;
+					lowerLeftLegSpeed = -speed;
 
-				//right leg
-				upperRightLegSpeed = speed;
-				lowerRightLegSpeed = speed;
+					//right leg
+					upperRightLegSpeed = speed;
+					lowerRightLegSpeed = speed;
+				}
 			}
 
 		}
@@ -317,8 +329,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_SPACE) {
 			//Projection
 			isOrtho = true;
-			tz = 0.0f;
+			tz = 1.5f;
 			Ry = 0.0f;
+			Tx = 0.0f;
+			Ty = 0.0f;
 
 			//Body Rotate
 			initialBodyRotate = 0.0f;
@@ -500,50 +514,79 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				rotateHSpeed = -speed;
 			}
 		}
-		else if (wParam == '1' || wParam == VK_NUMPAD1) {
-			isOrtho = true;
+		//projection
+		else if (wParam == VK_F2) {
+			isOrtho = !isOrtho;
 		}
+		//zoom out (robot)
 		else if (wParam == '2' || wParam == VK_NUMPAD2) {
-			isOrtho = false;
-		}
-		else if (wParam == '3' || wParam == VK_NUMPAD3) {
 
-			if (isOrtho) {
-				if (tz < 1.0) {
-					tz += tSpeed;
-				}
-			}
-			else {
+			if (!isOrtho) {
 				if (tz < 3.0) {
 					tz += tSpeed;
 				}
 			}
 
 		}
-		else if (wParam == '4' || wParam == VK_NUMPAD4) {
-			if (isOrtho) {
-				if (tz > -1.0) {
+		//zoom in (robot)
+		else if (wParam == '8' || wParam == VK_NUMPAD8) {
+			if (!isOrtho) {
+				if (tz > 0.0) {
 					tz -= tSpeed;
 				}
 
 			}
-			else {
-				if (tz > 0.0) {
-					tz -= tSpeed;
+		}
+		//move view left
+		else if (wParam == '4' || wParam == VK_NUMPAD4) {
+			if (!isOrtho) {
+				if (Tx > -1.0) {
+					Tx -= TxSpeed;
 				}
+
 			}
 		}
+		//move view right
+		else if (wParam == '6' || wParam == VK_NUMPAD6) {
+			if (!isOrtho) {
+				if (Tx < 1.0) {
+					Tx += TxSpeed;
+				}
+
+			}
+		}
+		//move view up
 		else if (wParam == '5' || wParam == VK_NUMPAD5) {
+			if (!isOrtho) {
+				if (Ty > -1.0) {
+					Ty -= TySpeed;
+				}
+
+			}
+		}
+		//move view down
+		else if (wParam == '0' || wParam == VK_NUMPAD0) {
+			if (!isOrtho) {
+				if (Ty < 1.0) {
+					Ty += TySpeed;
+				}
+
+			}
+		}
+		//rotate view left
+		else if (wParam == '7' || wParam == VK_NUMPAD7) {
 			Ry += rSpeed;
 		}
-		else if (wParam == '6' || wParam == VK_NUMPAD6) {
+		//rotate view right
+		else if (wParam == '9' || wParam == VK_NUMPAD9) {
 			Ry -= rSpeed;
 		}
 		/////////////////////////////////
 		else if (wParam == VK_F1) {
 			isShield = !isShield;
+			isRifle = !isRifle;
 
-			if (isShield) {
+			if (isShield && isRifle) {
 				fingerMove = fingerSpeed;
 				thumbMove = thumbSpeed;
 			}
@@ -623,8 +666,10 @@ void display()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	
-		glTranslatef(0.0, 0.0, tz);
-	
+		if (!isOrtho) {
+			glTranslatef(0.0, 0.0, tz);
+		}
+		
 		glPushMatrix();
 			//just for rotation checking purpose (need delete afterwards)
 			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
@@ -637,13 +682,10 @@ void display()
 				glTranslatef(-0.08,0.7,0.0);
 				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
 			glPopMatrix();
-	
-		
-	
+
 			glPushMatrix();
 				//translate whole body (combine with head)
 				glTranslatef(0.0, -0.3, 0.0);
-	
 	
 				//Body
 				glPushMatrix();
@@ -662,14 +704,32 @@ void display()
 					glScalef(0.5f, 0.5f, 0.5f);
 					constructleg();
 				glPopMatrix();
-	
-			
+			glPopMatrix();
 
-				
-				
-		glPopMatrix();
+			//Weapon - bazooka
+			glPushMatrix();
+				glTranslatef(0.0f, 0.15f, -0.05f);
+
+				glPushMatrix();
+					glTranslatef(0.0f, -0.1f, 0.0f);
+					glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+					glTranslatef(0.0f, 0.1f, 0.0f);
+
+					drawBazooka();
+				glPopMatrix();
+			glPopMatrix();
+
+			//weapon - right light sword
+			glPushMatrix();
+				drawLightSword('L');
+			glPopMatrix();
+
+			//weapon - left light sword
+			glPushMatrix();
+				drawLightSword('R');
+			glPopMatrix();
 	
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 	//--------------------------------
@@ -684,14 +744,14 @@ void projection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glTranslatef(Tx, 0.0, 0.0);
+	//rotate view
 	glRotatef(Ry, 0.0, 1.0, 0.0);
-
+	
 	if (isOrtho) {
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 	}
 	else {
-	
+		glTranslatef(Tx, Ty, 0.0f);
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
 		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
 	}
@@ -1073,7 +1133,45 @@ void drawCylinder(float baseRadius, float topRadius, float height, int slices, i
 	gluCylinder(cylinder, baseRadius, topRadius, height,
 		slices, stacks);
 	gluDeleteQuadric(cylinder);
+
 }
+void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks) {
+
+	GLUquadricObj* cylinder = NULL;
+	cylinder = gluNewQuadric();
+
+	gluQuadricDrawStyle(cylinder, GLU_LINE);
+	gluCylinder(cylinder, baseRadius, topRadius, height, slices, stacks);
+
+	gluDeleteQuadric(cylinder);
+
+	//base cover
+	drawCircle(0.0f, 0.0f, baseRadius);
+
+	//top cover
+	glTranslatef(0.0f, 0.0f, height);
+	drawCircle(0.0f, 0.0f, topRadius);
+}
+void drawCircle(float xPoint, float yPoint, float radius) {
+
+	glBegin(GL_TRIANGLE_FAN);
+	//origin
+	glVertex2f(xPoint, yPoint);
+
+	for (float angle = 0; angle <= 360; angle += 0.1) {
+		glVertex2f(xPoint + radius * cos(angle), yPoint + radius * sin(angle));
+	}
+	glEnd();
+}
+void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(x1, y1, z1);
+	glVertex3f(x2, y2, z2);
+	glVertex3f(x3, y3, z3);
+	glVertex3f(x4, y4, z4);
+	glEnd();
+}
+
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -1267,58 +1365,74 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 
 		armJoint();
 
-			glPushMatrix();
+		glPushMatrix();
 
-				glTranslatef(0.52f, 0.0f, 0.0f);
-				glRotatef(*initialLowerArmSpeed, 0.0f, -0.1f, 0.0f); //control the lower arm
+			glTranslatef(0.52f, 0.0f, 0.0f);
+			glRotatef(*initialLowerArmSpeed, 0.0f, -0.1f, 0.0f); //control the lower arm
 
-				*initialLowerArmSpeed += *lowerArmSpeed;
+			*initialLowerArmSpeed += *lowerArmSpeed;
 
-				if (*initialLowerArmSpeed >= *lowerArmMaxAngle) {
-					*initialLowerArmSpeed = *lowerArmMaxAngle;
-					*lowerArmSpeed = 0.0f;
-				}
+			if (*initialLowerArmSpeed >= *lowerArmMaxAngle) {
+				*initialLowerArmSpeed = *lowerArmMaxAngle;
+				*lowerArmSpeed = 0.0f;
+			}
 
-				if (*initialLowerArmSpeed <= *lowerArmMinAngle) {
-					*initialLowerArmSpeed = *lowerArmMinAngle;
-					*lowerArmSpeed = 0.0f;
-				}
+			if (*initialLowerArmSpeed <= *lowerArmMinAngle) {
+				*initialLowerArmSpeed = *lowerArmMinAngle;
+				*lowerArmSpeed = 0.0f;
+			}
 
-				texture = loadTexture("Grey_Dirty_Color.bmp");
-				drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
-				glDeleteTextures(1, &texture);
+			drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+			armJoint();
 
-				armJoint();
-
+				glPushMatrix();
+					glTranslatef(0.53f, 0.0f, 0.0f);
+					glRotatef(*move_inFront_hand, 0.0f, 0.0f, 0.1f); //control palm
+					drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+						
 					glPushMatrix();
-						glTranslatef(0.53f, 0.0f, 0.0f);
-						glRotatef(*move_inFront_hand, 0.0f, 0.0f, 0.1f); //control palm
-						texture = loadTexture("Grey_Dirty_Color.bmp");
-						drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-						glDeleteTextures(1, &texture);
-
-						glPushMatrix();
-							glRotatef(100.0f, 1.0f, 0.0f, 0.0f);
-							glTranslatef(-0.4f, 0.0f, -0.18f);
-							glScalef(0.3f, 0.3f, 0.3f);
-							drawHand(direction);
-						glPopMatrix();
-
+						glRotatef(100.0f, 1.0f, 0.0f, 0.0f);
+						glTranslatef(-0.4f, 0.0f, -0.18f);
+						glScalef(0.3f, 0.3f, 0.3f);
+						drawHand(direction);
 					glPopMatrix();
 
-					if (isShield && direction == 'R') {
+				glPopMatrix();
+
+				if (isShield && direction == 'L') {
+					glPushMatrix();
+
+						glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+						//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
+						glTranslatef(0.0f, -0.525f, 0.95f);
+						glScalef(2.0f, 2.0f, 2.0f);
+						controlShield();
+					glPopMatrix();
+				}
+
+				if (isRifle && direction == 'R') {
+					//weapon - beam rifle
+					glPushMatrix();
+						glTranslatef(0.35f, 0.175f, 0.25f);
+
 						glPushMatrix();
+							//rotate to point to ground
+							glTranslatef(0.35f, 0.175f, 0.25f);
+							glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
+							glTranslatef(-0.35f, -0.175f, -0.25f);
 
-							glRotatef(90.0f, 0.0f, -1.0f, 0.0f);
-							glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
-							glTranslatef(0.2f, -0.65f, 0.95f);
-							glScalef(2.0f, 2.0f, 2.0f);
-							controlShield();
+							//rotate to fit the hand
+							glTranslatef(0.35f, 0.175f, 0.25f);
+							glRotatef(180.0f, 0.0f, 0.0f, 0.1f);
+							glTranslatef(-0.35f, -0.175f, -0.25f);
+
+							glScalef(0.8f, 0.8f, 0.8f);
+							drawBeamRifle();
 						glPopMatrix();
-					}
-			glPopMatrix();
+					glPopMatrix();
+				}
 
-		
+		glPopMatrix();
 
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
@@ -1423,7 +1537,7 @@ void drawRobotHand() {
 					arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
 					&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
 					&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle, 'R');
-				
+
 				glPopMatrix();
 	
 		glPopMatrix();
@@ -2210,223 +2324,223 @@ void shieldLogoHorizontal(float minX, float maxX, float minY, float maxY, float 
 void logoSideUp(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.075f, 0.18f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.09f, 0.195f, minZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 }
 void logoSideLeft(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.075f, 0.18f, minZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.09f, 0.195f, minZ);
-	glVertex3f(-0.09f, 0.195f, maxZ);
-	glVertex3f(-0.075f, 0.18f, maxZ);
-	glVertex3f(-0.075f, 0.18f, minZ);
+		glVertex3f(-0.09f, 0.195f, minZ);
+		glVertex3f(-0.09f, 0.195f, maxZ);
+		glVertex3f(-0.075f, 0.18f, maxZ);
+		glVertex3f(-0.075f, 0.18f, minZ);
 	glEnd();
 
 }
 void logoSideRight(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.075f, 0.18f, minZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.15f, -0.09f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.095f, 0.195f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.095f, 0.195f, minZ);
-	glVertex3f(0.095f, 0.195f, maxZ);
-	glVertex3f(0.075f, 0.18f, maxZ);
-	glVertex3f(0.075f, 0.18f, minZ);
+		glVertex3f(0.095f, 0.195f, minZ);
+		glVertex3f(0.095f, 0.195f, maxZ);
+		glVertex3f(0.075f, 0.18f, maxZ);
+		glVertex3f(0.075f, 0.18f, minZ);
 	glEnd();
 }
 void logoSideBLeft(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.15f, -0.09f, minZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-0.135f, -0.075f, minZ);
-	glVertex3f(-0.135f, -0.075f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(-0.135f, -0.075f, minZ);
+		glVertex3f(-0.135f, -0.075f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.205f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.24f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(-0.15f, -0.09f, maxZ);
-	glVertex3f(-0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(-0.15f, -0.09f, maxZ);
+		glVertex3f(-0.15f, -0.09f, minZ);
 	glEnd();
 }
 void logoSideBRight(float minZ, float maxZ) {
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.15f, -0.09f, minZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.135f, -0.075f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.135f, -0.075f, minZ);
-	glVertex3f(0.135f, -0.075f, maxZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.135f, -0.075f, minZ);
+		glVertex3f(0.135f, -0.075f, maxZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.205f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.205f, minZ);
-	glVertex3f(0.0f, -0.205f, maxZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.205f, minZ);
+		glVertex3f(0.0f, -0.205f, maxZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.0f, -0.24f, minZ);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, -0.24f, minZ);
-	glVertex3f(0.0f, -0.24f, maxZ);
-	glVertex3f(0.15f, -0.09f, maxZ);
-	glVertex3f(0.15f, -0.09f, minZ);
+		glVertex3f(0.0f, -0.24f, minZ);
+		glVertex3f(0.0f, -0.24f, maxZ);
+		glVertex3f(0.15f, -0.09f, maxZ);
+		glVertex3f(0.15f, -0.09f, minZ);
 	glEnd();
 }
 void DrawHandle() {
@@ -2581,39 +2695,200 @@ void shieldPentagon(float minZ, float maxZ) {
 }
 void controlShield() {
 
-	
-		glPushMatrix();
+	glPushMatrix();
 		glTranslatef(-0.2, 0.23f, -0.15f);
-		glScalef(0.8f, 0.8f, 0.8f);
+		glScalef(0.65f, 0.65f, 0.65f);
 		DrawHandle();
 		DrawShield();
-		glPopMatrix();
+	glPopMatrix();
 	
 }
 
-//Texture
-GLuint loadTexture(LPCSTR filename) {
+//Weapon
+void drawBazooka() {
+	glPushMatrix();
 
-	GLuint texture = 0;
+		//Bazooka Body
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			drawCylinder(0.04f, 0.04f, 1.0f, 20, 20);
+		glPopMatrix();
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		//Muzzle
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.4f);
+			drawCylinder(0.04f, 0.05f, 0.08f, 15, 15);
+		glPopMatrix();
 
-	HBITMAP hBMP = (HBITMAP)LoadImage(GetModuleHandle(NULL),
-		filename, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION |
-		LR_LOADFROMFILE);
+		//Back Seat
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			drawCoverCylinder(0.05f, 0.05f, 0.1f, 10, 10);
+		glPopMatrix();
 
-	GetObject(hBMP, sizeof(BMP), &BMP);
+		//Clip
+		glPushMatrix();
+			drawRectangle(-0.025f, 0.025f, 0.04f, -0.15f, -0.35f, -0.45f);
 
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, BMP.bmWidth, BMP.bmHeight, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, BMP.bmBits);
+			//Design
+			drawSquareLineLoop(-0.0255f, -0.06f, -0.451f, -0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.08f, -0.451f, -0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.10f, -0.451f, -0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.451f);
+			drawSquareLineLoop(-0.0255f, -0.12f, -0.451f, -0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.451f);
+		glPopMatrix();
 
+		//Gusset
+		glPushMatrix();
 
-	DeleteObject(hBMP);
-	return texture;
+			//pivot
+			glPushMatrix();
+				glTranslatef(0.0f, 0.0f, 0.04f);
+				drawCylinder(0.045f, 0.045f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			//draw '-' up
+			drawRectangle(-0.0255f, 0.0255f, -0.045f, -0.08f, 0.205f, 0.025f);
+
+			//draw '|'
+			drawRectangle(-0.0255f, 0.0255f, -0.081f, -0.2f, 0.075f, 0.035f);
+
+			//draw '-' down
+			drawTrapezium(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.191f, -0.191f, -0.171f, -0.171f, 0.075f, 0.2f, 0.075f, 0.175f);
+
+			//draw '/' down
+			drawTrapezium(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.21f, -0.21f, -0.171f, -0.171f, 0.225f, 0.275f, 0.175f, 0.225f);
+
+		glPopMatrix();
+
+	glPopMatrix();
+}
+void drawLightSword(char position) {
+	glPushMatrix();
+		if (toupper(position) == 'L') {
+
+			glTranslatef(0.095f, -0.04f, 0.08f);
+
+			glPushMatrix();
+			glTranslatef(-0.3f, 0.5f, -0.1f);
+			glRotatef(90.0f, 0.0f, 0.0f, 0.1f);
+			glTranslatef(0.3f, -0.5f, 0.1f);
+
+			glPushMatrix();
+			glPushMatrix();
+			glTranslatef(-0.2f, 0.5225f, -0.125f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			drawTrapezium(-0.2f, -0.3f, -0.2f, -0.26f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+			glPopMatrix();
+
+			glPopMatrix();
+		}
+		else if (toupper(position) == 'R') {
+
+			glTranslatef(-0.0435f, -0.04f, 0.08f);
+
+			glPushMatrix();
+
+			glTranslatef(0.1f, 0.5f, -0.1f);
+			glRotatef(-90.0f, 0.0f, 0.0f, 0.1f);
+			glTranslatef(-0.1f, -0.5f, 0.1f);
+
+			glPushMatrix();
+			glPushMatrix();
+			glTranslatef(-0.15f, 0.5225f, -0.125f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+			glPopMatrix();
+
+			drawTrapezium(0.0f, 0.1f, 0.0f, 0.06f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+			glPopMatrix();
+
+			glPopMatrix();
+		}
+	glPopMatrix();
+}
+void drawBeamRifle() {
+	glPushMatrix();
+		//front 
+		glPushMatrix();
+			glTranslatef(-0.8f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.02f, 0.02f, 0.1f, 10, 10);
+		glPopMatrix();
+
+		//drawRectangle(-0.5f, -0.4f, 0.0f, 0.06f, 0.0f, 0.05f);
+	
+		//middle
+		glPushMatrix();
+			glTranslatef(-0.7f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.035f, 0.035f, 0.3f, 10, 10);
+		glPopMatrix();
+
+		//middle-back
+		drawRectangle(-0.395f, 0.4f, -0.06f, 0.06f, -0.02f, 0.07f);
+
+		//back-up
+		drawTrapezium(0.4f, 0.7f, 0.4f, 0.8, 0.02f, 0.02f, 0.08f, 0.08f, -0.02f, 0.07f, -0.02f, 0.07f);
+
+		//back-bottom
+		drawRectangle(0.4f, 0.7f, -0.08f, 0.02f, -0.02f, 0.07f);
+
+		//sight
+		glPushMatrix();
+			glTranslatef(-0.1f, 0.102f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+			drawCoverCylinder(0.04f, 0.04f, 0.15f, 10, 10);
+		glPopMatrix();
+
+		//Clip
+		glPushMatrix();
+			drawRectangle(-0.225f, -0.125f, -0.06f, -0.3f, -0.00f, 0.05f);
+
+			//Design
+			drawSquareLineLoop(-0.2245f, -0.09f, -0.00f, -0.2245f, -0.09f, 0.05f, -0.1245f, -0.09f, 0.05f, -0.1245f, -0.09f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.12f, -0.00f, -0.2245f, -0.12f, 0.05f, -0.1245f, -0.12f, 0.05f, -0.1245f, -0.12f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.15f, -0.00f, -0.2245f, -0.15f, 0.05f, -0.1245f, -0.15f, 0.05f, -0.1245f, -0.15f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.18f, -0.00f, -0.2245f, -0.18f, 0.05f, -0.1245f, -0.18f, 0.05f, -0.1245f, -0.18f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.21f, -0.00f, -0.2245f, -0.21f, 0.05f, -0.1245f, -0.21f, 0.05f, -0.1245f, -0.21f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.24f, -0.00f, -0.2245f, -0.24f, 0.05f, -0.1245f, -0.24f, 0.05f, -0.1245f, -0.24f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.27f, -0.00f, -0.2245f, -0.27f, 0.05f, -0.1245f, -0.27f, 0.05f, -0.1245f, -0.27f, -0.00f);
+
+		glPopMatrix();
+
+		//Grip - back
+		drawRectangle(0.345f, 0.375f, -0.06f, -0.45f, -0.00f, 0.05f);
+
+		//Grip - bottom
+		glPushMatrix();
+			glTranslatef(0.36f, -0.475f, 0.0f);
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.34f, -0.465f, 0.05f);
+				glRotatef(8.0f, 0.0f, 0.0f, -0.1f);
+			glTranslatef(-0.34f, 0.465f, -0.05f);
+
+			drawRectangle(0.205f, 0.34f, -0.465f, -0.5f, -0.0f, 0.05f);
+		glPopMatrix();
+
+		//Grip - front
+		glPushMatrix();
+			glTranslatef(0.18f, -0.46f, 0.0f);
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+		glPopMatrix();
+
+		drawRectangle(0.155f, 0.185f, -0.06f, -0.435f, -0.00f, 0.05f);
+
+	glPopMatrix();
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
