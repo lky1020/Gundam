@@ -1,2 +1,17 @@
 ﻿  Gundam.cpp
-  Gundam.vcxproj -> C:\Users\User\Desktop\Gundam\Debug\Gundam.exe
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(53,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(54,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,7): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(737,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(743,32): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1382,50): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1383,51): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1383,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2300,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2300,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2933,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3039,34): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3229,103): warning C4305: 'argument': truncation from 'double' to 'float'
+  Gundam.vcxproj -> C:\Users\User\Documents\GitHub\Gundam\Debug\Gundam.exe

@@ -19,4 +19,63 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Blue_Dirty_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Dark_Grey_Dirty_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Grey_Dirty_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_5.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_6.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_7.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_8.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="head_9.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Knee_Texture.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Red_Dirty_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Shield_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Shield_2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Shield_3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Robot_Arm_Joint.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

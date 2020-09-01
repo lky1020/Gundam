@@ -49,7 +49,7 @@ string strShield_3 = "Shield_3.bmp";
 //projection
 float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
-float Ry = 0.0, rSpeed = 0.5;
+float Ry = 0.0, Rx = 0.0, rSpeed = 1.0f;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
@@ -611,7 +611,18 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == '9' || wParam == VK_NUMPAD9) {
 			Ry -= rSpeed;
 		}
-		/////////////////////////////////
+		else if (wParam == 'Y') {
+			
+			if (Rx > -50.0f) {
+				Rx -= rSpeed;
+			}
+		}
+		else if (wParam == '3') {
+			if (Rx < 20.0f) {
+				Rx += rSpeed;
+			}
+		}
+		// to activate shield and Rifle
 		else if (wParam == VK_F1) {
 			isShield = !isShield;
 			isRifle = !isRifle;
@@ -805,12 +816,13 @@ void projection() {
 	glRotatef(Ry, 0.0, 1.0, 0.0);
 
 	if (isOrtho) {
-		glOrtho(-20.0, 20.0, -20.0, 20.0, -20.0, 20.0);
+		glRotatef(Rx, 1.0f, 0.0f, 0.0f);
+		glOrtho(-20.0f, 20.0f, -20.0f, 20.0f, -20.0f, 20.0f);
 	}
 	else {
 		glTranslatef(Tx, Ty, 0.0f);
-		gluPerspective(20.0, 1.0, -1.0, 1.0);
-		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
+		gluPerspective(20.0f, 1.0f, -1.0f, 1.0f);
+		glFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 3.0f);
 	}
 
 }
