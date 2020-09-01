@@ -18,7 +18,7 @@ float thumbSpeed = 0.02f;
 //Rotation whole body
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
-float bodyRotateSpeed = 1.0f;
+float bodyRotateSpeed = 1.5f;
 
 //Texture
 BITMAP BMP;				//bitmap structure
@@ -49,17 +49,15 @@ string strShield_3 = "Shield_3.bmp";
 //projection
 float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
-float Ry = 0.0, rSpeed = 0.5;
+float Ry = 0.0, rSpeed = 1.5;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string frontBack, string topBottom, string leftRight);
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawSphere(float radius);
 void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, float maxZ, float divideX, float divideZ);
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
@@ -798,14 +796,15 @@ void projection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	//rotate view
-	glRotatef(Ry, 0.0, 1.0, 0.0);
+	//Translate Viewport (left, right, up, down)
+	glTranslatef(Tx, Ty, 0.0f);
 
 	if (isOrtho) {
+		//rotate Viewport
+		glRotatef(Ry, 0.0, 1.0, 0.0);
 		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 	}
 	else {
-		glTranslatef(Tx, Ty, 0.0f);
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
 		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
 	}
@@ -1049,55 +1048,6 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
-}
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
-	//Back
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glEnd();
-
-	//Bottom
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glEnd();
-
-	//Left
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
-
-	//Top
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
-
-	//Right
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glEnd();
-
-	//Front
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
 }
 void drawSphere(float radius) {
 	GLUquadricObj* sphere = NULL;
