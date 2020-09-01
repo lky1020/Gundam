@@ -132,6 +132,7 @@ void drawBeamRifle();
 
 //texture
 GLuint loadTexture(LPCSTR filename);
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -737,7 +738,30 @@ void display()
 	//--------------------------------
 }
 //--------------------------------------------------------------------
+//texture
+GLuint loadTexture(LPCSTR filename) {
 
+	GLuint texture = 0;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+	HBITMAP hBMP = (HBITMAP)LoadImage(GetModuleHandle(NULL),
+		filename, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION |
+		LR_LOADFROMFILE);
+
+	GetObject(hBMP, sizeof(BMP), &BMP);
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, BMP.bmWidth, BMP.bmHeight, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, BMP.bmBits);
+
+
+	DeleteObject(hBMP);
+	return texture;
+}
 //projection
 void projection() {
 
@@ -1382,13 +1406,19 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 				*lowerArmSpeed = 0.0f;
 			}
 
+			texture = loadTexture("Grey_Dirty_Color.bmp");
 			drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+			glDeleteTextures(1, &texture);
+
 			armJoint();
 
 				glPushMatrix();
 					glTranslatef(0.53f, 0.0f, 0.0f);
 					glRotatef(*move_inFront_hand, 0.0f, 0.0f, 0.1f); //control palm
+					texture = loadTexture("Grey_Dirty_Color.bmp");
 					drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+					glDeleteTextures(1, &texture);
+
 						
 					glPushMatrix();
 						glRotatef(100.0f, 1.0f, 0.0f, 0.0f);
