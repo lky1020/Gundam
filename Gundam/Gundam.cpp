@@ -18,7 +18,7 @@ float thumbSpeed = 0.02f;
 //Rotation whole body
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
-float bodyRotateSpeed = 1.0f;
+float bodyRotateSpeed = 1.5f;
 
 //Texture
 BITMAP BMP;				//bitmap structure
@@ -49,6 +49,7 @@ string strShield_3 = "Shield_3.bmp";
 //projection
 float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
+float Ry = 0.0, rSpeed = 1.5;
 float Ry = 0.0, Rx = 0.0, rSpeed = 1.0f;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
@@ -56,10 +57,8 @@ int x = 0.0, y = 0.0, z = 0.0;
 
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string frontBack, string topBottom, string leftRight);
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawSphere(float radius);
 void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, float maxZ, float divideX, float divideZ);
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
@@ -569,38 +568,27 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//move view left
 		else if (wParam == '4' || wParam == VK_NUMPAD4) {
-			if (!isOrtho) {
-				if (Tx > -1.0) {
-					Tx -= TxSpeed;
-				}
-
+			if (Tx > -1.0) {
+				Tx -= TxSpeed;
 			}
+
 		}
 		//move view right
 		else if (wParam == '6' || wParam == VK_NUMPAD6) {
-			if (!isOrtho) {
-				if (Tx < 1.0) {
-					Tx += TxSpeed;
-				}
-
+			if (Tx < 1.0) {
+				Tx += TxSpeed;
 			}
 		}
 		//move view up
 		else if (wParam == '5' || wParam == VK_NUMPAD5) {
-			if (!isOrtho) {
-				if (Ty > -1.0) {
-					Ty -= TySpeed;
-				}
-
+			if (Ty > -1.0) {
+				Ty -= TySpeed;
 			}
 		}
 		//move view down
 		else if (wParam == '0' || wParam == VK_NUMPAD0) {
-			if (!isOrtho) {
-				if (Ty < 1.0) {
-					Ty += TySpeed;
-				}
-
+			if (Ty < 1.0) {
+				Ty += TySpeed;
 			}
 		}
 		//rotate view left
@@ -712,69 +700,70 @@ void display()
 		}
 		
 		glPushMatrix();
-		glScalef(20.0,20.0,20.0);
-		glPushMatrix();
-			//just for rotation checking purpose (need delete afterwards)
-			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
-			initialBodyRotate += bodyRotate;
+			//glScalef(20.0,20.0,20.0);
 
-			glTranslatef(0.0f, -0.1f, 0.0f);
-
-			//Weapon - bazooka
 			glPushMatrix();
-				glTranslatef(0.0f, 0.15f, -0.05f);
+				//just for rotation checking purpose (need delete afterwards)
+				glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
+				initialBodyRotate += bodyRotate;
+
+				glTranslatef(0.0f, -0.1f, 0.0f);
+
+				//Weapon - bazooka
+				glPushMatrix();
+					glTranslatef(0.0f, 0.15f, -0.05f);
+
+					glPushMatrix();
+						glTranslatef(0.0f, -0.1f, 0.0f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+						glTranslatef(0.0f, 0.1f, 0.0f);
+
+						drawBazooka();
+					glPopMatrix();
+				glPopMatrix();
+
+				//weapon - right light sword
+				glPushMatrix();
+					drawLightSword('L');
+				glPopMatrix();
+
+				//weapon - left light sword
+				glPushMatrix();
+					drawLightSword('R');
+				glPopMatrix();
+
+				//head
+				glPushMatrix();
+					glTranslatef(-0.08,0.7,0.0);
+					drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
+				glPopMatrix();
 
 				glPushMatrix();
-					glTranslatef(0.0f, -0.1f, 0.0f);
-					glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-					glTranslatef(0.0f, 0.1f, 0.0f);
-
-					drawBazooka();
-				glPopMatrix();
-			glPopMatrix();
-
-			//weapon - right light sword
-			glPushMatrix();
-				drawLightSword('L');
-			glPopMatrix();
-
-			//weapon - left light sword
-			glPushMatrix();
-				drawLightSword('R');
-			glPopMatrix();
-
-			//head
-			glPushMatrix();
-				glTranslatef(-0.08,0.7,0.0);
-				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
-			glPopMatrix();
-
-			glPushMatrix();
-				//translate whole body (combine with head)
-				glTranslatef(0.0, -0.3, 0.0);
+					//translate whole body (combine with head)
+					glTranslatef(0.0, -0.3, 0.0);
 	
-				//hand
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					drawRobotHand();
-				glPopMatrix();
+					//hand
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						drawRobotHand();
+					glPopMatrix();
 	
-				//leg
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					constructleg();
+					//leg
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						constructleg();
+					glPopMatrix();
+
+					//Body
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						drawBody();
+					glPopMatrix();
 				glPopMatrix();
 
-				//Body
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					drawBody();
-				glPopMatrix();
 			glPopMatrix();
 
 		glPopMatrix();
-
-	glPopMatrix();
 	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
@@ -812,17 +801,18 @@ void projection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	//rotate view
-	glRotatef(Ry, 0.0, 1.0, 0.0);
+	//Translate Viewport (left, right, up, down)
+	glTranslatef(Tx, Ty, 0.0f);
 
 	if (isOrtho) {
-		glRotatef(Rx, 1.0f, 0.0f, 0.0f);
-		glOrtho(-20.0f, 20.0f, -20.0f, 20.0f, -20.0f, 20.0f);
+		//rotate Viewport
+		glRotatef(Ry, 0.0, 1.0, 0.0);
+		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+		//glOrtho(-20.0, 20.0, -20.0, 20.0, -20.0, 20.0);
 	}
 	else {
-		glTranslatef(Tx, Ty, 0.0f);
-		gluPerspective(20.0f, 1.0f, -1.0f, 1.0f);
-		glFrustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 3.0f);
+		gluPerspective(20.0, 1.0, -1.0, 1.0);
+		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
 	}
 
 }
@@ -1064,55 +1054,6 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
-}
-void drawTrapezium(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
-	//Back
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glEnd();
-
-	//Bottom
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glEnd();
-
-	//Left
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
-
-	//Top
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
-
-	//Right
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glEnd();
-
-	//Front
-	glBegin(GL_LINE_LOOP);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
-	glEnd();
 }
 void drawSphere(float radius) {
 	GLUquadricObj* sphere = NULL;
