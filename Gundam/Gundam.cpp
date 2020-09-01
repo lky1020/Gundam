@@ -699,6 +699,8 @@ void display()
 		}
 		
 		glPushMatrix();
+		glScalef(20.0,20.0,20.0);
+		glPushMatrix();
 			//just for rotation checking purpose (need delete afterwards)
 			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
 			initialBodyRotate += bodyRotate;
@@ -760,6 +762,7 @@ void display()
 		glPopMatrix();
 
 	glPopMatrix();
+	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
 	//--------------------------------
@@ -802,7 +805,7 @@ void projection() {
 	if (isOrtho) {
 		//rotate Viewport
 		glRotatef(Ry, 0.0, 1.0, 0.0);
-		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+		glOrtho(-20.0, 20.0, -20.0, 20.0, -20.0, 20.0);
 	}
 	else {
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
