@@ -567,38 +567,27 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//move view left
 		else if (wParam == '4' || wParam == VK_NUMPAD4) {
-			if (!isOrtho) {
-				if (Tx > -1.0) {
-					Tx -= TxSpeed;
-				}
-
+			if (Tx > -1.0) {
+				Tx -= TxSpeed;
 			}
+
 		}
 		//move view right
 		else if (wParam == '6' || wParam == VK_NUMPAD6) {
-			if (!isOrtho) {
-				if (Tx < 1.0) {
-					Tx += TxSpeed;
-				}
-
+			if (Tx < 1.0) {
+				Tx += TxSpeed;
 			}
 		}
 		//move view up
 		else if (wParam == '5' || wParam == VK_NUMPAD5) {
-			if (!isOrtho) {
-				if (Ty > -1.0) {
-					Ty -= TySpeed;
-				}
-
+			if (Ty > -1.0) {
+				Ty -= TySpeed;
 			}
 		}
 		//move view down
 		else if (wParam == '0' || wParam == VK_NUMPAD0) {
-			if (!isOrtho) {
-				if (Ty < 1.0) {
-					Ty += TySpeed;
-				}
-
+			if (Ty < 1.0) {
+				Ty += TySpeed;
 			}
 		}
 		//rotate view left
@@ -699,69 +688,70 @@ void display()
 		}
 		
 		glPushMatrix();
-		glScalef(20.0,20.0,20.0);
-		glPushMatrix();
-			//just for rotation checking purpose (need delete afterwards)
-			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
-			initialBodyRotate += bodyRotate;
+			//glScalef(20.0,20.0,20.0);
 
-			glTranslatef(0.0f, -0.1f, 0.0f);
-
-			//Weapon - bazooka
 			glPushMatrix();
-				glTranslatef(0.0f, 0.15f, -0.05f);
+				//just for rotation checking purpose (need delete afterwards)
+				glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
+				initialBodyRotate += bodyRotate;
+
+				glTranslatef(0.0f, -0.1f, 0.0f);
+
+				//Weapon - bazooka
+				glPushMatrix();
+					glTranslatef(0.0f, 0.15f, -0.05f);
+
+					glPushMatrix();
+						glTranslatef(0.0f, -0.1f, 0.0f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+						glTranslatef(0.0f, 0.1f, 0.0f);
+
+						drawBazooka();
+					glPopMatrix();
+				glPopMatrix();
+
+				//weapon - right light sword
+				glPushMatrix();
+					drawLightSword('L');
+				glPopMatrix();
+
+				//weapon - left light sword
+				glPushMatrix();
+					drawLightSword('R');
+				glPopMatrix();
+
+				//head
+				glPushMatrix();
+					glTranslatef(-0.08,0.7,0.0);
+					drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
+				glPopMatrix();
 
 				glPushMatrix();
-					glTranslatef(0.0f, -0.1f, 0.0f);
-					glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-					glTranslatef(0.0f, 0.1f, 0.0f);
-
-					drawBazooka();
-				glPopMatrix();
-			glPopMatrix();
-
-			//weapon - right light sword
-			glPushMatrix();
-				drawLightSword('L');
-			glPopMatrix();
-
-			//weapon - left light sword
-			glPushMatrix();
-				drawLightSword('R');
-			glPopMatrix();
-
-			//head
-			glPushMatrix();
-				glTranslatef(-0.08,0.7,0.0);
-				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
-			glPopMatrix();
-
-			glPushMatrix();
-				//translate whole body (combine with head)
-				glTranslatef(0.0, -0.3, 0.0);
+					//translate whole body (combine with head)
+					glTranslatef(0.0, -0.3, 0.0);
 	
-				//hand
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					drawRobotHand();
-				glPopMatrix();
+					//hand
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						drawRobotHand();
+					glPopMatrix();
 	
-				//leg
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					constructleg();
+					//leg
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						constructleg();
+					glPopMatrix();
+
+					//Body
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						drawBody();
+					glPopMatrix();
 				glPopMatrix();
 
-				//Body
-				glPushMatrix();
-					glScalef(0.5f, 0.5f, 0.5f);
-					drawBody();
-				glPopMatrix();
 			glPopMatrix();
 
 		glPopMatrix();
-
-	glPopMatrix();
 	glPopMatrix();
 	//--------------------------------
 	//	End of OpenGL drawing
@@ -805,7 +795,8 @@ void projection() {
 	if (isOrtho) {
 		//rotate Viewport
 		glRotatef(Ry, 0.0, 1.0, 0.0);
-		glOrtho(-20.0, 20.0, -20.0, 20.0, -20.0, 20.0);
+		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+		//glOrtho(-20.0, 20.0, -20.0, 20.0, -20.0, 20.0);
 	}
 	else {
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
