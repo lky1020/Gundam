@@ -691,75 +691,75 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.6f, 0.857f, 0.918f, 0.0f);
 	glPushMatrix();
-	projection();
+		projection();
+	
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	
+		if (!isOrtho) {
+			glTranslatef(0.0, 0.0, tz);
+		}
+		
+		glPushMatrix();
+			//just for rotation checking purpose (need delete afterwards)
+			glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
+			initialBodyRotate += bodyRotate;
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+			glTranslatef(0.0f, -0.1f, 0.0f);
 
-	if (!isOrtho) {
-		glTranslatef(0.0, 0.0, tz);
-	}
+			//Weapon - bazooka
+			glPushMatrix();
+				glTranslatef(0.0f, 0.15f, -0.05f);
 
-	glPushMatrix();
-	//just for rotation checking purpose (need delete afterwards)
-	glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
-	initialBodyRotate += bodyRotate;
+				glPushMatrix();
+					glTranslatef(0.0f, -0.1f, 0.0f);
+					glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+					glTranslatef(0.0f, 0.1f, 0.0f);
 
-	glTranslatef(0.0f, -0.1f, 0.0f);
+					drawBazooka();
+				glPopMatrix();
+			glPopMatrix();
 
-	//Weapon - bazooka
-	glPushMatrix();
-	glTranslatef(0.0f, 0.15f, -0.05f);
+			//weapon - right light sword
+			glPushMatrix();
+				drawLightSword('L');
+			glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(0.0f, -0.1f, 0.0f);
-	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-	glTranslatef(0.0f, 0.1f, 0.0f);
+			//weapon - left light sword
+			glPushMatrix();
+				drawLightSword('R');
+			glPopMatrix();
 
-	drawBazooka();
-	glPopMatrix();
-	glPopMatrix();
+			//head
+			glPushMatrix();
+				glTranslatef(-0.08,0.7,0.0);
+				drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
+			glPopMatrix();
 
-	//weapon - right light sword
-	glPushMatrix();
-	drawLightSword('L');
-	glPopMatrix();
+			glPushMatrix();
+				//translate whole body (combine with head)
+				glTranslatef(0.0, -0.3, 0.0);
+	
+				//hand
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					drawRobotHand();
+				glPopMatrix();
+	
+				//leg
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					constructleg();
+				glPopMatrix();
 
-	//weapon - left light sword
-	glPushMatrix();
-	drawLightSword('R');
-	glPopMatrix();
+				//Body
+				glPushMatrix();
+					glScalef(0.5f, 0.5f, 0.5f);
+					drawBody();
+				glPopMatrix();
+			glPopMatrix();
 
-	//head
-	glPushMatrix();
-	glTranslatef(-0.08, 0.7, 0.0);
-	drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
-	glPopMatrix();
-
-	glPushMatrix();
-	//translate whole body (combine with head)
-	glTranslatef(0.0, -0.3, 0.0);
-
-	//hand
-	glPushMatrix();
-	glScalef(0.5f, 0.5f, 0.5f);
-	drawRobotHand();
-	glPopMatrix();
-
-	//leg
-	glPushMatrix();
-	glScalef(0.5f, 0.5f, 0.5f);
-	constructleg();
-	glPopMatrix();
-
-	//Body
-	glPushMatrix();
-	glScalef(0.5f, 0.5f, 0.5f);
-	drawBody();
-	glPopMatrix();
-	glPopMatrix();
-
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 	//--------------------------------
@@ -889,88 +889,88 @@ void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, f
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
 	//Back
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
 	glEnd();
 
 	//Bottom
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
 	glEnd();
 
 	//Left
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 
 	//Top
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 
 	//Right
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
 	glEnd();
 
 	//Front
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 }
 void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string frontBack, string topBottom, string leftRight) {
 	//Back
 	textures = loadTexture(frontBack.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -978,14 +978,14 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	//Bottom
 	textures = loadTexture(topBottom.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -993,14 +993,14 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	//Left
 	textures = loadTexture(leftRight.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(maxXBottom, maxYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -1008,14 +1008,14 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	//Top
 	textures = loadTexture(topBottom.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(maxXTop, maxYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -1023,14 +1023,14 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	//Right
 	textures = loadTexture(leftRight.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, minZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, minZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -1038,14 +1038,14 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 	//Front
 	textures = loadTexture(frontBack.c_str());
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minXTop, minYTop, maxZTop);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(minXBottom, minYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(maxXBottom, maxYBottom, maxZBottom);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxXTop, maxYTop, maxZTop);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
 	glEnd();
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
@@ -1114,54 +1114,54 @@ void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, flo
 
 	//face - back
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(minX, minZ);
-	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(maxX, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(maxX / divideX, maxZ / divideZ);
-	glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
+		glTexCoord2f(minX, minZ);
+		glVertex3f(minX, minY, minZ);
+		glTexCoord2f(maxX, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glTexCoord2f(maxX / divideX, maxZ / divideZ);
+		glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
 	glEnd();
 
 	//face - top
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(minX, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glTexCoord2f(minX, minZ);
-	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(maxX / divideX, maxZ / divideZ);
-	glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
+		glTexCoord2f(minX, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glTexCoord2f(minX, minZ);
+		glVertex3f(minX, minY, minZ);
+		glTexCoord2f(maxX / divideX, maxZ / divideZ);
+		glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
 	glEnd();
 
 	//face - bottom
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(maxX, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(maxX, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glTexCoord2f(maxX / divideX, maxZ / divideZ);
-	glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
+		glTexCoord2f(maxX, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glTexCoord2f(maxX, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glTexCoord2f(maxX / divideX, maxZ / divideZ);
+		glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
 	glEnd();
 
 	//face - front
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(minX, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glTexCoord2f(maxX, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glTexCoord2f(maxX / divideX, maxZ / divideZ);
-	glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
+		glTexCoord2f(minX, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glTexCoord2f(maxX, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glTexCoord2f(maxX / divideX, maxZ / divideZ);
+		glVertex3f(maxX / divideX, maxY, maxZ / divideZ);
 	glEnd();
 
 	//face - base
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, maxZ);
-	glVertex3f(minX, minY, maxZ);
-	glTexCoord2f(maxX, maxZ);
-	glVertex3f(maxX, minY, maxZ);
-	glTexCoord2f(maxX, minZ);
-	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(minX, minZ);
-	glVertex3f(minX, minY, minZ);
+		glTexCoord2f(minX, maxZ);
+		glVertex3f(minX, minY, maxZ);
+		glTexCoord2f(maxX, maxZ);
+		glVertex3f(maxX, minY, maxZ);
+		glTexCoord2f(maxX, minZ);
+		glVertex3f(maxX, minY, minZ);
+		glTexCoord2f(minX, minZ);
+		glVertex3f(minX, minY, minZ);
 	glEnd();
 
 }
@@ -1383,10 +1383,10 @@ void drawCircle(float xPoint, float yPoint, float radius) {
 }
 void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(x1, y1, z1);
-	glVertex3f(x2, y2, z2);
-	glVertex3f(x3, y3, z3);
-	glVertex3f(x4, y4, z4);
+		glVertex3f(x1, y1, z1);
+		glVertex3f(x2, y2, z2);
+		glVertex3f(x3, y3, z3);
+		glVertex3f(x4, y4, z4);
 	glEnd();
 }
 
@@ -1394,17 +1394,17 @@ void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float 
 void constructleg() {
 	glPushMatrix();
 
-	//draw left leg pivot
-	glPushMatrix();
-	drawLegPivot();
-	glPopMatrix();
+		//draw left leg pivot
+		glPushMatrix();
+			drawLegPivot();
+		glPopMatrix();
 
-	//draw right leg pivot
-	glPushMatrix();
-	glTranslatef(-0.3f, 0.0f, 0.2f);
-	glRotatef(180.0f, 0.0f, 0.5f, 0.0f);
-	drawLegPivot();
-	glPopMatrix();
+		//draw right leg pivot
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.0f, 0.2f);
+			glRotatef(180.0f, 0.0f, 0.5f, 0.0f);
+			drawLegPivot();
+		glPopMatrix();
 
 	//draw right leg
 	glPushMatrix();
@@ -1412,8 +1412,8 @@ void constructleg() {
 	drawLeg(&initialUpperRightLegSpeed, &upperRightLegSpeed, &initialLowerRightLegSpeed, &lowerRightLegSpeed, &upperRightLegMinAngle, &upperRightLegMaxAngle, &lowerRightLegMinAngle, &lowerRightLegMaxAngle);
 	glPopMatrix();
 
-	//draw Pelvic Girdle
-	drawPelvicGirdle();
+		//draw Pelvic Girdle
+		drawPelvicGirdle();
 
 	//draw left leg
 	glPushMatrix();
@@ -1424,43 +1424,43 @@ void constructleg() {
 	glPopMatrix();
 }
 void drawPelvicGirdle() {
-	glPushMatrix();
-	//draw "/"
-	glPushMatrix();
-	//rotate vertical
-	glRotatef(-90.0f, 0.0f, 0.5f, 0.0f);
+	glPushMatrix(); 
+		//draw "/"
+		glPushMatrix();
+			//rotate vertical
+			glRotatef(-90.0f, 0.0f, 0.5f, 0.0f);
 
 	//translate trapezium
 	glTranslatef(0.25f, 0.35f, 0.4f);
 
-	textures = loadTexture(strLightBlueColor.c_str());
-	drawTrapeziumTexture(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-
-	//draw "|"
-	glPushMatrix();
-	//draw front
-	glPushMatrix();
-	//rotate vertical
-	glRotatef(90.0f, 0.5f, 0.0f, 0.0f);
+			textures = loadTexture(strLightBlueColor.c_str());
+			drawTrapeziumTexture(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
+	
+		//draw "|"
+		glPushMatrix();
+			//draw front
+			glPushMatrix();
+				//rotate vertical
+				glRotatef(90.0f, 0.5f, 0.0f, 0.0f);
 
 	//translate trapezium
 	glTranslatef(0.0f, -0.075f, -0.65f);
 
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawTrapeziumTexture(-0.05f, -0.25f, -0.10f, -0.2f, 0.30f, 0.30f, 0.45f, 0.45f, -0.15f, 0.35f, -0.05f, 0.225f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+				textures = loadTexture(strRedDirtyColor.c_str());
+				drawTrapeziumTexture(-0.05f, -0.25f, -0.10f, -0.2f, 0.30f, 0.30f, 0.45f, 0.45f, -0.15f, 0.35f, -0.05f, 0.225f);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
 
-	glPopMatrix();
+			glPopMatrix();
 
-	//draw middle
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(-0.25f, -0.05f, 0.30f, 0.80f, -0.025f, 0.225f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw middle
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawRectangle(-0.25f, -0.05f, 0.30f, 0.80f, -0.025f, 0.225f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	//draw back
 	glPushMatrix();
@@ -1470,13 +1470,13 @@ void drawPelvicGirdle() {
 	//translate trapezium
 	glTranslatef(0.0f, -0.275f, 0.30f);
 
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawTrapeziumTexture(-0.05f, -0.25f, -0.10f, -0.20f, 0.30f, 0.30f, 0.45f, 0.45f, 0.0f, 0.5f, 0.125f, 0.4f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+				textures = loadTexture(strRedDirtyColor.c_str());
+				drawTrapeziumTexture(-0.05f, -0.25f, -0.10f, -0.20f, 0.30f, 0.30f, 0.45f, 0.45f, 0.0f, 0.5f, 0.125f, 0.4f);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
 
-	glPopMatrix();
-	glPopMatrix();
+			glPopMatrix();
+		glPopMatrix();
 
 	//draw "\"
 	glPushMatrix();
@@ -1486,21 +1486,21 @@ void drawPelvicGirdle() {
 	//translate trapezium
 	glTranslatef(0.05f, 0.35f, 0.1f);
 
-	textures = loadTexture(strLightBlueColor.c_str());
-	drawTrapeziumTexture(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			textures = loadTexture(strLightBlueColor.c_str());
+			drawTrapeziumTexture(-0.05f, -0.25f, -0.05f, -0.25f, 0.275f, 0.275f, 0.45f, 0.45f, -0.15f, 0.25f, -0.15f, 0.2f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 }
 void drawLeg(float* initialUpperSpeed, float* upperSpeed, float* initialLowerSpeed, float* lowerSpeed, float* upperMinAngle, float* upperMaxAngle, float* lowerMinAngle, float* lowerMaxAngle) {
 	glPushMatrix();
-	//draw Upper leg (leg at the bottom, to prevent duplicate with knee textures)
-	glTranslatef(-0.5f, 0.45f, 0.1f);
-	glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
-	glTranslatef(0.5f, -0.45f, -0.1f);
+		//draw Upper leg (leg at the bottom, to prevent duplicate with knee textures)
+		glTranslatef(-0.5f, 0.45f, 0.1f);
+			glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
+		glTranslatef(0.5f, -0.45f, -0.1f);
 
 	*initialUpperSpeed += *upperSpeed;
 
@@ -1514,52 +1514,52 @@ void drawLeg(float* initialUpperSpeed, float* upperSpeed, float* initialLowerSpe
 		*upperSpeed = 0.0f;
 	}
 
-	glPushMatrix();
-	//rotate knee to lower leg
-	glTranslatef(0.155f, -0.10f, 0.1f);
-	glRotatef(-*initialLowerSpeed, -0.5f, 0.0f, 0.0f);
-	glTranslatef(-0.155f, 0.10f, -0.1f);
+		glPushMatrix();
+			//rotate knee to lower leg
+			glTranslatef(0.155f, -0.10f, 0.1f);
+				glRotatef(-*initialLowerSpeed, -0.5f, 0.0f, 0.0f);
+			glTranslatef(-0.155f, 0.10f, -0.1f);
 
-	*initialLowerSpeed += *lowerSpeed;
+			*initialLowerSpeed += *lowerSpeed;
 
-	if (*initialLowerSpeed >= *lowerMaxAngle) {
-		*initialLowerSpeed = *lowerMaxAngle;
-		*lowerSpeed = 0.0f;
-	}
+			if (*initialLowerSpeed >= *lowerMaxAngle) {
+				*initialLowerSpeed = *lowerMaxAngle;
+				*lowerSpeed = 0.0f;
+			}
 
-	if (*initialLowerSpeed <= *lowerMinAngle) {
-		*initialLowerSpeed = *lowerMinAngle;
-		*lowerSpeed = 0.0f;
-	}
+			if (*initialLowerSpeed <= *lowerMinAngle) {
+				*initialLowerSpeed = *lowerMinAngle;
+				*lowerSpeed = 0.0f;
+			}
 
-	glPushMatrix();
-	glTranslatef(0.1f, -0.10f, 0.1f);
-	glScalef(0.65f, 0.65f, 0.65f);
+			glPushMatrix();
+				glTranslatef(0.1f, -0.10f, 0.1f);
+				glScalef(0.65f, 0.65f, 0.65f);
 
-	textures = loadTexture(strKneeTexture.c_str());
-	drawLegKnee(0.15f, 20, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+				textures = loadTexture(strKneeTexture.c_str());
+				drawLegKnee(0.15f, 20, 10);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
 
-	//draw lower leg (will rotate with knee)
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw lower leg (will rotate with knee)
+			textures = loadTexture(strGreyDirtyColor.c_str());
+			drawRectangle(0.0f, 0.2f, -0.2f, -0.75f, 0.0f, 0.2f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	//draw leg sole
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawTrapeziumTexture(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.875f, -0.75f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			//draw leg sole
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.05f, 0.25f, -0.025f, 0.225f, -0.875f, -0.875f, -0.75f, -0.75f, -0.1f, 0.4f, -0.05f, 0.3f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Upper Leg (prevent duplicate textures)
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(0.0f, 0.2f, 0.55f, 0.0f, 0.0f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//Upper Leg (prevent duplicate textures)
+		textures = loadTexture(strGreyDirtyColor.c_str());
+		drawRectangle(0.0f, 0.2f, 0.55f, 0.0f, 0.0f, 0.2f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -1582,10 +1582,10 @@ void drawLegPivot() {
 	glEnd();
 	glLineWidth(1);
 
-	glPushMatrix();
-	glTranslatef(0.10f, 0.45f, 0.1f);
-	drawLegKnee(0.05f, 10, 5); //draw joint
-	glPopMatrix();
+		glPushMatrix();
+			glTranslatef(0.10f, 0.45f, 0.1f);
+			drawLegKnee(0.05f, 10, 5); //draw joint
+		glPopMatrix();
 	glPopMatrix();
 }
 
@@ -1610,10 +1610,10 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 		*upperArmSpeed = 0.0f;
 	}
 
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		textures = loadTexture(strGreyDirtyColor.c_str());
+		drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	armJoint();
 
@@ -1634,11 +1634,11 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 		*lowerArmSpeed = 0.0f;
 	}
 
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	armJoint();
+			textures = loadTexture(strGreyDirtyColor.c_str());
+			drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+			armJoint();
 
 	glPushMatrix();
 	glTranslatef(0.53f, 0.0f, 0.0f);
@@ -1697,35 +1697,35 @@ void armJoint() {
 	//upper arm joint
 
 	glPushMatrix();
-	glTranslatef(0.5f, 0.0f, 0.0f);
-	textures = loadTexture(strRobotArmJoint.c_str());
-	drawSphere(0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(0.5f, 0.0f, 0.0f);
+		textures = loadTexture(strRobotArmJoint.c_str());
+		drawSphere(0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.5f, 0.2f, 0.0f);
-	textures = loadTexture(strRobotArmJoint.c_str());
-	drawSphere(0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(0.5f, 0.2f, 0.0f);
+		textures = loadTexture(strRobotArmJoint.c_str());
+		drawSphere(0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.5f, 0.0f, 0.2f);
-	textures = loadTexture(strRobotArmJoint.c_str());
-	drawSphere(0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(0.5f, 0.0f, 0.2f);
+		textures = loadTexture(strRobotArmJoint.c_str());
+		drawSphere(0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.5f, 0.2f, 0.2f);
-	textures = loadTexture(strRobotArmJoint.c_str());
-	drawSphere(0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(0.5f, 0.2f, 0.2f);
+		textures = loadTexture(strRobotArmJoint.c_str());
+		drawSphere(0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 }
@@ -1733,47 +1733,47 @@ void shoulder() {
 
 	//shoulder
 	glPushMatrix();
-	glTranslatef(-0.5f, -0.05f, 0.0f);
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(-0.5f, -0.05f, 0.0f);
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-0.5f, 0.15f, 0.0f);
-	glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(-0.5f, 0.15f, 0.0f);
+		glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-0.8f, 0.2f, 0.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(-0.8f, 0.2f, 0.0f);
+		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-0.7f, 0.15f, 0.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(-0.7f, 0.15f, 0.0f);
+		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-0.6f, 0.15f, 0.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	textures = loadTexture(strRedDirtyColor.c_str());
-	drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(-0.6f, 0.15f, 0.0f);
+		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawRectangle(0.0f, 0.05f, 0.0f, 0.25f, 0.0f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 }
@@ -1841,11 +1841,11 @@ void drawHand(char direction) {
 	glDisable(GL_TEXTURE_2D);
 
 	glPushMatrix();
-	//Thumb
-	textures = loadTexture(strBlacKColor.c_str());
-	drawPyramid(1.5f, 1.7f, 0.55f, 0.65f, 0.2f, 0.3f, 1.08f, 2.0f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//Thumb
+		textures = loadTexture(strBlacKColor.c_str());
+		drawPyramid(1.5f, 1.7f, 0.55f, 0.65f, 0.2f, 0.3f, 1.08f, 2.0f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPushMatrix();
 	//initial position of the thumb finger(inner, outer) - no animation
@@ -1877,115 +1877,115 @@ void drawHand(char direction) {
 		initialThumbMove = 0.0f;
 		thumbMove = 0.0f;
 
-	}
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(1.56f, 1.76f, 0.50f, 0.65f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			}
+			textures = loadTexture(strBlacKColor.c_str());
+			drawRectangle(1.56f, 1.76f, 0.50f, 0.65f, 0.2f, 0.3f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	//outer
 	adjustFingerMove(1.76f, 0.65f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
 
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(1.76f, 1.96f, 0.50f, 0.65f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			textures = loadTexture(strBlacKColor.c_str());
+			drawRectangle(1.76f, 1.96f, 0.50f, 0.65f, 0.2f, 0.3f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 	glPopMatrix();
 
 	//Index Finger
 	glPushMatrix();
-	//inner
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.00f, 2.10f, 0.40f, 0.50f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//inner
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.00f, 2.10f, 0.40f, 0.50f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//middle
-	adjustFingerMove(2.10f, 0.50f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.10f, 2.25f, 0.40f, 0.50f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//middle
+		adjustFingerMove(2.10f, 0.50f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.10f, 2.25f, 0.40f, 0.50f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//outer
-	adjustFingerMove(2.25f, 0.50f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.25f, 2.45f, 0.40f, 0.50f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//outer
+		adjustFingerMove(2.25f, 0.50f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.25f, 2.45f, 0.40f, 0.50f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 
 	//Middle Finger
 	glPushMatrix();
-	//inner
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.00f, 2.20f, 0.25f, 0.35f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//inner
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.00f, 2.20f, 0.25f, 0.35f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//middle
-	adjustFingerMove(2.20f, 0.35f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.20f, 2.35f, 0.25f, 0.35f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//middle
+		adjustFingerMove(2.20f, 0.35f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.20f, 2.35f, 0.25f, 0.35f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//outer
-	adjustFingerMove(2.35f, 0.35f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.35f, 2.55f, 0.25f, 0.35f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//outer
+		adjustFingerMove(2.35f, 0.35f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.35f, 2.55f, 0.25f, 0.35f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	//Ring Finger
 	glPushMatrix();
-	//inner
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.00f, 2.10f, 0.10f, 0.20f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//inner
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.00f, 2.10f, 0.10f, 0.20f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//middle
-	adjustFingerMove(2.10f, 0.20f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.10f, 2.25f, 0.10f, 0.20f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//middle
+		adjustFingerMove(2.10f, 0.20f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.10f, 2.25f, 0.10f, 0.20f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//outer
-	adjustFingerMove(2.25f, 0.20f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.25f, 2.45f, 0.10f, 0.20f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//outer
+		adjustFingerMove(2.25f, 0.20f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.25f, 2.45f, 0.10f, 0.20f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 
 	//Little Finger
 	glPushMatrix();
-	//inner
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.00f, 2.10f, -0.05f, 0.05f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//inner
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.00f, 2.10f, -0.05f, 0.05f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//middle
-	adjustFingerMove(2.10f, 0.05f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.10f, 2.15f, -0.05f, 0.05f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//middle
+		adjustFingerMove(2.10f, 0.05f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.10f, 2.15f, -0.05f, 0.05f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//outer
-	adjustFingerMove(2.15f, 0.05f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(2.15f, 2.25f, -0.05f, 0.05f, 0.2f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//outer
+		adjustFingerMove(2.15f, 0.05f, handDirectionZ, 0.0f, 0.5f, 0.0f, 90.0f, 0.0f, direction);
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(2.15f, 2.25f, -0.05f, 0.05f, 0.2f, 0.3f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 }
@@ -2019,111 +2019,111 @@ void adjustFingerMove(float translateX, float translateY, float translateZ, floa
 void drawBody() {
 	glPushMatrix();
 
-	if (initialBodyRotate > 90.0f || initialBodyRotate < -90.0f) {
-		drawOverallBody();
+		if (initialBodyRotate > 90.0f || initialBodyRotate < -90.0f) {
+			drawOverallBody();
+		
+			//Back Pack
+			drawBackPack();
+		}
+		else {
+			//Back Pack
+			drawBackPack();
 
-		//Back Pack
-		drawBackPack();
-	}
-	else {
-		//Back Pack
-		drawBackPack();
-
-		drawOverallBody();
-	}
+			drawOverallBody();
+		}
 
 	glPopMatrix();
 }
 void drawOverallBody() {
 	glPushMatrix();
-	//base
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawTrapeziumTexture(-0.45f, 0.15f, -0.435f, 0.135f, 0.8f, 0.8f, 1.0f, 1.0f, 0.0f, 0.2f, 0.025f, 0.175f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-
-	//middle
-	drawTrapeziumTexture_3Var(-0.475f, 0.175f, -0.5f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strGreyDirtyColor);
-
-	if (initialBodyRotate < 0.0f) {
-		//connect right hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+		//base
+		textures = loadTexture(strGreyDirtyColor.c_str());
+		drawTrapeziumTexture(-0.45f, 0.15f, -0.435f, 0.135f, 0.8f, 0.8f, 1.0f, 1.0f, 0.0f, 0.2f, 0.025f, 0.175f);
 		glDeleteTextures(1, &textures);
 		glDisable(GL_TEXTURE_2D);
 
-		//Top
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+		//middle
+		drawTrapeziumTexture_3Var(-0.475f, 0.175f, -0.5f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strGreyDirtyColor);
 
-		//connect left hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
-	}
-	else if (initialBodyRotate > 0.0f) {
-		//connect left hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+		if (initialBodyRotate < 0.0f) {
+			//connect right hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-		//Top
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+			//Top
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-		//connect right hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
-	}
-	else {
-		//connect right hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+			//connect left hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		}
+		else if (initialBodyRotate > 0.0f) {
+			//connect left hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-		//Top
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+			//Top
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-		//connect left hand
-		textures = loadTexture(strRedDirtyColor.c_str());
-		drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
-	}
+			//connect right hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		}
+		else {
+			//connect right hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+
+			//Top
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+
+			//connect left hand
+			textures = loadTexture(strRedDirtyColor.c_str());
+			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		}
 
 	glPopMatrix();
 }
 void drawBackPack() {
 	glPushMatrix();
 
-	//Backpack
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, -0.2f);
+		//Backpack
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.2f);
 
 	glPushMatrix();
 	glTranslatef(-0.15f, 1.4875f, -0.085f);
 	glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
 	glTranslatef(0.15f, -1.4875f, 0.085f);
 
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawTrapeziumTexture(-0.4f, 0.1f, -0.4f, 0.1f, 1.2f, 1.2f, 1.4f, 1.4f, 0.2f, -0.485f, 0.2f, -0.185f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();
-	glPopMatrix();
+				textures = loadTexture(strDarkGreyDirtyColor.c_str());
+				drawTrapeziumTexture(-0.4f, 0.1f, -0.4f, 0.1f, 1.2f, 1.2f, 1.4f, 1.4f, 0.2f, -0.485f, 0.2f, -0.185f);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+				
+			glPopMatrix();
+		glPopMatrix();
 
 	//Rocket
 	glPushMatrix();
@@ -2196,12 +2196,12 @@ void drawBackHead() {
 	glPushMatrix();
 	glPushMatrix();
 
-	glTranslatef(-0.05f, -0.06f, -0.05f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_9.c_str());
-	drawRectangle(0.0f, 0.5f, 0.0f, 0.6f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			glTranslatef(-0.05f, -0.06f, -0.05f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_9.c_str());
+				drawRectangle(0.0f, 0.5f, 0.0f, 0.6f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 
@@ -2210,26 +2210,26 @@ void drawBackHead() {
 	glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 	glTranslatef(0.05f, 0.06f, 0.03f);
 
-	glTranslatef(-0.1f, -0.06f, -0.05f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_9.c_str());
-	drawRectangle(0.0f, 0.25f, 0.0f, 0.6f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.1f, -0.06f, -0.05f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_9.c_str());
+				drawRectangle(0.0f, 0.25f, 0.0f, 0.6f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(0.05f, -0.06f, -0.03f);
 	glRotatef(45.0f, 0.0f, -1.0f, 0.0f);
 	glTranslatef(-0.05f, 0.06f, 0.03f);
 
-	glTranslatef(0.05f, -0.06f, -0.05f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_9.c_str());
-	drawRectangle(0.0f, 0.25f, 0.0f, 0.6f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(0.05f, -0.06f, -0.05f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_9.c_str());
+				drawRectangle(0.0f, 0.25f, 0.0f, 0.6f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
 	glPushMatrix();
 
@@ -2237,27 +2237,27 @@ void drawBackHead() {
 	glRotatef(50.0f, 1.0f, 0.0f, 0.0f);
 	glTranslatef(0.05f, -0.06f, 0.03f);
 
-	glTranslatef(-0.05f, 0.05f, -0.05f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_9.c_str());
-	drawRectangle(0.0f, 0.5f, 0.0f, 0.3f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.05f, 0.05f, -0.05f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_9.c_str());
+				drawRectangle(0.0f, 0.5f, 0.0f, 0.3f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
+		glPushMatrix();
 
-	glTranslatef(-0.05f, -0.06f, -0.05f);
-	glRotatef(45.0f, -1.0f, 0.0f, 0.0f);
-	glTranslatef(0.05f, 0.06f, 0.05f);
+			glTranslatef(-0.05f, -0.06f, -0.05f);
+			glRotatef(45.0f, -1.0f, 0.0f, 0.0f);
+			glTranslatef(0.05f, 0.06f, 0.05f);
 
-	glTranslatef(-0.05f, -0.12f, -0.05f);
-	textures = loadTexture(strHead_9.c_str());
-	glScalef(0.2f, 0.2f, 0.2f);
-	drawRectangle(0.0f, 0.5f, 0.0f, 0.3f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.05f, -0.12f, -0.05f);
+			textures = loadTexture(strHead_9.c_str());
+			glScalef(0.2f, 0.2f, 0.2f);
+			drawRectangle(0.0f, 0.5f, 0.0f, 0.3f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 	glPopMatrix();
 
 }
@@ -2265,172 +2265,172 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 
 	glPushMatrix();
 
-	glRotatef(*rotateH, *rotateHX, *rotateHY, *rotateHZ);
+		glRotatef(*rotateH, *rotateHX, *rotateHY, *rotateHZ);
 
-	*rotateH += *rotateHSpeed;
+		*rotateH += *rotateHSpeed;
 
-	if (*rotateH >= *rotateHMaxAngle) {
-		*rotateH = *rotateHMaxAngle;
-		*rotateHSpeed = 0.0f;
-	}
+		if (*rotateH >= *rotateHMaxAngle) {
+			*rotateH = *rotateHMaxAngle;
+			*rotateHSpeed = 0.0f;
+		}
 
-	if (*rotateH <= *rotateHMinAngle) {
-		*rotateH = *rotateHMinAngle;
-		*rotateHSpeed = 0.0f;
-	}
+		if (*rotateH <= *rotateHMinAngle) {
+			*rotateH = *rotateHMinAngle;
+			*rotateHSpeed = 0.0f;
+		}
 
-	glPushMatrix();
-	drawBackHead();
-	glPopMatrix();
+		glPushMatrix();
+			drawBackHead();
+		glPopMatrix();
 
-	glPushMatrix();
-	textures = loadTexture(strHead_3.c_str());
-	octagonalPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.1f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			textures = loadTexture(strHead_3.c_str());
+				octagonalPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.1f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(0.0f, 0.0f, 0.1f);
-	textures = loadTexture(strHead_7.c_str());
-	drawCylinder(0.005f, 0.005f, 0.1f, 10.0f, 10.0f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+			glTranslatef(0.0f, 0.0f, 0.1f);
+			textures = loadTexture(strHead_7.c_str());
+				drawCylinder(0.005f, 0.005f, 0.1f, 10.0f, 10.0f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(-0.018f, 0.1f, 0.0f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_6.c_str());
-	drawRectangle(0.0f, 0.2f, 0.0f, 0.2f, 0.0f, 0.5f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			glTranslatef(-0.018f, 0.1f, 0.0f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_6.c_str());
+				drawRectangle(0.0f, 0.2f, 0.0f, 0.2f, 0.0f, 0.5f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-	glTranslatef(-0.15f, -0.05f, -0.1f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_2.c_str());
-	drawRectangle(0.2f, 0.5f, 0.2f, 0.5f, 0.0f, 1.0f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-0.15f, -0.05f, -0.1f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_2.c_str());
+				drawRectangle(0.2f, 0.5f, 0.2f, 0.5f, 0.0f, 1.0f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(-0.07f, -0.15f, 0.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(0.07f, 0.15f, 0.0f);
+		glPushMatrix();
+			glTranslatef(-0.07f, -0.15f, 0.0f);
+			glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+			glTranslatef(0.07f, 0.15f, 0.0f);
 
-	glTranslatef(0.05f, 0.1f, 0.0f);
-	glRotatef(225.0f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.05f, -0.1f, 0.0f);
+			glTranslatef(0.05f, 0.1f, 0.0f);
+			glRotatef(225.0f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(-0.05f, -0.1f, 0.0f);
 
-	glTranslatef(0.12f, 0.1f, -0.13f);
-	textures = loadTexture(strHead_6.c_str());
-	triangularPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.07f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(0.12f, 0.1f, -0.13f);
+			textures = loadTexture(strHead_6.c_str());
+				triangularPrism(0.05f, 0.1f, 0.05f, 0.1f, 0.0f, 0.07f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(-0.12f, -0.02f, 0.0f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_4.c_str());
-	drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			glTranslatef(-0.12f, -0.02f, 0.0f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_4.c_str());
+				drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(0.05f, -0.02f, 0.0f);
-	glScalef(0.2f, 0.2f, 0.2f);
-	textures = loadTexture(strHead_4.c_str());
-	drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		glPushMatrix();
+			glTranslatef(0.05f, -0.02f, 0.0f);
+			glScalef(0.2f, 0.2f, 0.2f);
+			textures = loadTexture(strHead_4.c_str());
+				drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//inner left
-	glPushMatrix();
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+		//inner left
+		glPushMatrix();
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(0.0f, -0.1f, 0.05f);
+			glTranslatef(0.0f, -0.1f, 0.05f);
 
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(0.0f, -0.15f, 0.0f);
-	textures = loadTexture(strHead_1.c_str());
-	triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.125f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(0.0f, -0.15f, 0.0f);
+			textures = loadTexture(strHead_1.c_str());
+				triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.125f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//inner right
-	glPushMatrix();
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+		//inner right
+		glPushMatrix();
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(0.0f, -0.1f, 0.05f);
+			glTranslatef(0.0f, -0.1f, 0.05f);
 
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(-0.06f, -0.08f, 0.0f);
-	textures = loadTexture(strHead_1.c_str());
-	triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.125f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.06f, -0.08f, 0.0f);
+			textures = loadTexture(strHead_1.c_str());
+				triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.125f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//outer right
-	glPushMatrix();
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+		//outer right
+		glPushMatrix();
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(0.05f, 0.1f, 0.0f);
-	glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.05f, -0.1f, 0.0f);
+			glTranslatef(0.05f, 0.1f, 0.0f);
+			glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(-0.05f, -0.1f, 0.0f);
 
-	glTranslatef(0.05f, 0.1f, 0.0f);
-	glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(-0.05f, -0.1f, 0.0f);
+			glTranslatef(0.05f, 0.1f, 0.0f);
+			glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
+			glTranslatef(-0.05f, -0.1f, 0.0f);
 
-	glTranslatef(-0.18f, 0.01f, 0.0f);
-	textures = loadTexture(strHead_1.c_str());
-	triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.18f, 0.01f, 0.0f);
+			textures = loadTexture(strHead_1.c_str());
+				triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.3f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//outer left
-	glPushMatrix();
-	glTranslatef(0.05f, 0.05f, 0.0f);
-	glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(-0.05f, -0.05f, 0.0f);
+		//outer left
+		glPushMatrix();
+			glTranslatef(0.05f, 0.05f, 0.0f);
+			glRotatef(240.0f, 1.0f, 1.0f, 1.0f);
+			glTranslatef(-0.05f, -0.05f, 0.0f);
 
-	glTranslatef(0.05f, 0.1f, 0.0f);
-	glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.05f, -0.1f, 0.0f);
+			glTranslatef(0.05f, 0.1f, 0.0f);
+			glRotatef(129.8f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(-0.05f, -0.1f, 0.0f);
 
-	glTranslatef(0.05f, 0.1f, 0.0f);
-	glRotatef(60, 0.0f, 1.0f, 0.0f);
-	glTranslatef(-0.05f, -0.1f, 0.0f);
+			glTranslatef(0.05f, 0.1f, 0.0f);
+			glRotatef(60, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-0.05f, -0.1f, 0.0f);
 
-	glTranslatef(-0.1f, 0.0f, -0.1f);
-	textures = loadTexture(strHead_1.c_str());
-	triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.3f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			glTranslatef(-0.1f, 0.0f, -0.1f);
+			textures = loadTexture(strHead_1.c_str());
+				triangularPrism(0.05f, 0.08f, 0.05f, 0.08f, 0.0f, 0.3f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
 	glPopMatrix();
 }
@@ -2888,58 +2888,58 @@ void logoSideBRight(float minZ, float maxZ) {
 void DrawHandle() {
 
 	glPushMatrix();
-	textures = loadTexture(strShield_3.c_str());
-	drawRectangle(0.0f, 0.3f, 0.0f, 0.05f, 0.0f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		textures = loadTexture(strShield_3.c_str());
+		drawRectangle(0.0f, 0.3f, 0.0f, 0.05f, 0.0f, 0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(60.0f, 0.0f, 0.0f, -1.0f);
-	glTranslatef(-0.2f, 0.0f, 0.0f);
-	textures = loadTexture(strShield_3.c_str());
-	drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glRotatef(60.0f, 0.0f, 0.0f, -1.0f);
+		glTranslatef(-0.2f, 0.0f, 0.0f);
+		textures = loadTexture(strShield_3.c_str());
+		drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.3f, 0.0f, 0.0f);
-	glRotatef(60.0f, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-0.3f, -0.0f, -0.0f);
-	glTranslatef(0.3f, 0.0f, 0.0f);
-	textures = loadTexture(strShield_3.c_str());
-	drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glTranslatef(0.3f, 0.0f, 0.0f);
+		glRotatef(60.0f, 0.0f, 0.0f, 1.0f);
+		glTranslatef(-0.3f, -0.0f, -0.0f);
+		glTranslatef(0.3f, 0.0f, 0.0f);
+		textures = loadTexture(strShield_3.c_str());
+		drawRectangle(0.0f, 0.2f, 0.0f, 0.05f, 0.0f, 0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
 }
 void DrawShield() {
 
 	glPushMatrix();
-	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(0.15f, 0.0f, 0.2f);
-	glScalef(2.0f, 2.0f, 2.0f);
-	textures = loadTexture(strShield_2.c_str());
-	shieldPentagon(0.0f, 0.04f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+		glTranslatef(0.15f, 0.0f, 0.2f);
+		glScalef(2.0f, 2.0f, 2.0f);
+		textures = loadTexture(strShield_2.c_str());
+		shieldPentagon(0.0f, 0.04f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	glPushMatrix();
-	glTranslatef(0.0, 0.0, 0.04);
-	textures = loadTexture(strShield_1.c_str());
-	shieldLogo(0.0f, 0.025f, 0.125f, 0.15f, 0.0f, 0.01f);
-	shieldLogoHorizontal(0.075f, 0.1f, 0.0f, 0.025f, 0.0f, 0.01f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		glPushMatrix();
+			glTranslatef(0.0, 0.0, 0.04);
+			textures = loadTexture(strShield_1.c_str());
+			shieldLogo(0.0f, 0.025f, 0.125f, 0.15f, 0.0f, 0.01f);
+			shieldLogoHorizontal(0.075f, 0.1f, 0.0f, 0.025f, 0.0f, 0.01f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	logoSideUp(0.0f, 0.01f);
-	logoSideLeft(0.0f, 0.01f);
-	logoSideRight(0.0f, 0.01f);
-	logoSideBLeft(0.0f, 0.01f);
-	logoSideBRight(0.0f, 0.01f);
-	glPopMatrix();
+			logoSideUp(0.0f, 0.01f);
+			logoSideLeft(0.0f, 0.01f);
+			logoSideRight(0.0f, 0.01f);
+			logoSideBLeft(0.0f, 0.01f);
+			logoSideBRight(0.0f, 0.01f);
+		glPopMatrix();
 	glPopMatrix();
 }
 void shieldPentagon(float minZ, float maxZ) {
@@ -3045,39 +3045,39 @@ void controlShield() {
 void drawBazooka() {
 	glPushMatrix();
 
-	//Bazooka Body
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, -0.6f);
-	textures = loadTexture(strBlacKColor.c_str());
-	drawCylinder(0.04f, 0.04f, 1.0f, 20, 20);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//Bazooka Body
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			textures = loadTexture(strBlacKColor.c_str());
+			drawCylinder(0.04f, 0.04f, 1.0f, 20, 20);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Muzzle
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, 0.4f);
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawCylinder(0.04f, 0.05f, 0.08f, 15, 15);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//Muzzle
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, 0.4f);
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawCylinder(0.04f, 0.05f, 0.08f, 15, 15);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Back Seat
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, -0.6f);
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawCoverCylinder(0.05f, 0.05f, 0.1f, 10, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//Back Seat
+		glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.6f);
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawCoverCylinder(0.05f, 0.05f, 0.1f, 10, 10);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Clip
-	glPushMatrix();
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawRectangle(-0.025f, 0.025f, -0.04f, -0.15f, -0.35f, -0.45f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//Clip
+		glPushMatrix();
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawRectangle(-0.025f, 0.025f, -0.04f, -0.15f, -0.35f, -0.45f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	//Design
 	drawSquareLineLoop(-0.0255f, -0.06f, -0.451f, -0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.451f);
@@ -3089,38 +3089,38 @@ void drawBazooka() {
 	//Gusset
 	glPushMatrix();
 
-	//pivot
-	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, 0.04f);
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawCylinder(0.045f, 0.045f, 0.15f, 10, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			//pivot
+			glPushMatrix();
+				glTranslatef(0.0f, 0.0f, 0.04f);
+				textures = loadTexture(strDarkGreyDirtyColor.c_str());
+				drawCylinder(0.045f, 0.045f, 0.15f, 10, 10);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
 
-	//draw '-' up
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(-0.0255f, 0.0255f, -0.045f, -0.08f, 0.205f, 0.025f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw '-' up
+			textures = loadTexture(strGreyDirtyColor.c_str());
+			drawRectangle(-0.0255f, 0.0255f, -0.045f, -0.08f, 0.205f, 0.025f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	//draw '|'
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawRectangle(-0.0255f, 0.0255f, -0.081f, -0.2f, 0.075f, 0.035f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw '|'
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawRectangle(-0.0255f, 0.0255f, -0.081f, -0.2f, 0.075f, 0.035f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	//draw '-' down
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawTrapeziumTexture(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.191f, -0.191f, -0.171f, -0.171f, 0.075f, 0.2f, 0.075f, 0.175f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw '-' down
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawTrapeziumTexture(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.191f, -0.191f, -0.171f, -0.171f, 0.075f, 0.2f, 0.075f, 0.175f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	//draw '/' down
-	textures = loadTexture(strBlacKColor.c_str());
-	drawTrapeziumTexture(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.21f, -0.21f, -0.171f, -0.171f, 0.225f, 0.275f, 0.175f, 0.225f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			//draw '/' down
+			textures = loadTexture(strBlacKColor.c_str());
+			drawTrapeziumTexture(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.21f, -0.21f, -0.171f, -0.171f, 0.225f, 0.275f, 0.175f, 0.225f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 
@@ -3132,29 +3132,29 @@ void drawLightSword(char position) {
 
 		glTranslatef(0.095f, -0.04f, 0.08f);
 
-		glPushMatrix();
-		glTranslatef(-0.3f, 0.5f, -0.1f);
-		glRotatef(90.0f, 0.0f, 0.0f, 0.1f);
-		glTranslatef(0.3f, -0.5f, 0.1f);
+			glPushMatrix();
+				glTranslatef(-0.3f, 0.5f, -0.1f);
+				glRotatef(90.0f, 0.0f, 0.0f, 0.1f);
+				glTranslatef(0.3f, -0.5f, 0.1f);
 
-		glPushMatrix();
-		glPushMatrix();
-		glTranslatef(-0.2f, 0.5225f, -0.125f);
-		glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+				glPushMatrix();
+					glPushMatrix();
+						glTranslatef(-0.2f, 0.5225f, -0.125f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
-		textures = loadTexture(strGreyDirtyColor.c_str());
-		drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+						textures = loadTexture(strGreyDirtyColor.c_str());
+						drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+						glDeleteTextures(1, &textures);
+						glDisable(GL_TEXTURE_2D);
 
-		glPopMatrix();
+					glPopMatrix();
 
-		textures = loadTexture(strDarkGreyDirtyColor.c_str());
-		drawTrapeziumTexture(-0.2f, -0.3f, -0.2f, -0.26f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+					textures = loadTexture(strDarkGreyDirtyColor.c_str());
+					drawTrapeziumTexture(-0.2f, -0.3f, -0.2f, -0.26f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+					glDeleteTextures(1, &textures);
+					glDisable(GL_TEXTURE_2D);
 
-		glPopMatrix();
+				glPopMatrix();
 
 		glPopMatrix();
 	}
@@ -3164,28 +3164,28 @@ void drawLightSword(char position) {
 
 		glPushMatrix();
 
-		glTranslatef(0.1f, 0.5f, -0.1f);
-		glRotatef(-90.0f, 0.0f, 0.0f, 0.1f);
-		glTranslatef(-0.1f, -0.5f, 0.1f);
+				glTranslatef(0.1f, 0.5f, -0.1f);
+				glRotatef(-90.0f, 0.0f, 0.0f, 0.1f);
+				glTranslatef(-0.1f, -0.5f, 0.1f);
 
-		glPushMatrix();
-		glPushMatrix();
-		glTranslatef(-0.15f, 0.5225f, -0.125f);
-		glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+				glPushMatrix();
+					glPushMatrix();
+						glTranslatef(-0.15f, 0.5225f, -0.125f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
-		textures = loadTexture(strGreyDirtyColor.c_str());
-		drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+						textures = loadTexture(strGreyDirtyColor.c_str());
+						drawCoverCylinder(0.015f, 0.015f, 0.15f, 10, 10);
+						glDeleteTextures(1, &textures);
+						glDisable(GL_TEXTURE_2D);
 
-		glPopMatrix();
+					glPopMatrix();
 
-		textures = loadTexture(strDarkGreyDirtyColor.c_str());
-		drawTrapeziumTexture(0.0f, 0.1f, 0.0f, 0.06f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
-		glDeleteTextures(1, &textures);
-		glDisable(GL_TEXTURE_2D);
+					textures = loadTexture(strDarkGreyDirtyColor.c_str());
+					drawTrapeziumTexture(0.0f, 0.1f, 0.0f, 0.06f, 0.5f, 0.5f, 0.55f, 0.55f, -0.1f, -0.15f, -0.1f, -0.15f);
+					glDeleteTextures(1, &textures);
+					glDisable(GL_TEXTURE_2D);
 
-		glPopMatrix();
+				glPopMatrix();
 
 		glPopMatrix();
 	}
@@ -3198,109 +3198,109 @@ void drawBeamRifle() {
 	glTranslatef(-0.8f, 0.002f, 0.025f);
 	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
-	textures = loadTexture(strBlacKColor.c_str());
-	drawCoverCylinder(0.02f, 0.02f, 0.1f, 10, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			textures = loadTexture(strBlacKColor.c_str());
+			drawCoverCylinder(0.02f, 0.02f, 0.1f, 10, 10);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
+	
+		//middle
+		glPushMatrix();
+			glTranslatef(-0.7f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
-	//middle
-	glPushMatrix();
-	glTranslatef(-0.7f, 0.002f, 0.025f);
-	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawCoverCylinder(0.035f, 0.035f, 0.3f, 10, 10);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawCoverCylinder(0.035f, 0.035f, 0.3f, 10, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//middle-back
+		textures = loadTexture(strGreyDirtyColor.c_str());
+		drawRectangle(-0.395f, 0.4f, -0.06f, 0.06f, -0.02f, 0.07f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//middle-back
-	textures = loadTexture(strGreyDirtyColor.c_str());
-	drawRectangle(-0.395f, 0.4f, -0.06f, 0.06f, -0.02f, 0.07f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//back-up
+		textures = loadTexture(strBlacKColor.c_str());
+		drawTrapeziumTexture(0.4f, 0.7f, 0.4f, 0.8, 0.02f, 0.02f, 0.08f, 0.08f, -0.02f, 0.07f, -0.02f, 0.07f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//back-up
-	textures = loadTexture(strBlacKColor.c_str());
-	drawTrapeziumTexture(0.4f, 0.7f, 0.4f, 0.8, 0.02f, 0.02f, 0.08f, 0.08f, -0.02f, 0.07f, -0.02f, 0.07f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-
-	//back-bottom
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(0.4f, 0.7f, -0.08f, 0.02f, -0.02f, 0.07f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//back-bottom
+		textures = loadTexture(strBlacKColor.c_str());
+		drawRectangle(0.4f, 0.7f, -0.08f, 0.02f, -0.02f, 0.07f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	//sight
 	glPushMatrix();
 	glTranslatef(-0.1f, 0.102f, 0.025f);
 	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawCoverCylinder(0.04f, 0.04f, 0.15f, 10, 10);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawCoverCylinder(0.04f, 0.04f, 0.15f, 10, 10);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Clip
-	glPushMatrix();
-	textures = loadTexture(strBlacKColor.c_str());
-	drawRectangle(-0.225f, -0.125f, -0.06f, -0.3f, -0.00f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//Clip
+		glPushMatrix();
+			textures = loadTexture(strBlacKColor.c_str());
+			drawRectangle(-0.225f, -0.125f, -0.06f, -0.3f, -0.00f, 0.05f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	//Design
-	drawSquareLineLoop(-0.2245f, -0.09f, -0.00f, -0.2245f, -0.09f, 0.05f, -0.1245f, -0.09f, 0.05f, -0.1245f, -0.09f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.12f, -0.00f, -0.2245f, -0.12f, 0.05f, -0.1245f, -0.12f, 0.05f, -0.1245f, -0.12f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.15f, -0.00f, -0.2245f, -0.15f, 0.05f, -0.1245f, -0.15f, 0.05f, -0.1245f, -0.15f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.18f, -0.00f, -0.2245f, -0.18f, 0.05f, -0.1245f, -0.18f, 0.05f, -0.1245f, -0.18f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.21f, -0.00f, -0.2245f, -0.21f, 0.05f, -0.1245f, -0.21f, 0.05f, -0.1245f, -0.21f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.24f, -0.00f, -0.2245f, -0.24f, 0.05f, -0.1245f, -0.24f, 0.05f, -0.1245f, -0.24f, -0.00f);
-	drawSquareLineLoop(-0.2245f, -0.27f, -0.00f, -0.2245f, -0.27f, 0.05f, -0.1245f, -0.27f, 0.05f, -0.1245f, -0.27f, -0.00f);
-	glPopMatrix();
+			//Design
+			drawSquareLineLoop(-0.2245f, -0.09f, -0.00f, -0.2245f, -0.09f, 0.05f, -0.1245f, -0.09f, 0.05f, -0.1245f, -0.09f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.12f, -0.00f, -0.2245f, -0.12f, 0.05f, -0.1245f, -0.12f, 0.05f, -0.1245f, -0.12f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.15f, -0.00f, -0.2245f, -0.15f, 0.05f, -0.1245f, -0.15f, 0.05f, -0.1245f, -0.15f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.18f, -0.00f, -0.2245f, -0.18f, 0.05f, -0.1245f, -0.18f, 0.05f, -0.1245f, -0.18f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.21f, -0.00f, -0.2245f, -0.21f, 0.05f, -0.1245f, -0.21f, 0.05f, -0.1245f, -0.21f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.24f, -0.00f, -0.2245f, -0.24f, 0.05f, -0.1245f, -0.24f, 0.05f, -0.1245f, -0.24f, -0.00f);
+			drawSquareLineLoop(-0.2245f, -0.27f, -0.00f, -0.2245f, -0.27f, 0.05f, -0.1245f, -0.27f, 0.05f, -0.1245f, -0.27f, -0.00f);
+		glPopMatrix();
 
-	//Grip - back
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawRectangle(0.345f, 0.375f, -0.06f, -0.45f, -0.00f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		//Grip - back
+		textures = loadTexture(strDarkGreyDirtyColor.c_str());
+		drawRectangle(0.345f, 0.375f, -0.06f, -0.45f, -0.00f, 0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-	//Grip - bottom
-	glPushMatrix();
-	glTranslatef(0.36f, -0.475f, 0.0f);
-	textures = loadTexture(strKneeTexture.c_str());
-	drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//Grip - bottom
+		glPushMatrix();
+			glTranslatef(0.36f, -0.475f, 0.0f);
+			textures = loadTexture(strKneeTexture.c_str());
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(0.34f, -0.465f, 0.05f);
 	glRotatef(8.0f, 0.0f, 0.0f, -0.1f);
 	glTranslatef(-0.34f, 0.465f, -0.05f);
 
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawRectangle(0.205f, 0.34f, -0.465f, -0.5f, -0.0f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+			drawRectangle(0.205f, 0.34f, -0.465f, -0.5f, -0.0f, 0.05f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 
-	glPopMatrix();
+		glPopMatrix();
 
-	//Grip - front
-	glPushMatrix();
-	glTranslatef(0.18f, -0.46f, 0.0f);
-	textures = loadTexture(strKneeTexture.c_str());
-	drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+		//Grip - front
+		glPushMatrix();
+			glTranslatef(0.18f, -0.46f, 0.0f);
+			textures = loadTexture(strKneeTexture.c_str());
+			drawCoverCylinder(0.02f, 0.02f, 0.05f, 5, 5);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	textures = loadTexture(strDarkGreyDirtyColor.c_str());
-	drawRectangle(0.155f, 0.185f, -0.06f, -0.435f, -0.00f, 0.05f);
-	glDeleteTextures(1, &textures);
-	glDisable(GL_TEXTURE_2D);
+		textures = loadTexture(strDarkGreyDirtyColor.c_str());
+		drawRectangle(0.155f, 0.185f, -0.06f, -0.435f, -0.00f, 0.05f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
