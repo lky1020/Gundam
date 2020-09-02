@@ -25,7 +25,10 @@ BITMAP BMP;				//bitmap structure
 HBITMAP hBMP = NULL;	//bitmap handle
 GLuint textures;
 
+
 //Texture (BMP)
+//background
+string strBackground = "dayTime.bmp";
 //Robot
 string strLightBlueColor = "Blue_Dirty_Color.bmp";
 string strRedDirtyColor = "Red_Dirty_Color.bmp";
@@ -65,6 +68,18 @@ float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
 
+//lightning
+void lighting();
+bool isLightOn = true; 
+float amb[] = { 1.0f, 1.0f, 1.0f }; 
+float posA[] = { 0.0f, 1.0f, 0.0f }; 
+
+float diff[] = { 1.0f, 1.0f, 1.0f }; 
+float posD[] = { 0.0f, 1.0f, 0.0f }; 
+
+
+float ambM[] = { 1, 0, 0 }; //red color ambient material
+
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
@@ -76,6 +91,7 @@ void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, 
 void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCircle(float xPoint, float yPoint, float radius);
+void drawCube(float size);
 
 //leg - data type
 //left leg
@@ -180,7 +196,7 @@ void drawBeamRifle();
 //textures
 GLuint loadTexture(LPCSTR filename);
 bool isTextureChange = false;
-
+bool isTextureBackground = false;
 //London Bridge
 bool activateBridge = false;
 
@@ -232,6 +248,8 @@ void sun();
 void sunTriangle(float x1, float y1, float x2, float y2, float x3, float y3);
 void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 
+//Robot BackGround
+void drawBackground();
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -706,7 +724,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_F9) {
 			activateBridge = !activateBridge;
 		}
-
+		else if (wParam == VK_F6) {
+			isTextureBackground = !isTextureBackground;
+		}
+		else if (wParam == VK_F7) {
+			isLightOn = !isLightOn;
+		}
 		//for finger moving
 		if (activate == 1.0f) {
 
@@ -943,6 +966,30 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			strShield_2 = "Shield_2.bmp";
 			strShield_3 = "Shield_3.bmp";
 		}
+
+		if (isTextureBackground) {
+			if (wParam == '1' || wParam == VK_NUMPAD1) {
+				strBackground = "Spring.bmp";
+			}
+			else if (wParam == '2' || wParam == VK_NUMPAD2) {
+				strBackground = "Summer.bmp";
+			}
+			else if (wParam == '3' || wParam == VK_NUMPAD3) {
+				strBackground = "autumn.bmp";
+			}
+			else if (wParam == '4' || wParam == VK_NUMPAD4) {
+				strBackground = "winter.bmp";
+			}
+			else if (wParam == '5' || wParam == VK_NUMPAD5) {
+				strBackground = "dayTime.bmp";
+			}
+			else if (wParam == '6' || wParam == VK_NUMPAD6) {
+				strBackground = "night.bmp";
+			}
+		}
+		else {
+			strBackground = "dayTime.bmp";
+		}
 		break;
 
 	default:
@@ -994,6 +1041,13 @@ void display()
 	glEnable(GL_DEPTH);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.6f, 0.857f, 0.918f, 0.0f);
+
+	lighting();
+
+	glPushMatrix();
+		glTranslatef(-1.0f,1.0f,0.0f);
+		drawBackground();
+	glPopMatrix();
 
 	glPushMatrix();
 		projection();
@@ -1160,15 +1214,47 @@ void projection() {
 
 }
 
+void lighting() {
+
+	if (isLightOn)
+		glEnable(GL_LIGHTING);
+
+	else
+		glDisable(GL_LIGHTING);
+	//Light 1 - greem color diffuse light at pos(4, 0, 0) above sphere
+	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT1, GL_POSITION, posA);
+	glEnable(GL_LIGHT1); // turn on light source
+
+	//Light 1 - greem color diffuse light at pos(4, 0, 0) above sphere
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff);
+	glLightfv(GL_LIGHT1, GL_POSITION, posD);
+	glEnable(GL_LIGHT1); // turn on light source
+
+}
+
+//Draw Background
+void drawBackground() {
+
+	GLuint texture;
+
+	texture = loadTexture(strBackground.c_str());
+	
+	drawCube(3.0);
+
+	glDeleteTextures(1,&texture);
+
+
+}
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, maxY, minZ);
-	glTexCoord2f(0.0, 1.0);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(1.0, 0.0);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(maxX, minY, minZ);
 	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, maxY, minZ);
@@ -1687,6 +1773,78 @@ void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float 
 		glVertex3f(x3, y3, z3);
 		glVertex3f(x4, y4, z4);
 	glEnd();
+}
+void drawCube(float size) {
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 0.0);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 0.0f); 
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(0.0f, -size, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, -size, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(size, -size, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(0.0f, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glEnd();
+
+
+
+
 }
 
 //leg
