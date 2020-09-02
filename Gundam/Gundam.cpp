@@ -548,7 +548,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isOrtho = !isOrtho;
 		}
 		//zoom out (robot)
-		else if (wParam == '2' || wParam == VK_NUMPAD2) {
+		else if (wParam == '2' || wParam == VK_NUMPAD2 && !isTextureChange) {
 
 			if (!isOrtho) {
 				if (tz < 3.0) {
@@ -558,7 +558,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 		}
 		//zoom in (robot)
-		else if (wParam == '8' || wParam == VK_NUMPAD8) {
+		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange) {
 			if (!isOrtho) {
 				if (tz > 0.0) {
 					tz -= tSpeed;
@@ -567,36 +567,36 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		}
 		//move view left
-		else if (wParam == '4' || wParam == VK_NUMPAD4) {
+		else if (wParam == '4' || wParam == VK_NUMPAD4 && !isTextureChange) {
 			if (Tx > -1.0) {
 				Tx -= TxSpeed;
 			}
 
 		}
 		//move view right
-		else if (wParam == '6' || wParam == VK_NUMPAD6) {
+		else if (wParam == '6' || wParam == VK_NUMPAD6 && !isTextureChange) {
 			if (Tx < 1.0) {
 				Tx += TxSpeed;
 			}
 		}
 		//move view up
-		else if (wParam == '5' || wParam == VK_NUMPAD5) {
+		else if (wParam == '5' || wParam == VK_NUMPAD5 && !isTextureChange) {
 			if (Ty > -1.0) {
 				Ty -= TySpeed;
 			}
 		}
 		//move view down
-		else if (wParam == '0' || wParam == VK_NUMPAD0) {
+		else if (wParam == '0' || wParam == VK_NUMPAD0 && !isTextureChange) {
 			if (Ty < 1.0) {
 				Ty += TySpeed;
 			}
 		}
 		//rotate view left
-		else if (wParam == '7' || wParam == VK_NUMPAD7) {
+		else if (wParam == '7' || wParam == VK_NUMPAD7 && !isTextureChange) {
 			Ry += rSpeed;
 		}
 		//rotate view right
-		else if (wParam == '9' || wParam == VK_NUMPAD9) {
+		else if (wParam == '9' || wParam == VK_NUMPAD9 && !isTextureChange) {
 			Ry -= rSpeed;
 		}
 		// to activate shield and Rifle
@@ -632,7 +632,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 
 		if (isTextureChange) {
-			if (wParam == '1') {
+			if (wParam == '1' || wParam == VK_NUMPAD1) {
 				//Texture (BMP)
 				strLightBlueColor = "Red_Dirty_Color.bmp";
 				strRedDirtyColor = "Blue_Dirty_Color.bmp";
@@ -654,7 +654,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '2') {
+			else if (wParam == '2' || wParam == VK_NUMPAD2) {
 				//Texture (BMP)
 				strLightBlueColor = "green.bmp";
 				strRedDirtyColor = "head_1.bmp";
@@ -676,7 +676,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '3') {
+			else if (wParam == '3' || wParam == VK_NUMPAD3) {
 				//Texture (BMP)
 				strLightBlueColor = "Shield_1.bmp";
 				strRedDirtyColor = "Grey_Dirty_Color.bmp";
@@ -698,7 +698,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '4') {
+			else if (wParam == '4' || wParam == VK_NUMPAD4) {
 				//Texture (BMP)
 				strLightBlueColor = "head_1.bmp";
 				strRedDirtyColor = "orange.bmp";
@@ -720,7 +720,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '5') {
+			else if (wParam == '5' || wParam == VK_NUMPAD5) {
 				//Texture (BMP)
 				strLightBlueColor = "head_3.bmp";
 				strRedDirtyColor = "black.bmp";
@@ -742,7 +742,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '6') {
+			else if (wParam == '6' || wParam == VK_NUMPAD6) {
 				//Texture (BMP)
 				strLightBlueColor = "Shield_3.bmp";
 				strRedDirtyColor = "green.bmp";
@@ -764,7 +764,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '7') {
+			else if (wParam == '7' || wParam == VK_NUMPAD7) {
 				//Texture (BMP)
 				strLightBlueColor = "purple.bmp";
 				strRedDirtyColor = "Shield_2.bmp";
@@ -786,7 +786,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '8') {
+			else if (wParam == '8' || wParam == VK_NUMPAD8) {
 				//Texture (BMP)
 				strLightBlueColor = "black.bmp";
 				strRedDirtyColor = "indigo.bmp";
@@ -808,7 +808,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strShield_2 = "Shield_2.bmp";
 				strShield_3 = "Shield_3.bmp";
 			}
-			else if (wParam == '9') {
+			else if (wParam == '9' || wParam == VK_NUMPAD9) {
 				//Texture (BMP)
 				strLightBlueColor = "Red_Dirty_Color.bmp";
 				strRedDirtyColor = "Shield_1.bmp";
