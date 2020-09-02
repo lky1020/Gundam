@@ -1038,14 +1038,13 @@ void display()
 	//	OpenGL drawing
 	//--------------------------------
 
-	glEnable(GL_DEPTH);
+	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.6f, 0.857f, 0.918f, 0.0f);
 
 	lighting();
 
 	glPushMatrix();
-		glTranslatef(-1.0f,1.0f,0.0f);
+		glTranslatef(-1.0f,1.0f,-1.5f);
 		drawBackground();
 	glPopMatrix();
 
@@ -3466,8 +3465,6 @@ void DrawShield() {
 	glPopMatrix();
 }
 void shieldPentagon(float minZ, float maxZ) {
-
-
 
 	glBegin(GL_POLYGON);
 	glTexCoord2f(-0.1f, minZ);
