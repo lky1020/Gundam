@@ -50,7 +50,6 @@ string strShield_3 = "Shield_3.bmp";
 float tz = 1.5f, tSpeed = 0.5f;
 bool isOrtho = true;
 float Ry = 0.0, rSpeed = 1.5;
-float Ry = 0.0, Rx = 0.0, rSpeed = 1.0f;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
 int x = 0.0, y = 0.0, z = 0.0;
@@ -161,6 +160,7 @@ void drawBeamRifle();
 
 //textures
 GLuint loadTexture(LPCSTR filename);
+bool isTextureChange = false;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -599,17 +599,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == '9' || wParam == VK_NUMPAD9) {
 			Ry -= rSpeed;
 		}
-		else if (wParam == 'Y') {
-			
-			if (Rx > -50.0f) {
-				Rx -= rSpeed;
-			}
-		}
-		else if (wParam == '3') {
-			if (Rx < 20.0f) {
-				Rx += rSpeed;
-			}
-		}
 		// to activate shield and Rifle
 		else if (wParam == VK_F1) {
 			isShield = !isShield;
@@ -625,6 +614,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 
 		}
+		else if (wParam == VK_F5) {
+			isTextureChange = !isTextureChange;
+		}
 		//for finger moving
 		if (activate == 1.0f) {
 
@@ -637,6 +629,230 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				fingerMove = -fingerSpeed;
 				thumbMove = -thumbSpeed;
 			}
+		}
+
+		if (isTextureChange) {
+			if (wParam == '1') {
+				//Texture (BMP)
+				strLightBlueColor = "Red_Dirty_Color.bmp";
+				strRedDirtyColor = "Blue_Dirty_Color.bmp";
+				strGreyDirtyColor = "black.bmp";
+				strDarkGreyDirtyColor = "head_2.bmp";
+				strKneeTexture = "joint_white.bmp";
+				strBlacKColor = "Shield_2.bmp";
+				strRobotArmJoint = "joint_white.bmp";
+				strHead_1 = "head_3.bmp";
+				strHead_2 = "Red_Dirty_Color.bmp";
+				strHead_3 = "Blue_Dirty_Color.bmp";
+				strHead_4 = "Red_Dirty_Color.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '2') {
+				//Texture (BMP)
+				strLightBlueColor = "green.bmp";
+				strRedDirtyColor = "head_1.bmp";
+				strGreyDirtyColor = "head_5.bmp";
+				strDarkGreyDirtyColor = "orange.bmp";
+				strKneeTexture = "joint_black.bmp";
+				strBlacKColor = "indigo.bmp";
+				strRobotArmJoint = "joint_black.bmp";
+				strHead_1 = "black.bmp";
+				strHead_2 = "green.bmp";
+				strHead_3 = "head_1.bmp";
+				strHead_4 = "green.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '3') {
+				//Texture (BMP)
+				strLightBlueColor = "Shield_1.bmp";
+				strRedDirtyColor = "Grey_Dirty_Color.bmp";
+				strGreyDirtyColor = "orange.bmp";
+				strDarkGreyDirtyColor = "orange.bmp";
+				strKneeTexture = "joint_blue.bmp";
+				strBlacKColor = "head_4.bmp";
+				strRobotArmJoint = "joint_blue.bmp";
+				strHead_1 = "Blue_Dirty_Color.bmp";
+				strHead_2 = "Shield_1.bmp";
+				strHead_3 = "Grey_Dirty_Color.bmp";
+				strHead_4 = "Shield_1.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '4') {
+				//Texture (BMP)
+				strLightBlueColor = "head_1.bmp";
+				strRedDirtyColor = "orange.bmp";
+				strGreyDirtyColor = "head_9.bmp";
+				strDarkGreyDirtyColor = "Red_Dirty_Color.bmp";
+				strKneeTexture = "joint_indigo.bmp";
+				strBlacKColor = "black.bmp";
+				strRobotArmJoint = "joint_indigo.bmp";
+				strHead_1 = "indigo.bmp";
+				strHead_2 = "head_1.bmp";
+				strHead_3 = "orange.bmp";
+				strHead_4 = "head_1.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '5') {
+				//Texture (BMP)
+				strLightBlueColor = "head_3.bmp";
+				strRedDirtyColor = "black.bmp";
+				strGreyDirtyColor = "head_2.bmp";
+				strDarkGreyDirtyColor = "Shield_1.bmp";
+				strKneeTexture = "joint_purple.bmp";
+				strBlacKColor = "Blue_Dirty_Color.bmp";
+				strRobotArmJoint = "joint_purple.bmp";
+				strHead_1 = "purple.bmp";
+				strHead_2 = "head_3.bmp";
+				strHead_3 = "black.bmp";
+				strHead_4 = "head_3.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '6') {
+				//Texture (BMP)
+				strLightBlueColor = "Shield_3.bmp";
+				strRedDirtyColor = "green.bmp";
+				strGreyDirtyColor = "Shield_3.bmp";
+				strDarkGreyDirtyColor = "Shield_2.bmp";
+				strKneeTexture = "joint_orange.bmp";
+				strBlacKColor = "Dark_Grey_Dirty_Color.bmp";
+				strRobotArmJoint = "joint_orange.bmp";
+				strHead_1 = "orange.bmp";
+				strHead_2 = "Shield_3.bmp";
+				strHead_3 = "Shield_3.bmp";
+				strHead_4 = "Shield_3.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '7') {
+				//Texture (BMP)
+				strLightBlueColor = "purple.bmp";
+				strRedDirtyColor = "Shield_2.bmp";
+				strGreyDirtyColor = "head_4.bmp";
+				strDarkGreyDirtyColor = "black.bmp";
+				strKneeTexture = "joint_grey.bmp";
+				strBlacKColor = "Shield_3.bmp";
+				strRobotArmJoint = "joint_grey.bmp";
+				strHead_1 = "Dark_Grey_Dirty_Color.bmp";
+				strHead_2 = "purple.bmp";
+				strHead_3 = "Shield_2.bmp";
+				strHead_4 = "purple.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '8') {
+				//Texture (BMP)
+				strLightBlueColor = "black.bmp";
+				strRedDirtyColor = "indigo.bmp";
+				strGreyDirtyColor = "Blue_Dirty_Color.bmp";
+				strDarkGreyDirtyColor = "Shield_1.bmp";
+				strKneeTexture = "joint_red.bmp";
+				strBlacKColor = "Red_Dirty_Color.bmp";
+				strRobotArmJoint = "joint_red.bmp";
+				strHead_1 = "head_5.bmp";
+				strHead_2 = "black.bmp";
+				strHead_3 = "indigo.bmp";
+				strHead_4 = "black.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+			else if (wParam == '9') {
+				//Texture (BMP)
+				strLightBlueColor = "Red_Dirty_Color.bmp";
+				strRedDirtyColor = "Shield_1.bmp";
+				strGreyDirtyColor = "orange.bmp";
+				strDarkGreyDirtyColor = "black.bmp";
+				strKneeTexture = "joint_yellow.bmp";
+				strBlacKColor = "head_7.bmp";
+				strRobotArmJoint = "joint_yellow.bmp";
+				strHead_1 = "head_1.bmp";
+				strHead_2 = "Red_Dirty_Color.bmp";
+				strHead_3 = "Shield_1.bmp";
+				strHead_4 = "Red_Dirty_Color.bmp";
+				strHead_5 = "head_5.bmp";
+				strHead_6 = "head_6.bmp";
+				strHead_7 = "head_7.bmp";
+				strHead_8 = "head_8.bmp";
+				strHead_9 = "head_9.bmp";
+				strShield_1 = "Shield_1.bmp";
+				strShield_2 = "Shield_2.bmp";
+				strShield_3 = "Shield_3.bmp";
+			}
+		
+		}
+		else {
+			//Texture (BMP)
+			strLightBlueColor = "Blue_Dirty_Color.bmp";
+			strRedDirtyColor = "Red_Dirty_Color.bmp";
+			strGreyDirtyColor = "Grey_Dirty_Color.bmp";
+			strDarkGreyDirtyColor = "Dark_Grey_Dirty_Color.bmp";
+			strKneeTexture = "Knee_Texture.bmp";
+			strBlacKColor = "black.bmp";
+			strRobotArmJoint = "Robot_Arm_Joint.bmp";
+			strHead_1 = "head_1.bmp";
+			strHead_2 = "head_2.bmp";
+			strHead_3 = "head_3.bmp";
+			strHead_4 = "head_4.bmp";
+			strHead_5 = "head_5.bmp";
+			strHead_6 = "head_6.bmp";
+			strHead_7 = "head_7.bmp";
+			strHead_8 = "head_8.bmp";
+			strHead_9 = "head_9.bmp";
+			strShield_1 = "Shield_1.bmp";
+			strShield_2 = "Shield_2.bmp";
+			strShield_3 = "Shield_3.bmp";
 		}
 		break;
 
@@ -821,73 +1037,73 @@ void projection() {
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, maxY, minZ);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, maxY, minZ);
 	glEnd();
 
 	//Bottom
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, minY, maxZ);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, minY, maxZ);
 	glEnd();
 
 	//Left
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, maxY, maxZ);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(minX, maxY, minZ);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(minX, minY, maxZ);
 	glEnd();
 
 	//Top
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, maxY, maxZ);
-	glTexCoord2f(minX, minZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(minX, maxY, minZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(maxX, maxY, minZ);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 
 	//Right
 	glBegin(GL_QUADS);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(maxX, maxY, maxZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(maxX, maxY, minZ);
-	glTexCoord2f(maxX, minZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(maxX, minY, minZ);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, minY, maxZ);
 	glEnd();
 
 	//Front
 	glBegin(GL_QUADS);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(minX, maxY, maxZ);
-	glTexCoord2f(minX, maxZ);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(minX, minY, maxZ);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(maxX, minY, maxZ);
-	glTexCoord2f(maxX, maxZ);
+	glTexCoord2f(1.0, 1.0);
 	glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 }
