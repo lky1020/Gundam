@@ -106,6 +106,8 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 	float* upperArmSpeed, float* upperArmMaxAngle, float* upperArmMinAngle,
 	float* lowerArmSpeed, float* lowerArmMaxAngle, float* lowerArmMinAngle, char direction);
 void drawHand(char direction);
+void drawRobotLeftHand();
+void drawRobotRightHand();
 void adjustFingerMove(float translateX, float translateY, float translateZ, float rotateX, float rotateY, float rotateZ, float maxAngle, float minAngle, char direction);
 void armJoint();
 void drawRobotHand();
@@ -961,7 +963,7 @@ void display()
 					//hand
 					glPushMatrix();
 						glScalef(0.5f, 0.5f, 0.5f);
-						drawRobotHand();
+						drawRobotLeftHand();
 					glPopMatrix();
 	
 					//leg
@@ -974,6 +976,12 @@ void display()
 					glPushMatrix();
 						glScalef(0.5f, 0.5f, 0.5f);
 						drawBody();
+					glPopMatrix();
+
+					//hand
+					glPushMatrix();
+						glScalef(0.5f, 0.5f, 0.5f);
+						drawRobotRightHand();
 					glPopMatrix();
 				glPopMatrix();
 
@@ -1566,17 +1574,17 @@ void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float 
 void constructleg() {
 	glPushMatrix();
 
-		//draw left leg pivot
-		glPushMatrix();
-			drawLegPivot();
-		glPopMatrix();
-
-		//draw right leg pivot
-		glPushMatrix();
-			glTranslatef(-0.3f, 0.0f, 0.2f);
-			glRotatef(180.0f, 0.0f, 0.5f, 0.0f);
-			drawLegPivot();
-		glPopMatrix();
+	//draw left leg pivot
+	glPushMatrix();
+		drawLegPivot();
+	glPopMatrix();
+	
+	//draw right leg pivot
+	glPushMatrix();
+		glTranslatef(-0.3f, 0.0f, 0.2f);
+		glRotatef(180.0f, 0.0f, 0.5f, 0.0f);
+		drawLegPivot();
+	glPopMatrix();
 
 	//draw right leg
 	glPushMatrix();
@@ -1592,6 +1600,7 @@ void constructleg() {
 	glTranslatef(0.0f, 0.0f, 0.0f);
 	drawLeg(&initialUpperLeftLegSpeed, &upperLeftLegSpeed, &initialLowerLeftLegSpeed, &lowerLeftLegSpeed, &upperLeftLegMinAngle, &upperLeftLegMaxAngle, &lowerLeftLegMinAngle, &lowerLeftLegMaxAngle);
 	glPopMatrix();
+
 
 	glPopMatrix();
 }
@@ -1953,26 +1962,26 @@ void drawRobotHand() {
 
 	glPushMatrix();
 
-	glTranslatef(0.0f, 1.7f, 0.0f);
+		glTranslatef(0.0f, 1.7f, 0.0f);
 
-	glPushMatrix();
+		glPushMatrix();
 
-	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-	glTranslatef(0.5f, -0.1f, -1.0f);
-	shoulder();
+			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+			glTranslatef(0.5f, -0.1f, -1.0f);
+			shoulder();
 
-	glPushMatrix();
+			glPushMatrix();
 
-	glTranslatef(-0.525f, -0.1f, 0.025f);
-	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-	glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-	arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
-		&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
-		&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle, 'R');
+				glTranslatef(-0.525f, -0.1f, 0.025f);
+				glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+				glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+				//right
+				arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
+					&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
+					&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle, 'R');
+			glPopMatrix();
 
-	glPopMatrix();
-
-	glPopMatrix();
+		glPopMatrix();
 
 	glPushMatrix();
 
@@ -1981,25 +1990,90 @@ void drawRobotHand() {
 
 	glPushMatrix();
 
-	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-	glTranslatef(0.0f, -0.1f, -0.5f);
-	glTranslatef(0.0f, 0.0f, 0.8f);
-	shoulder();
+		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glTranslatef(0.0f, -0.1f, -0.5f);
+		glTranslatef(0.0f, 0.0f, 0.8f);
+		shoulder();
+
+		glPushMatrix();
+
+			glTranslatef(-0.725f, -0.1f, 0.23f);
+			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+			glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+			//left
+			arm(&initialLeftUpperArmSpeed, &initialLeftLowerArmSpeed,
+				&move_Left_inFront_hand, &upperLeftArmSpeed, &upperLeftArmMaxAngle,
+				&upperLeftArmMinAngle, &lowerLeftArmSpeed, &lowerLeftArmMaxAngle, &lowerLeftArmMinAngle, 'L');
+
+		glPopMatrix();
+
+	glPopMatrix();
+
+	glPopMatrix();
+
+	glPopMatrix();
+
+}
+void drawRobotRightHand() {
 
 	glPushMatrix();
 
-	glTranslatef(-0.725f, -0.1f, 0.23f);
-	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-	glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-	arm(&initialLeftUpperArmSpeed, &initialLeftLowerArmSpeed,
-		&move_Left_inFront_hand, &upperLeftArmSpeed, &upperLeftArmMaxAngle,
-		&upperLeftArmMinAngle, &lowerLeftArmSpeed, &lowerLeftArmMaxAngle, &lowerLeftArmMinAngle, 'L');
+		glTranslatef(0.0f, 1.7f, 0.0f);
+
+			glPushMatrix();
+
+				glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+				glTranslatef(0.5f, -0.1f, -1.0f);
+				shoulder();
+
+				glPushMatrix();
+
+					glTranslatef(-0.525f, -0.1f, 0.025f);
+					glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+					glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+					arm(&initialRightUpperArmSpeed, &initialRightLowerArmSpeed,
+						&move_Right_inFront_hand, &upperRightArmSpeed, &upperRightArmMaxAngle,
+						&upperRightArmMinAngle, &lowerRightArmSpeed, &lowerRightArmMaxAngle, &lowerRightArmMinAngle, 'R');
+				glPopMatrix();
+
+			glPopMatrix();
 
 	glPopMatrix();
+}
+void drawRobotLeftHand() {
 
-	glPopMatrix();
+	glPushMatrix();
 
-	glPopMatrix();
+		glTranslatef(0.0f, 1.7f, 0.0f);
+
+	
+		glPushMatrix();
+
+			glRotatef(-180.0f, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-1.0f, 0.0f, -0.75f);
+
+			glPushMatrix();
+
+				glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+				glTranslatef(0.0f, -0.1f, -0.5f);
+				glTranslatef(0.0f, 0.0f, 0.8f);
+				shoulder();
+
+				glPushMatrix();
+
+					glTranslatef(-0.725f, -0.1f, 0.23f);
+					glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+					glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+					//left
+					arm(&initialLeftUpperArmSpeed, &initialLeftLowerArmSpeed,
+						&move_Left_inFront_hand, &upperLeftArmSpeed, &upperLeftArmMaxAngle,
+						&upperLeftArmMinAngle, &lowerLeftArmSpeed, &lowerLeftArmMaxAngle, &lowerLeftArmMinAngle, 'L');
+
+				glPopMatrix();
+
+			glPopMatrix();
+
+		glPopMatrix();
 
 	glPopMatrix();
 
