@@ -71,7 +71,7 @@ int x = 0.0, y = 0.0, z = 0.0;
 //lightning
 void lighting();
 bool isLightOn = true; 
-float amb[] = { 1.0f, 1.0f, 1.0f }; 
+float amb[] = { 0.0f, 0.0f, 0.0f }; 
 float posA[] = { 0.0f, 1.0f, 0.0f }; 
 
 float diff[] = { 1.0f, 1.0f, 1.0f }; 
