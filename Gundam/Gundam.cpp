@@ -1411,7 +1411,7 @@ void lighting() {
 void drawBackground() {
 
 	textures = loadTexture(strBackground.c_str());
-	drawSphere(3.0);
+	drawCube(3.0);
 	glDeleteTextures(1,&textures);
 	glDisable(GL_TEXTURE_2D);
 }
@@ -1944,6 +1944,78 @@ void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float 
 		glVertex3f(x3, y3, z3);
 		glVertex3f(x4, y4, z4);
 	glEnd();
+}
+void drawCube(float size) {
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 0.0);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 0.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(0.0f, -size, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, 0.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(size, 0.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, 0.0f, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(size, -size, 1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(size, -size, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(size, -size, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(0.0f, -size, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(0.0f, -size, 1.0f);
+	glEnd();
+
+
+
+
 }
 
 
