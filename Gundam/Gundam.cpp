@@ -11,9 +11,11 @@ using namespace std;
 #define WINDOW_TITLE "GP Assignment - Gundam"
 
 //Speed
+
 float speed = 1.0f;
 float fingerSpeed = 1.0f;
 float thumbSpeed = 0.02f;
+
 
 //Rotation whole body
 float initialBodyRotate = 0.0f;
@@ -1761,6 +1763,13 @@ void drawCircle(float xPoint, float yPoint, float radius) {
 	glVertex2f(xPoint, yPoint);
 
 	for (float angle = 0; angle <= 360; angle += 0.1) {
+
+		if (xPoint / 4 == 0) {
+			glTexCoord2f(0.0f,0.0f);
+		}
+		else {
+			glTexCoord2f(1.0f, 1.0f);
+		}
 		glVertex2f(xPoint + radius * cos(angle), yPoint + radius * sin(angle));
 	}
 	glEnd();
@@ -1845,7 +1854,6 @@ void drawCube(float size) {
 
 
 }
-
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -2558,6 +2566,7 @@ void drawBody() {
 }
 void drawOverallBody() {
 	glPushMatrix();
+
 		//base
 		textures = loadTexture(strGreyDirtyColor.c_str());
 		drawTrapeziumTexture(-0.45f, 0.15f, -0.435f, 0.135f, 0.8f, 0.8f, 1.0f, 1.0f, 0.0f, 0.2f, 0.025f, 0.175f);
