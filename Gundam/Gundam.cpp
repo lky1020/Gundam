@@ -15,6 +15,7 @@ float speed = 1.5f;
 float fingerSpeed = 1.0f;
 float thumbSpeed = 0.02f;
 
+
 //Rotation whole body
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
@@ -484,6 +485,9 @@ void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 //Robot BackGround
 void drawBackground();
 
+//isAttactMode
+bool isAttactMode = false;
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -936,7 +940,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//zoom in (robot)
 		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (!isOrtho) {
-				if (tz > 0.0) {
+				if (tz > -1.0) {
 					tz -= tSpeed;
 				}
 
@@ -1003,6 +1007,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else if (wParam == VK_F7) {
 			isLightOn = !isLightOn;
+		}
+		else if (wParam == VK_F8) {
+			isAttactMode = !isAttactMode;
 		}
 		//for finger moving
 		if (activate == 1.0f) {
@@ -1132,7 +1139,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				beamFireTranslateSpeed = -0.01f;
 			}
 		}
+		//need to deactivate before space
+		if (isAttactMode) {
 
+			isShield = true;
+
+			if (isShield) {
+				fingerMove = fingerSpeed;
+				thumbMove = thumbSpeed;
+			}
+			else {
+				fingerMove = -fingerSpeed;
+				thumbMove = -thumbSpeed;
+			}
+
+			lowerLeftArmMaxAngle = 90.0f;
+
+			if (initialLeftLowerArmSpeed == 0.0f) {
+
+				lowerLeftArmSpeed = speed;
+
+			}
+			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
+
+				lowerLeftArmSpeed = -speed;
+
+			}
+
+		}
 		break;
 
 	default:
@@ -1379,12 +1413,10 @@ void lighting() {
 //Draw Background
 void drawBackground() {
 
-	glPushMatrix();
-		textures = loadTexture(strBackground.c_str());
-		drawCube(3.0);
-		glDeleteTextures(1,&textures);
-		glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
+	textures = loadTexture(strBackground.c_str());
+	drawCube(3.0);
+	glDeleteTextures(1,&textures);
+	glDisable(GL_TEXTURE_2D);
 }
 
 //Draw Shape
@@ -2024,7 +2056,7 @@ void drawCube(float size) {
 	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(size, -size, 0.0f);
 	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, -size, 0.0f); 
+	glVertex3f(0.0f, -size, 0.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
@@ -2302,19 +2334,33 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 
 	glPushMatrix();
 
-	glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
+	if (direction == 'L' && isAttactMode) {
+		glTranslatef(0.0, 0.1, 0.1);
+		glRotatef(50, 0.1f, 0.0f, 0.0f); //control upper arm
+		glTranslatef(0.0, -0.1, -0.1);
 
-	*initialUpperArmSpeed += *upperArmSpeed;
-
-	if (*initialUpperArmSpeed >= *upperArmMaxAngle) {
-		*initialUpperArmSpeed = *upperArmMaxAngle;
-		*upperArmSpeed = 0.0f;
+		glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
 	}
+	else {
 
-	if (*initialUpperArmSpeed <= *upperArmMinAngle) {
-		*initialUpperArmSpeed = *upperArmMinAngle;
-		*upperArmSpeed = 0.0f;
+		glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
+
+
+
+		*initialUpperArmSpeed += *upperArmSpeed;
+
+		if (*initialUpperArmSpeed >= *upperArmMaxAngle) {
+			*initialUpperArmSpeed = *upperArmMaxAngle;
+			*upperArmSpeed = 0.0f;
+		}
+
+		if (*initialUpperArmSpeed <= *upperArmMinAngle) {
+			*initialUpperArmSpeed = *upperArmMinAngle;
+			*upperArmSpeed = 0.0f;
+		}
+
 	}
+	
 
 		textures = loadTexture(strGreyDirtyColor.c_str());
 		drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
@@ -2365,11 +2411,10 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 	if (isShield && direction == 'L') {
 		glPushMatrix();
 
-			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-			//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
-			glTranslatef(0.0f, -0.525f, 0.95f);
-			glScalef(2.0f, 2.0f, 2.0f);
-			controlShield();
+		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glTranslatef(0.0f, -0.525f, 0.95f);
+		glScalef(2.0f, 2.0f, 2.0f);
+		controlShield();
 		glPopMatrix();
 	}
 
@@ -2799,6 +2844,7 @@ void drawBody() {
 }
 void drawOverallBody() {
 	glPushMatrix();
+
 		//base
 		textures = loadTexture(strGreyDirtyColor.c_str());
 		drawTrapeziumTexture(-0.45f, 0.15f, -0.435f, 0.135f, 0.8f, 0.8f, 1.0f, 1.0f, 0.0f, 0.2f, 0.025f, 0.175f);
