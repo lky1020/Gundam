@@ -2681,81 +2681,93 @@ void drawBackPack() {
 		glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.2f);
 
-	glPushMatrix();
-	glTranslatef(-0.15f, 1.4875f, -0.085f);
-	glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
-	glTranslatef(0.15f, -1.4875f, 0.085f);
+			glPushMatrix();
+			glTranslatef(-0.15f, 1.4875f, -0.085f);
+			glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
+			glTranslatef(0.15f, -1.4875f, 0.085f);
 
-				textures = loadTexture(strDarkGreyDirtyColor.c_str());
-				drawTrapeziumTexture(-0.4f, 0.1f, -0.4f, 0.1f, 1.2f, 1.2f, 1.4f, 1.4f, 0.2f, -0.485f, 0.2f, -0.185f);
-				glDeleteTextures(1, &textures);
-				glDisable(GL_TEXTURE_2D);
+					textures = loadTexture(strDarkGreyDirtyColor.c_str());
+					drawTrapeziumTexture(-0.4f, 0.1f, -0.4f, 0.1f, 1.2f, 1.2f, 1.4f, 1.4f, 0.2f, -0.485f, 0.2f, -0.185f);
+					glDeleteTextures(1, &textures);
+					glDisable(GL_TEXTURE_2D);
 				
+				glPopMatrix();
 			glPopMatrix();
-		glPopMatrix();
 
-	//Rocket
-	glPushMatrix();
-	drawRocket();
-	glPopMatrix();
+		//Rocket
+		glPushMatrix();
+			drawRocket();
+		glPopMatrix();
 
 	glPopMatrix();
 }
 void drawRocket() {
 	glPushMatrix();
 
-	//left up rocket
-	glPushMatrix();
-	glTranslatef(0.0f, 0.75f, -0.55f);
+		//left up rocket
+		glPushMatrix();
+			glTranslatef(0.0f, 0.75f, -0.55f);
 
-	glPushMatrix();
-	glTranslatef(0.0f, 1.0f, -1.0f);
-	glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
-	glTranslatef(-0.0f, -1.0f, 1.0f);
+			glPushMatrix();
+				glTranslatef(0.0f, 1.0f, -1.0f);
+				glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -1.0f, 1.0f);
 
-	drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
-	glPopMatrix();
+				textures = loadTexture(strBlacKColor.c_str());
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
 
-	glPopMatrix();
+		glPopMatrix();
 
-	//left down rocket
-	glPushMatrix();
-	glTranslatef(0.0f, 0.575f, -0.4f);
+		//left down rocket
+		glPushMatrix();
+			glTranslatef(0.0f, 0.575f, -0.4f);
 
-	glPushMatrix();
-	glTranslatef(0.0f, 0.6f, -0.5f);
-	glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
-	glTranslatef(-0.0f, -0.6f, 0.5f);
+			glPushMatrix();
+				glTranslatef(0.0f, 0.6f, -0.5f);
+				glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -0.6f, 0.5f);
 
-	drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
-	glPopMatrix();
-	glPopMatrix();
+				textures = loadTexture(strBlacKColor.c_str());
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
+		glPopMatrix();
 
-	//right up rocket
-	glPushMatrix();
-	glTranslatef(-0.3f, 0.75f, -0.55f);
+		//right up rocket
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.75f, -0.55f);
 
-	glPushMatrix();
-	glTranslatef(0.0f, 1.0f, -1.0f);
-	glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
-	glTranslatef(-0.0f, -1.0f, 1.0f);
+			glPushMatrix();
+				glTranslatef(0.0f, 1.0f, -1.0f);
+				glRotatef(-25.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -1.0f, 1.0f);
 
-	drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
-	glPopMatrix();
-	glPopMatrix();
+				textures = loadTexture(strBlacKColor.c_str());
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
+		glPopMatrix();
 
-	//right down rocket
-	glPushMatrix();
-	glTranslatef(-0.3f, 0.575f, -0.4f);
+		//right down rocket
+		glPushMatrix();
+			glTranslatef(-0.3f, 0.575f, -0.4f);
 
-	glPushMatrix();
-	glTranslatef(0.0f, 0.6f, -0.5f);
-	glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
-	glTranslatef(-0.0f, -0.6f, 0.5f);
+			glPushMatrix();
+				glTranslatef(0.0f, 0.6f, -0.5f);
+				glRotatef(-45.0f, 0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.0f, -0.6f, 0.5f);
 
-	drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
-	glPopMatrix();
-	glPopMatrix();
+				textures = loadTexture(strBlacKColor.c_str());
+				drawCylinder(0.075f, 0.0f, 0.15f, 20, 20);
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+			glPopMatrix();
+		glPopMatrix();
 	glPopMatrix();
 }
 
