@@ -2857,7 +2857,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 		glPopMatrix();
 
 		glPushMatrix();
-			glTranslatef(-0.12f, -0.02f, 0.0f);
+			glTranslatef(-0.121f, -0.02f, 0.0f);
 			glScalef(0.2f, 0.2f, 0.2f);
 			textures = loadTexture(strHead_4.c_str());
 				drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
@@ -2866,7 +2866,7 @@ void drawRobotHead(float* rotateH, float* rotateHX, float* rotateHY, float* rota
 		glPopMatrix();
 
 		glPushMatrix();
-			glTranslatef(0.05f, -0.02f, 0.0f);
+			glTranslatef(0.051f, -0.02f, 0.0f);
 			glScalef(0.2f, 0.2f, 0.2f);
 			textures = loadTexture(strHead_4.c_str());
 				drawRectangle(0.1f, 0.25f, 0.05f, 0.35f, 0.0f, 0.5f);
