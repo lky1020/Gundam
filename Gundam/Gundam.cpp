@@ -474,6 +474,10 @@ void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 
 //Robot BackGround
 void drawBackground();
+
+//isAttactMode
+bool isAttactMode = false;
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -824,7 +828,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			}
 
-			lowerRightArmSpeed = -speed;
 		}
 		//'Z' - to move right lower arm up and down
 		else if (wParam == 0x5A) {
@@ -841,7 +844,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			}
 
-			lowerLeftArmSpeed = -speed;
 		}
 		//'N' - to move head to left
 		else if (wParam == 'N') {
@@ -896,7 +898,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//zoom in (robot)
 		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (!isOrtho) {
-				if (tz > 0.0) {
+				if (tz > -1.0) {
 					tz -= tSpeed;
 				}
 
@@ -963,6 +965,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else if (wParam == VK_F7) {
 			isLightOn = !isLightOn;
+		}
+		else if (wParam == VK_F8) {
+			isAttactMode = !isAttactMode;
 		}
 		//for finger moving
 		if (activate == 1.0f) {
@@ -1082,6 +1087,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					posD[2] += 0.1f;
 				}
 			}
+		}
+		//need to deactivate before space
+		if (isAttactMode) {
+
+			isShield = true;
+
+			if (isShield) {
+				fingerMove = fingerSpeed;
+				thumbMove = thumbSpeed;
+			}
+			else {
+				fingerMove = -fingerSpeed;
+				thumbMove = -thumbSpeed;
+			}
+
+			lowerLeftArmMaxAngle = 90.0f;
+
+			if (initialLeftLowerArmSpeed == 0.0f) {
+
+				lowerLeftArmSpeed = speed;
+
+			}
+			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
+
+				lowerLeftArmSpeed = -speed;
+
+			}
+
 		}
 		break;
 
@@ -1330,7 +1363,7 @@ void lighting() {
 void drawBackground() {
 
 	textures = loadTexture(strBackground.c_str());
-	drawCube(3.0);
+	drawSphere(3.0);
 	glDeleteTextures(1,&textures);
 	glDisable(GL_TEXTURE_2D);
 }
@@ -1863,78 +1896,8 @@ void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float 
 		glVertex3f(x4, y4, z4);
 	glEnd();
 }
-void drawCube(float size) {
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(size, 0.0f, 0.0);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, -size, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, -size, 0.0f); 
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(size, 0.0f, 1.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, -size, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, -size, 1.0f);
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, -size, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, -size, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(size, 0.0f, 1.0f);
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(size, 0.0f, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(size, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(size, -size, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(size, -size, 1.0f);
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(size, -size, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(size, -size, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, -size, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, -size, 1.0f);
-	glEnd();
 
 
-
-
-}
 //leg
 void constructleg() {
 	glPushMatrix();
@@ -2142,19 +2105,33 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 
 	glPushMatrix();
 
-	glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
+	if (direction == 'L' && isAttactMode) {
+		glTranslatef(0.0, 0.1, 0.1);
+		glRotatef(50, 0.1f, 0.0f, 0.0f); //control upper arm
+		glTranslatef(0.0, -0.1, -0.1);
 
-	*initialUpperArmSpeed += *upperArmSpeed;
-
-	if (*initialUpperArmSpeed >= *upperArmMaxAngle) {
-		*initialUpperArmSpeed = *upperArmMaxAngle;
-		*upperArmSpeed = 0.0f;
+		glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
 	}
+	else {
 
-	if (*initialUpperArmSpeed <= *upperArmMinAngle) {
-		*initialUpperArmSpeed = *upperArmMinAngle;
-		*upperArmSpeed = 0.0f;
+		glRotatef(*initialUpperArmSpeed, 0.0f, -0.1f, 0.0f); //control upper arm
+
+
+
+		*initialUpperArmSpeed += *upperArmSpeed;
+
+		if (*initialUpperArmSpeed >= *upperArmMaxAngle) {
+			*initialUpperArmSpeed = *upperArmMaxAngle;
+			*upperArmSpeed = 0.0f;
+		}
+
+		if (*initialUpperArmSpeed <= *upperArmMinAngle) {
+			*initialUpperArmSpeed = *upperArmMinAngle;
+			*upperArmSpeed = 0.0f;
+		}
+
 	}
+	
 
 		textures = loadTexture(strGreyDirtyColor.c_str());
 		drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
@@ -2206,7 +2183,6 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 		glPushMatrix();
 
 		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-		//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
 		glTranslatef(0.0f, -0.525f, 0.95f);
 		glScalef(2.0f, 2.0f, 2.0f);
 		controlShield();
