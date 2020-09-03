@@ -542,7 +542,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		}
 		//'W' to walk
-		else if (wParam == 0x57) {
+		else if (wParam == 0x57 && !activateBridge) {
 			//initialize angle
 			upperLeftLegMaxAngle = 40.0f;
 			lowerLeftLegMaxAngle = 35.0f;
@@ -608,7 +608,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 		}
 		//'S' to stand
-		else if (wParam == 0x53) {
+		else if (wParam == 0x53 && !activateBridge) {
 			//initialize leg angle
 			upperLeftLegMinAngle = 0.0f;
 			lowerLeftLegMinAngle = 0.0f;
@@ -975,7 +975,19 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				thumbMove = -thumbSpeed;
 			}
 		}
+		
+		if (activateBridge) {
+			//move middle bridge up down
+			if (wParam == 'W') {
+				bridgeLift = liftSpeed;
+			}
+			else if (wParam == 'S') {
+				bridgeLift = -liftSpeed;
+			}
+		}
+
 		if (isTextureChange) {
+			//Change Texture (num1 - num9)
 			if (wParam == '1' || wParam == VK_NUMPAD1) {
 				textureMap1();
 			}
@@ -1007,6 +1019,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 
 		if (isTextureBackground) {
+			//Change background (num1 - num6)
 			if (wParam == '1' || wParam == VK_NUMPAD1) {
 				strBackground = "Spring.bmp";
 			}
