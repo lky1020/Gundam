@@ -11,20 +11,19 @@ using namespace std;
 #define WINDOW_TITLE "GP Assignment - Gundam"
 
 //Speed
-float speed = 1.0f;
+float speed = 1.5f;
 float fingerSpeed = 1.0f;
 float thumbSpeed = 0.02f;
 
 //Rotation whole body
 float initialBodyRotate = 0.0f;
 float bodyRotate = 0.0f;
-float bodyRotateSpeed = 1.5f;
+float bodyRotateSpeed = 2.0f;
 
 //Texture
 BITMAP BMP;				//bitmap structure
 HBITMAP hBMP = NULL;	//bitmap handle
 GLuint textures;
-
 
 //Texture (BMP)
 //background
@@ -50,6 +49,7 @@ string strHead_9 = "head_9.bmp";
 string strShield_1 = "Shield_1.bmp";
 string strShield_2 = "Shield_2.bmp";
 string strShield_3 = "Shield_3.bmp";
+string strGunBeam = "Gun_Beam.bmp";
 void textureMapOrigin() {
 	//Texture (BMP)
 	strLightBlueColor = "Blue_Dirty_Color.bmp";
@@ -312,6 +312,7 @@ void octagonalPrism(float minX, float maxX, float minY, float maxY, float minZ, 
 void drawCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCoverCylinder(float baseRadius, float topRadius, float height, int slices, int stacks);
 void drawCircle(float xPoint, float yPoint, float radius);
+void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4);
 void drawCube(float size);
 
 //leg - data type
@@ -341,11 +342,21 @@ GLuint loadTexture(LPCSTR fileName);
 //projection
 void projection();
 
-//Animation (Walking + Attack)
+//Animation - Walking
 bool isWalking = false;
 float initialRobotWalk = 0.0f;
 float walkSpeed = 0.0015f;
 float maxWalkDistance = 0.0f; //indicate the last z-axis position
+
+//Animation - Attack
+float isAttack = false;
+float isFire = false;
+float isFinishAccumulateBeam = false;
+float initialBeamSize = 0.0f;
+float beamAccumulateSpeed = 0.005f;
+float maxBeamSize = 0.1f;
+float initialBeamFireTranslate = 0.0f;
+float beamFireTranslateSpeed = 0.0f;
 
 //leg
 void constructleg();
@@ -734,6 +745,15 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			//Background
 			isTextureBackground = false;
+
+			//Animation - attack
+			isAttack = false;
+			isFire = false;
+			isFinishAccumulateBeam = false;
+			initialBeamSize = 0.0f;
+			initialBeamFireTranslate = 0.0f;
+			beamFireTranslateSpeed = 0.0f;
+
 		}
 		//'H' - activate upper arm (left and right)
 		else if (wParam == 0x48) {
@@ -795,7 +815,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			upperLeftArmSpeed = -speed;
 		}
 		//'F' - to move both finger (activate and deactivate)
-		else if (wParam == 0x46) {
+		else if (wParam == 0x46 && !isAttack) {
 			if (activate == 0.0f) {
 
 				activate = 1.0f;
@@ -876,6 +896,26 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 				rotateHSpeed = -speed;
 			}
+		}
+		//'G' - Gun Fire Beam
+		else if (wParam == 'G' && isRifle) {
+			isAttack = !isAttack;
+
+			//Move the right lower arm before fire
+			lowerRightArmMaxAngle = 90.0f;
+
+			if (initialRightLowerArmSpeed == 0.0f) {
+
+				lowerRightArmSpeed = speed;
+
+			}
+			if (initialRightLowerArmSpeed == lowerRightArmMaxAngle) {
+
+				lowerRightArmSpeed = -speed;
+
+			}
+
+			lowerLeftArmSpeed = -speed;
 		}
 		//projection
 		else if (wParam == VK_F2) {
@@ -1081,6 +1121,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				}
 			}
 		}
+
+		if (isAttack) {
+			if (wParam == 'F' && initialRightLowerArmSpeed == 90.0f && !isFinishAccumulateBeam) {
+				isFire = true;
+			}
+			else if(wParam == 'F' && initialRightLowerArmSpeed == 90.0f && isFinishAccumulateBeam) {
+				beamFireTranslateSpeed = -0.01f;
+			}
+		}
+
 		break;
 
 	default:
@@ -1327,10 +1377,14 @@ void lighting() {
 //Draw Background
 void drawBackground() {
 
-	textures = loadTexture(strBackground.c_str());
-	drawCube(3.0);
-	glDeleteTextures(1,&textures);
-	glDisable(GL_TEXTURE_2D);
+	glPushMatrix();
+		//glTranslatef(0.0f, 0.0f, 2.0f);
+
+		textures = loadTexture(strBackground.c_str());
+		drawCube(3.0);
+		glDeleteTextures(1,&textures);
+		glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
 
 //Draw Shape
@@ -1862,6 +1916,7 @@ void drawCircle(float xPoint, float yPoint, float radius) {
 }
 void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
 	glBegin(GL_LINE_LOOP);
+		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(x1, y1, z1);
 		glVertex3f(x2, y2, z2);
 		glVertex3f(x3, y3, z3);
@@ -2054,17 +2109,17 @@ void drawLeg(float* initialUpperSpeed, float* upperSpeed, float* initialLowerSpe
 			glRotatef(*initialUpperSpeed, -0.5f, 0.0f, 0.0f);
 		glTranslatef(0.5f, -0.45f, -0.1f);
 
-	*initialUpperSpeed += *upperSpeed;
+		*initialUpperSpeed += *upperSpeed;
 
-	if (*initialUpperSpeed >= *upperMaxAngle) {
-		*initialUpperSpeed = *upperMaxAngle;
-		*upperSpeed = 0.0f;
-	}
+		if (*initialUpperSpeed >= *upperMaxAngle) {
+			*initialUpperSpeed = *upperMaxAngle;
+			*upperSpeed = 0.0f;
+		}
 
-	if (*initialUpperSpeed <= *upperMinAngle) {
-		*initialUpperSpeed = *upperMinAngle;
-		*upperSpeed = 0.0f;
-	}
+		if (*initialUpperSpeed <= *upperMinAngle) {
+			*initialUpperSpeed = *upperMinAngle;
+			*upperSpeed = 0.0f;
+		}
 
 		glPushMatrix();
 			//rotate knee to lower leg
@@ -2186,11 +2241,11 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 		*lowerArmSpeed = 0.0f;
 	}
 
-			textures = loadTexture(strGreyDirtyColor.c_str());
-			drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-			armJoint();
+		textures = loadTexture(strGreyDirtyColor.c_str());
+		drawRectangle(0.0f, 0.5f, 0.0f, 0.2f, 0.0f, 0.2f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
+		armJoint();
 
 	glPushMatrix();
 	glTranslatef(0.53f, 0.0f, 0.0f);
@@ -2211,33 +2266,33 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 	if (isShield && direction == 'L') {
 		glPushMatrix();
 
-		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-		//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
-		glTranslatef(0.0f, -0.525f, 0.95f);
-		glScalef(2.0f, 2.0f, 2.0f);
-		controlShield();
+			glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+			//glRotatef(180.0f, -1.0f, 0.0f, 0.0f);
+			glTranslatef(0.0f, -0.525f, 0.95f);
+			glScalef(2.0f, 2.0f, 2.0f);
+			controlShield();
 		glPopMatrix();
 	}
 
 	if (isRifle && direction == 'R') {
 		//weapon - beam rifle
 		glPushMatrix();
-		glTranslatef(0.35f, 0.175f, 0.25f);
+			glTranslatef(0.35f, 0.175f, 0.25f);
 
-		glPushMatrix();
-		//rotate to point to ground
-		glTranslatef(0.35f, 0.175f, 0.25f);
-		glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
-		glTranslatef(-0.35f, -0.175f, -0.25f);
+			glPushMatrix();
+				//rotate to point to ground
+				glTranslatef(0.35f, 0.175f, 0.25f);
+				glRotatef(90.0f, -0.1f, 0.0f, 0.0f);
+				glTranslatef(-0.35f, -0.175f, -0.25f);
 
-		//rotate to fit the hand
-		glTranslatef(0.35f, 0.175f, 0.25f);
-		glRotatef(180.0f, 0.0f, 0.0f, 0.1f);
-		glTranslatef(-0.35f, -0.175f, -0.25f);
+				//rotate to fit the hand
+				glTranslatef(0.35f, 0.175f, 0.25f);
+				glRotatef(180.0f, 0.0f, 0.0f, 0.1f);
+				glTranslatef(-0.35f, -0.175f, -0.25f);
 
-		glScalef(0.8f, 0.8f, 0.8f);
-		drawBeamRifle();
-		glPopMatrix();
+				glScalef(0.8f, 0.8f, 0.8f);
+				drawBeamRifle();
+			glPopMatrix();
 		glPopMatrix();
 	}
 
@@ -3658,15 +3713,18 @@ void drawBazooka() {
 			glDeleteTextures(1, &textures);
 			glDisable(GL_TEXTURE_2D);
 
-	//Design
-	drawSquareLineLoop(-0.0255f, -0.06f, -0.451f, -0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.451f);
-	drawSquareLineLoop(-0.0255f, -0.08f, -0.451f, -0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.451f);
-	drawSquareLineLoop(-0.0255f, -0.10f, -0.451f, -0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.451f);
-	drawSquareLineLoop(-0.0255f, -0.12f, -0.451f, -0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.451f);
-	glPopMatrix();
+			//Design
+			textures = loadTexture(strHead_8.c_str());
+				drawSquareLineLoop(-0.0255f, -0.06f, -0.451f, -0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.349f, 0.0255f, -0.06f, -0.451f);
+				drawSquareLineLoop(-0.0255f, -0.08f, -0.451f, -0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.349f, 0.0255f, -0.08f, -0.451f);
+				drawSquareLineLoop(-0.0255f, -0.10f, -0.451f, -0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.349f, 0.0255f, -0.10f, -0.451f);
+				drawSquareLineLoop(-0.0255f, -0.12f, -0.451f, -0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.349f, 0.0255f, -0.12f, -0.451f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 
-	//Gusset
-	glPushMatrix();
+		//Gusset
+		glPushMatrix();
 
 			//pivot
 			glPushMatrix();
@@ -3700,8 +3758,7 @@ void drawBazooka() {
 			drawTrapeziumTexture(-0.0255f, 0.0255f, -0.0255f, 0.0255f, -0.21f, -0.21f, -0.171f, -0.171f, 0.225f, 0.275f, 0.175f, 0.225f);
 			glDeleteTextures(1, &textures);
 			glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 }
@@ -3772,10 +3829,40 @@ void drawLightSword(char position) {
 }
 void drawBeamRifle() {
 	glPushMatrix();
-	//front 
-	glPushMatrix();
-	glTranslatef(-0.8f, 0.002f, 0.025f);
-	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+
+		if (isAttack && isFire) {
+
+			//Attack Beam
+			glPushMatrix();
+				glTranslatef(initialBeamFireTranslate, 0.0f, 0.0f);
+
+				//Translate the beam
+				if (isFinishAccumulateBeam) {
+					initialBeamFireTranslate += beamFireTranslateSpeed;
+				}
+
+			
+				glTranslatef(-0.95f, 0.0f, 0.025f);
+				textures = loadTexture(strGunBeam.c_str());
+				drawSphere(initialBeamSize);
+
+				if (initialBeamSize <= maxBeamSize) {
+					initialBeamSize += beamAccumulateSpeed;
+				}
+				glDeleteTextures(1, &textures);
+				glDisable(GL_TEXTURE_2D);
+
+				if (initialBeamSize >= maxBeamSize) {
+					isFinishAccumulateBeam = true;
+				}
+
+			glPopMatrix();
+		}
+
+		//front 
+		glPushMatrix();
+			glTranslatef(-0.8f, 0.002f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
 			textures = loadTexture(strBlacKColor.c_str());
 			drawCoverCylinder(0.02f, 0.02f, 0.1f, 10, 10);
@@ -3812,10 +3899,10 @@ void drawBeamRifle() {
 		glDeleteTextures(1, &textures);
 		glDisable(GL_TEXTURE_2D);
 
-	//sight
-	glPushMatrix();
-	glTranslatef(-0.1f, 0.102f, 0.025f);
-	glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+		//sight
+		glPushMatrix();
+			glTranslatef(-0.1f, 0.102f, 0.025f);
+			glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
 
 			textures = loadTexture(strDarkGreyDirtyColor.c_str());
 			drawCoverCylinder(0.04f, 0.04f, 0.15f, 10, 10);
@@ -3831,13 +3918,16 @@ void drawBeamRifle() {
 			glDisable(GL_TEXTURE_2D);
 
 			//Design
-			drawSquareLineLoop(-0.2245f, -0.09f, -0.00f, -0.2245f, -0.09f, 0.05f, -0.1245f, -0.09f, 0.05f, -0.1245f, -0.09f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.12f, -0.00f, -0.2245f, -0.12f, 0.05f, -0.1245f, -0.12f, 0.05f, -0.1245f, -0.12f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.15f, -0.00f, -0.2245f, -0.15f, 0.05f, -0.1245f, -0.15f, 0.05f, -0.1245f, -0.15f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.18f, -0.00f, -0.2245f, -0.18f, 0.05f, -0.1245f, -0.18f, 0.05f, -0.1245f, -0.18f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.21f, -0.00f, -0.2245f, -0.21f, 0.05f, -0.1245f, -0.21f, 0.05f, -0.1245f, -0.21f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.24f, -0.00f, -0.2245f, -0.24f, 0.05f, -0.1245f, -0.24f, 0.05f, -0.1245f, -0.24f, -0.00f);
-			drawSquareLineLoop(-0.2245f, -0.27f, -0.00f, -0.2245f, -0.27f, 0.05f, -0.1245f, -0.27f, 0.05f, -0.1245f, -0.27f, -0.00f);
+			textures = loadTexture(strHead_8.c_str());
+				drawSquareLineLoop(-0.2255f, -0.09f, -0.005f, -0.2255f, -0.09f, 0.055f, -0.1255f, -0.09f, 0.055f, -0.1255f, -0.09f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.12f, -0.005f, -0.2255f, -0.12f, 0.055f, -0.1255f, -0.12f, 0.055f, -0.1255f, -0.12f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.15f, -0.005f, -0.2255f, -0.15f, 0.055f, -0.1255f, -0.15f, 0.055f, -0.1255f, -0.15f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.18f, -0.005f, -0.2255f, -0.18f, 0.055f, -0.1255f, -0.18f, 0.055f, -0.1255f, -0.18f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.21f, -0.005f, -0.2255f, -0.21f, 0.055f, -0.1255f, -0.21f, 0.055f, -0.1255f, -0.21f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.24f, -0.005f, -0.2255f, -0.24f, 0.055f, -0.1255f, -0.24f, 0.055f, -0.1255f, -0.24f, -0.005f);
+				drawSquareLineLoop(-0.2255f, -0.27f, -0.005f, -0.2255f, -0.27f, 0.055f, -0.1255f, -0.27f, 0.055f, -0.1255f, -0.27f, -0.005f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
 
 		//Grip - back
@@ -3855,16 +3945,15 @@ void drawBeamRifle() {
 			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(0.34f, -0.465f, 0.05f);
-	glRotatef(8.0f, 0.0f, 0.0f, -0.1f);
-	glTranslatef(-0.34f, 0.465f, -0.05f);
+		glPushMatrix();
+			glTranslatef(0.34f, -0.465f, 0.05f);
+			glRotatef(8.0f, 0.0f, 0.0f, -0.1f);
+			glTranslatef(-0.34f, 0.465f, -0.05f);
 
 			textures = loadTexture(strDarkGreyDirtyColor.c_str());
 			drawRectangle(0.205f, 0.34f, -0.465f, -0.5f, -0.0f, 0.05f);
 			glDeleteTextures(1, &textures);
 			glDisable(GL_TEXTURE_2D);
-
 		glPopMatrix();
 
 		//Grip - front
