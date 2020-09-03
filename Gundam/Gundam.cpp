@@ -50,6 +50,8 @@ string strShield_1 = "Shield_1.bmp";
 string strShield_2 = "Shield_2.bmp";
 string strShield_3 = "Shield_3.bmp";
 string strGunBeam = "Gun_Beam.bmp";
+string strOrangeColor = "orange.bmp";
+
 void textureMapOrigin() {
 	//Texture (BMP)
 	strLightBlueColor = "Blue_Dirty_Color.bmp";
@@ -280,6 +282,7 @@ string strRoof = "London_Roof.bmp";
 string strPillar = "London_Roof.bmp";
 string strSplitLine = "London_Split_Line.bmp";
 string strBlackLine = "London_Black_Line.bmp";
+string strFire = "London_Fire.bmp";
 
 //projection
 float tz = 1.5f, tSpeed = 0.5f;
@@ -305,6 +308,7 @@ float ambM[] = { 1, 0, 0 }; //red color ambient material
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop);
 void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string frontBack, string topBottom, string leftRight);
+void drawTrapeziumTexture_6Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string front, string back, string top, string bottom, string left, string right);
 void drawSphere(float radius);
 void drawPyramid(float minX, float maxX, float minY, float maxY, float minZ, float maxZ, float divideX, float divideZ);
 void triangularPrism(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
@@ -314,6 +318,7 @@ void drawCoverCylinder(float baseRadius, float topRadius, float height, int slic
 void drawCircle(float xPoint, float yPoint, float radius);
 void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4);
 void drawCube(float size);
+void drawLine(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 
 //leg - data type
 //left leg
@@ -434,14 +439,9 @@ bool isTextureBackground = false;
 bool activateBridge = false;
 
 //London Transition & Rotation
-float initialViewportRotate = 0.0f;
-float viewportRotate = 0.0f;
-float initialBridgeRotate = 0.0f;
-float bridgeRotate = 0.0f;
-float bridgeZoomInOut = 0.0f;
-float bridgeZoomLeftRight = 0.0f;
 float intitialBridgeLift = 0.0f;
 float bridgeLift = 0.0f;
+static float londonFireSpin = 0.0f;
 
 //London Speed
 float rotateSpeed = 2.0f;
@@ -483,6 +483,7 @@ void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 
 //Robot BackGround
 void drawBackground();
+
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -735,6 +736,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			//London Bridge
 			activateBridge = false;
+			londonFireSpin = 0.0f;
 
 			//Texture
 			isTextureChange = false;
@@ -1378,8 +1380,6 @@ void lighting() {
 void drawBackground() {
 
 	glPushMatrix();
-		//glTranslatef(0.0f, 0.0f, 2.0f);
-
 		textures = loadTexture(strBackground.c_str());
 		drawCube(3.0);
 		glDeleteTextures(1,&textures);
@@ -1612,6 +1612,97 @@ void drawTrapeziumTexture_3Var(float minXBottom, float maxXBottom, float minXTop
 
 	//Front
 	textures = loadTexture(frontBack.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+}
+void drawTrapeziumTexture_6Var(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop, string front, string back, string top, string bottom, string left, string right) {
+	//Back
+	textures = loadTexture(back.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+
+	//Bottom
+	textures = loadTexture(bottom.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+
+	//Left
+	textures = loadTexture(left.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(maxXBottom, maxYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(maxXBottom, maxYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+
+	//Top
+	textures = loadTexture(top.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(maxXTop, maxYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxXTop, maxYTop, maxZTop);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+
+	//Right
+	textures = loadTexture(right.c_str());
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minXTop, minYTop, minZTop);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(minXBottom, minYBottom, minZBottom);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(minXBottom, minYBottom, maxZBottom);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(minXTop, minYTop, maxZTop);
+	glEnd();
+	glDeleteTextures(1, &textures);
+	glDisable(GL_TEXTURE_2D);
+
+	//Front
+	textures = loadTexture(front.c_str());
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(minXTop, minYTop, maxZTop);
@@ -1994,6 +2085,14 @@ void drawCube(float size) {
 
 
 
+}
+void drawLine(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+	glBegin(GL_LINES);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minX, minY, minZ);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxX, maxY, maxZ);
+	glEnd();
 }
 
 //leg
@@ -2706,8 +2805,30 @@ void drawOverallBody() {
 		glDeleteTextures(1, &textures);
 		glDisable(GL_TEXTURE_2D);
 
-		//middle
-		drawTrapeziumTexture_3Var(-0.475f, 0.175f, -0.5f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strGreyDirtyColor);
+		//middle body
+		glPushMatrix();
+
+			//left middle
+			drawTrapeziumTexture_6Var(-0.475f, -0.275f, -0.5f, -0.3f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strRedDirtyColor, strRedDirtyColor, strHead_1, strGreyDirtyColor);
+			//middle middle
+			drawTrapeziumTexture_3Var(-0.275f, -0.025f, -0.3f, 0.0f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.125f, 0.015f, 0.25f, strGreyBase, strGreyBase, strGreyBase);
+			//right middle
+			drawTrapeziumTexture_6Var(-0.025f, 0.175f, 0.0f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strGreyDirtyColor, strRedDirtyColor, strGreyDirtyColor, strHead_1);
+		
+			//Design for middle middle
+			glLineWidth(5.0f);
+
+			textures = loadTexture(strDarkGreyDirtyColor.c_str());
+				drawLine(-0.3f, 1.35f, 0.3f, 0.0f, 1.35f, 0.3f);
+				drawLine(-0.3f, 1.25f, 0.25f, 0.0f, 1.25f, 0.25f);
+				drawLine(-0.3f, 1.15f, 0.225f, 0.0f, 1.15f, 0.225f);
+				drawLine(-0.3f, 1.05f, 0.175f, 0.0f, 1.05f, 0.175f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+
+			glLineWidth(1.0f);
+
+		glPopMatrix();
 
 		//connect right hand
 		textures = loadTexture(strRedDirtyColor.c_str());
@@ -4343,10 +4464,10 @@ void drawLondonCircle(float xPoint, float yPoint, float radius, string circleTex
 }
 void drawLondonLine(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
 	glBegin(GL_LINES);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(minX, minY, minZ);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(maxX, maxY, maxZ);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minX, minY, minZ);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
 }
 
@@ -4354,19 +4475,19 @@ void drawFinalBridge() {
 	glPushMatrix();
 		//left
 		glPushMatrix();
-			glTranslatef(-1.5f, -1.0f, bridgeZoomInOut);
+			glTranslatef(-1.5f, -1.0f, 0.0f);
 			drawBridgeBuilding();
 		glPopMatrix();
 
 		//right
 		glPushMatrix();
-			glTranslatef(1.5f, -1.0f, bridgeZoomInOut);
+			glTranslatef(1.5f, -1.0f, 0.0f);
 			glRotatef(-180.0f, 0.0f, 0.1f, 0.0f);
 			drawBridgeBuilding();
 		glPopMatrix();
 
 		glPushMatrix();
-			glTranslatef(-1.5f, 1.0f, bridgeZoomInOut);
+			glTranslatef(-1.5f, 1.0f, 0.0f);
 			sun();
 
 			//Bird Fly
@@ -4394,6 +4515,18 @@ void drawFinalBridge() {
 }
 void drawBridgeBuilding() {
 	glPushMatrix();
+		//draw fire below base
+		glPushMatrix();
+			glTranslatef(0.0f, -0.075f, 0.0f);
+				glRotatef(londonFireSpin += 1.0f, 0.0f, 0.1f, 0.0f);
+			glTranslatef(0.0f, 0.075f, 0.0f);
+
+			textures = loadTexture(strOrangeColor.c_str());
+				drawPyramid(-0.25f, 0.25f, -0.55f, -0.95f, -0.25f, 0.25f, 20.0f, 20.0f);
+			glDeleteTextures(1, &textures);
+			glDisable(GL_TEXTURE_2D);
+
+		glPopMatrix();
 
 		//draw base
 		glPushMatrix();
@@ -4603,21 +4736,21 @@ void sun() {
 	glPopMatrix();
 
 	textures = loadTexture(strSunColor.c_str());
-	sunTriangle(-0.95f, 0.475f, -0.80f, 0.50f, -0.85f, 0.30f);
-	sunTriangle(-0.7f, 0.55f, -0.50f, 0.425f, -0.575f, 0.65f);
-	sunTriangle(-0.475f, 0.85f, -0.525f, 0.70f, -0.275f, 0.725f);
-	sunTriangle(-0.475f, 1.0f, -0.475f, 0.90f, -0.30f, 0.965f);
+		sunTriangle(-0.95f, 0.475f, -0.80f, 0.50f, -0.85f, 0.30f);
+		sunTriangle(-0.7f, 0.55f, -0.50f, 0.425f, -0.575f, 0.65f);
+		sunTriangle(-0.475f, 0.85f, -0.525f, 0.70f, -0.275f, 0.725f);
+		sunTriangle(-0.475f, 1.0f, -0.475f, 0.90f, -0.30f, 0.965f);
 	glDeleteTextures(1, &textures);
 	glDisable(GL_TEXTURE_2D);
 }
 void sunTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex2f(x1, y1);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex2f(x2, y2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex2f(x3, y3);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(x1, y1);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(x2, y2);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(x3, y3);
 	glEnd();
 }
 void bird(float lineX1, float lineY1, float lineX2, float lineY2) {
