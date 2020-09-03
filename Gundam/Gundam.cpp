@@ -29,6 +29,7 @@ GLuint textures;
 //Texture (BMP)
 //background
 string strBackground = "dayTime.bmp";
+
 //Robot
 string strLightBlueColor = "Blue_Dirty_Color.bmp";
 string strRedDirtyColor = "Red_Dirty_Color.bmp";
@@ -49,6 +50,226 @@ string strHead_9 = "head_9.bmp";
 string strShield_1 = "Shield_1.bmp";
 string strShield_2 = "Shield_2.bmp";
 string strShield_3 = "Shield_3.bmp";
+void textureMapOrigin() {
+	//Texture (BMP)
+	strLightBlueColor = "Blue_Dirty_Color.bmp";
+	strRedDirtyColor = "Red_Dirty_Color.bmp";
+	strGreyDirtyColor = "Grey_Dirty_Color.bmp";
+	strDarkGreyDirtyColor = "Dark_Grey_Dirty_Color.bmp";
+	strKneeTexture = "Knee_Texture.bmp";
+	strBlacKColor = "black.bmp";
+	strRobotArmJoint = "Robot_Arm_Joint.bmp";
+	strHead_1 = "head_1.bmp";
+	strHead_2 = "head_2.bmp";
+	strHead_3 = "head_3.bmp";
+	strHead_4 = "head_4.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap1() {
+	//Texture (BMP)
+	strLightBlueColor = "Red_Dirty_Color.bmp";
+	strRedDirtyColor = "Blue_Dirty_Color.bmp";
+	strGreyDirtyColor = "black.bmp";
+	strDarkGreyDirtyColor = "head_2.bmp";
+	strKneeTexture = "joint_white.bmp";
+	strBlacKColor = "Shield_2.bmp";
+	strRobotArmJoint = "joint_white.bmp";
+	strHead_1 = "head_3.bmp";
+	strHead_2 = "Red_Dirty_Color.bmp";
+	strHead_3 = "Blue_Dirty_Color.bmp";
+	strHead_4 = "Red_Dirty_Color.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap2() {
+	//Texture (BMP)
+	strLightBlueColor = "green.bmp";
+	strRedDirtyColor = "head_1.bmp";
+	strGreyDirtyColor = "head_5.bmp";
+	strDarkGreyDirtyColor = "orange.bmp";
+	strKneeTexture = "joint_black.bmp";
+	strBlacKColor = "indigo.bmp";
+	strRobotArmJoint = "joint_black.bmp";
+	strHead_1 = "black.bmp";
+	strHead_2 = "green.bmp";
+	strHead_3 = "head_1.bmp";
+	strHead_4 = "green.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap3() {
+	//Texture (BMP)
+	strLightBlueColor = "Shield_1.bmp";
+	strRedDirtyColor = "Grey_Dirty_Color.bmp";
+	strGreyDirtyColor = "orange.bmp";
+	strDarkGreyDirtyColor = "orange.bmp";
+	strKneeTexture = "joint_blue.bmp";
+	strBlacKColor = "head_4.bmp";
+	strRobotArmJoint = "joint_blue.bmp";
+	strHead_1 = "Blue_Dirty_Color.bmp";
+	strHead_2 = "Shield_1.bmp";
+	strHead_3 = "Grey_Dirty_Color.bmp";
+	strHead_4 = "Shield_1.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap4() {
+	//Texture (BMP)
+	strLightBlueColor = "head_1.bmp";
+	strRedDirtyColor = "orange.bmp";
+	strGreyDirtyColor = "head_9.bmp";
+	strDarkGreyDirtyColor = "Red_Dirty_Color.bmp";
+	strKneeTexture = "joint_indigo.bmp";
+	strBlacKColor = "black.bmp";
+	strRobotArmJoint = "joint_indigo.bmp";
+	strHead_1 = "indigo.bmp";
+	strHead_2 = "head_1.bmp";
+	strHead_3 = "orange.bmp";
+	strHead_4 = "head_1.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap5() {
+	//Texture (BMP)
+	strLightBlueColor = "head_3.bmp";
+	strRedDirtyColor = "black.bmp";
+	strGreyDirtyColor = "head_2.bmp";
+	strDarkGreyDirtyColor = "Shield_1.bmp";
+	strKneeTexture = "joint_purple.bmp";
+	strBlacKColor = "Blue_Dirty_Color.bmp";
+	strRobotArmJoint = "joint_purple.bmp";
+	strHead_1 = "purple.bmp";
+	strHead_2 = "head_3.bmp";
+	strHead_3 = "black.bmp";
+	strHead_4 = "head_3.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap6() {
+	//Texture (BMP)
+	strLightBlueColor = "Shield_3.bmp";
+	strRedDirtyColor = "green.bmp";
+	strGreyDirtyColor = "Shield_3.bmp";
+	strDarkGreyDirtyColor = "Shield_2.bmp";
+	strKneeTexture = "joint_orange.bmp";
+	strBlacKColor = "Dark_Grey_Dirty_Color.bmp";
+	strRobotArmJoint = "joint_orange.bmp";
+	strHead_1 = "orange.bmp";
+	strHead_2 = "Shield_3.bmp";
+	strHead_3 = "Shield_3.bmp";
+	strHead_4 = "Shield_3.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap7() {
+	//Texture (BMP)
+	strLightBlueColor = "purple.bmp";
+	strRedDirtyColor = "Shield_2.bmp";
+	strGreyDirtyColor = "head_4.bmp";
+	strDarkGreyDirtyColor = "black.bmp";
+	strKneeTexture = "joint_grey.bmp";
+	strBlacKColor = "Shield_3.bmp";
+	strRobotArmJoint = "joint_grey.bmp";
+	strHead_1 = "Dark_Grey_Dirty_Color.bmp";
+	strHead_2 = "purple.bmp";
+	strHead_3 = "Shield_2.bmp";
+	strHead_4 = "purple.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap8() {
+	//Texture (BMP)
+	strLightBlueColor = "black.bmp";
+	strRedDirtyColor = "indigo.bmp";
+	strGreyDirtyColor = "Blue_Dirty_Color.bmp";
+	strDarkGreyDirtyColor = "Shield_1.bmp";
+	strKneeTexture = "joint_red.bmp";
+	strBlacKColor = "Red_Dirty_Color.bmp";
+	strRobotArmJoint = "joint_red.bmp";
+	strHead_1 = "head_5.bmp";
+	strHead_2 = "black.bmp";
+	strHead_3 = "indigo.bmp";
+	strHead_4 = "black.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
+void textureMap9() {
+	//Texture (BMP)
+	strLightBlueColor = "Red_Dirty_Color.bmp";
+	strRedDirtyColor = "Shield_1.bmp";
+	strGreyDirtyColor = "orange.bmp";
+	strDarkGreyDirtyColor = "black.bmp";
+	strKneeTexture = "joint_yellow.bmp";
+	strBlacKColor = "head_7.bmp";
+	strRobotArmJoint = "joint_yellow.bmp";
+	strHead_1 = "head_1.bmp";
+	strHead_2 = "Red_Dirty_Color.bmp";
+	strHead_3 = "Shield_1.bmp";
+	strHead_4 = "Red_Dirty_Color.bmp";
+	strHead_5 = "head_5.bmp";
+	strHead_6 = "head_6.bmp";
+	strHead_7 = "head_7.bmp";
+	strHead_8 = "head_8.bmp";
+	strHead_9 = "head_9.bmp";
+	strShield_1 = "Shield_1.bmp";
+	strShield_2 = "Shield_2.bmp";
+	strShield_3 = "Shield_3.bmp";
+}
 //London
 string strSideWall = "London_Side_Wall.bmp";
 string strStreet = "London_Street.bmp";
@@ -66,17 +287,17 @@ bool isOrtho = true;
 float Ry = 0.0, rSpeed = 1.5;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
-int x = 0.0, y = 0.0, z = 0.0;
+//int x = 0.0, y = 0.0, z = 0.0;
 
 //lightning
 void lighting();
-bool isLightOn = true; 
-float amb[] = { 0.0f, 0.0f, 0.0f }; 
-float posA[] = { 0.0f, 1.0f, 0.0f }; 
+bool isLightOn = false;
 
-float diff[] = { 1.0f, 1.0f, 1.0f }; 
-float posD[] = { 0.0f, 1.0f, 0.0f }; 
+GLfloat amb[] = { 0.0f, 0.0f, 0.0f };
+GLfloat posA[] = { 0.0f, 1.0f, 0.0f };
 
+GLfloat diff[] = { 1.0f, 1.0f, 1.0f };
+GLfloat posD[] = { 0.0f, 1.0f, 0.0f };
 
 float ambM[] = { 1, 0, 0 }; //red color ambient material
 
@@ -197,6 +418,7 @@ void drawBeamRifle();
 GLuint loadTexture(LPCSTR filename);
 bool isTextureChange = false;
 bool isTextureBackground = false;
+
 //London Bridge
 bool activateBridge = false;
 
@@ -502,6 +724,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			//London Bridge
 			activateBridge = false;
+
+			//Texture
+			isTextureChange = false;
+			textureMapOrigin();
+
+			//Light
+			isLightOn = false;
+
+			//Background
+			isTextureBackground = false;
 		}
 		//'H' - activate upper arm (left and right)
 		else if (wParam == 0x48) {
@@ -650,7 +882,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isOrtho = !isOrtho;
 		}
 		//zoom out (robot)
-		else if (wParam == '2' || wParam == VK_NUMPAD2 && !isTextureChange) {
+		else if (wParam == '2' || wParam == VK_NUMPAD2 && !isTextureChange && !isTextureBackground && !isLightOn) {
 
 			if (!isOrtho) {
 				if (tz < 3.0) {
@@ -660,7 +892,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 		}
 		//zoom in (robot)
-		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange) {
+		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (!isOrtho) {
 				if (tz > 0.0) {
 					tz -= tSpeed;
@@ -669,36 +901,36 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			}
 		}
 		//move view left
-		else if (wParam == '4' || wParam == VK_NUMPAD4 && !isTextureChange) {
+		else if (wParam == '4' || wParam == VK_NUMPAD4 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (Tx > -1.0) {
 				Tx -= TxSpeed;
 			}
 
 		}
 		//move view right
-		else if (wParam == '6' || wParam == VK_NUMPAD6 && !isTextureChange) {
+		else if (wParam == '6' || wParam == VK_NUMPAD6 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (Tx < 1.0) {
 				Tx += TxSpeed;
 			}
 		}
 		//move view up
-		else if (wParam == '5' || wParam == VK_NUMPAD5 && !isTextureChange) {
+		else if (wParam == '5' || wParam == VK_NUMPAD5 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (Ty > -1.0) {
 				Ty -= TySpeed;
 			}
 		}
 		//move view down
-		else if (wParam == '0' || wParam == VK_NUMPAD0 && !isTextureChange) {
+		else if (wParam == '0' || wParam == VK_NUMPAD0 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			if (Ty < 1.0) {
 				Ty += TySpeed;
 			}
 		}
 		//rotate view left
-		else if (wParam == '7' || wParam == VK_NUMPAD7 && !isTextureChange) {
+		else if (wParam == '7' || wParam == VK_NUMPAD7 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			Ry += rSpeed;
 		}
 		//rotate view right
-		else if (wParam == '9' || wParam == VK_NUMPAD9 && !isTextureChange) {
+		else if (wParam == '9' || wParam == VK_NUMPAD9 && !isTextureChange && !isTextureBackground && !isLightOn) {
 			Ry -= rSpeed;
 		}
 		// to activate shield and Rifle
@@ -745,226 +977,33 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		if (isTextureChange) {
 			if (wParam == '1' || wParam == VK_NUMPAD1) {
-				//Texture (BMP)
-				strLightBlueColor = "Red_Dirty_Color.bmp";
-				strRedDirtyColor = "Blue_Dirty_Color.bmp";
-				strGreyDirtyColor = "black.bmp";
-				strDarkGreyDirtyColor = "head_2.bmp";
-				strKneeTexture = "joint_white.bmp";
-				strBlacKColor = "Shield_2.bmp";
-				strRobotArmJoint = "joint_white.bmp";
-				strHead_1 = "head_3.bmp";
-				strHead_2 = "Red_Dirty_Color.bmp";
-				strHead_3 = "Blue_Dirty_Color.bmp";
-				strHead_4 = "Red_Dirty_Color.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap1();
 			}
 			else if (wParam == '2' || wParam == VK_NUMPAD2) {
-				//Texture (BMP)
-				strLightBlueColor = "green.bmp";
-				strRedDirtyColor = "head_1.bmp";
-				strGreyDirtyColor = "head_5.bmp";
-				strDarkGreyDirtyColor = "orange.bmp";
-				strKneeTexture = "joint_black.bmp";
-				strBlacKColor = "indigo.bmp";
-				strRobotArmJoint = "joint_black.bmp";
-				strHead_1 = "black.bmp";
-				strHead_2 = "green.bmp";
-				strHead_3 = "head_1.bmp";
-				strHead_4 = "green.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap2();
 			}
 			else if (wParam == '3' || wParam == VK_NUMPAD3) {
-				//Texture (BMP)
-				strLightBlueColor = "Shield_1.bmp";
-				strRedDirtyColor = "Grey_Dirty_Color.bmp";
-				strGreyDirtyColor = "orange.bmp";
-				strDarkGreyDirtyColor = "orange.bmp";
-				strKneeTexture = "joint_blue.bmp";
-				strBlacKColor = "head_4.bmp";
-				strRobotArmJoint = "joint_blue.bmp";
-				strHead_1 = "Blue_Dirty_Color.bmp";
-				strHead_2 = "Shield_1.bmp";
-				strHead_3 = "Grey_Dirty_Color.bmp";
-				strHead_4 = "Shield_1.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap3();
 			}
 			else if (wParam == '4' || wParam == VK_NUMPAD4) {
-				//Texture (BMP)
-				strLightBlueColor = "head_1.bmp";
-				strRedDirtyColor = "orange.bmp";
-				strGreyDirtyColor = "head_9.bmp";
-				strDarkGreyDirtyColor = "Red_Dirty_Color.bmp";
-				strKneeTexture = "joint_indigo.bmp";
-				strBlacKColor = "black.bmp";
-				strRobotArmJoint = "joint_indigo.bmp";
-				strHead_1 = "indigo.bmp";
-				strHead_2 = "head_1.bmp";
-				strHead_3 = "orange.bmp";
-				strHead_4 = "head_1.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap4();
 			}
 			else if (wParam == '5' || wParam == VK_NUMPAD5) {
-				//Texture (BMP)
-				strLightBlueColor = "head_3.bmp";
-				strRedDirtyColor = "black.bmp";
-				strGreyDirtyColor = "head_2.bmp";
-				strDarkGreyDirtyColor = "Shield_1.bmp";
-				strKneeTexture = "joint_purple.bmp";
-				strBlacKColor = "Blue_Dirty_Color.bmp";
-				strRobotArmJoint = "joint_purple.bmp";
-				strHead_1 = "purple.bmp";
-				strHead_2 = "head_3.bmp";
-				strHead_3 = "black.bmp";
-				strHead_4 = "head_3.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap5();
 			}
 			else if (wParam == '6' || wParam == VK_NUMPAD6) {
-				//Texture (BMP)
-				strLightBlueColor = "Shield_3.bmp";
-				strRedDirtyColor = "green.bmp";
-				strGreyDirtyColor = "Shield_3.bmp";
-				strDarkGreyDirtyColor = "Shield_2.bmp";
-				strKneeTexture = "joint_orange.bmp";
-				strBlacKColor = "Dark_Grey_Dirty_Color.bmp";
-				strRobotArmJoint = "joint_orange.bmp";
-				strHead_1 = "orange.bmp";
-				strHead_2 = "Shield_3.bmp";
-				strHead_3 = "Shield_3.bmp";
-				strHead_4 = "Shield_3.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap6();
 			}
 			else if (wParam == '7' || wParam == VK_NUMPAD7) {
-				//Texture (BMP)
-				strLightBlueColor = "purple.bmp";
-				strRedDirtyColor = "Shield_2.bmp";
-				strGreyDirtyColor = "head_4.bmp";
-				strDarkGreyDirtyColor = "black.bmp";
-				strKneeTexture = "joint_grey.bmp";
-				strBlacKColor = "Shield_3.bmp";
-				strRobotArmJoint = "joint_grey.bmp";
-				strHead_1 = "Dark_Grey_Dirty_Color.bmp";
-				strHead_2 = "purple.bmp";
-				strHead_3 = "Shield_2.bmp";
-				strHead_4 = "purple.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap7();
 			}
 			else if (wParam == '8' || wParam == VK_NUMPAD8) {
-				//Texture (BMP)
-				strLightBlueColor = "black.bmp";
-				strRedDirtyColor = "indigo.bmp";
-				strGreyDirtyColor = "Blue_Dirty_Color.bmp";
-				strDarkGreyDirtyColor = "Shield_1.bmp";
-				strKneeTexture = "joint_red.bmp";
-				strBlacKColor = "Red_Dirty_Color.bmp";
-				strRobotArmJoint = "joint_red.bmp";
-				strHead_1 = "head_5.bmp";
-				strHead_2 = "black.bmp";
-				strHead_3 = "indigo.bmp";
-				strHead_4 = "black.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap8();
 			}
 			else if (wParam == '9' || wParam == VK_NUMPAD9) {
-				//Texture (BMP)
-				strLightBlueColor = "Red_Dirty_Color.bmp";
-				strRedDirtyColor = "Shield_1.bmp";
-				strGreyDirtyColor = "orange.bmp";
-				strDarkGreyDirtyColor = "black.bmp";
-				strKneeTexture = "joint_yellow.bmp";
-				strBlacKColor = "head_7.bmp";
-				strRobotArmJoint = "joint_yellow.bmp";
-				strHead_1 = "head_1.bmp";
-				strHead_2 = "Red_Dirty_Color.bmp";
-				strHead_3 = "Shield_1.bmp";
-				strHead_4 = "Red_Dirty_Color.bmp";
-				strHead_5 = "head_5.bmp";
-				strHead_6 = "head_6.bmp";
-				strHead_7 = "head_7.bmp";
-				strHead_8 = "head_8.bmp";
-				strHead_9 = "head_9.bmp";
-				strShield_1 = "Shield_1.bmp";
-				strShield_2 = "Shield_2.bmp";
-				strShield_3 = "Shield_3.bmp";
+				textureMap9();
 			}
 		
-		}
-		else {
-			//Texture (BMP)
-			strLightBlueColor = "Blue_Dirty_Color.bmp";
-			strRedDirtyColor = "Red_Dirty_Color.bmp";
-			strGreyDirtyColor = "Grey_Dirty_Color.bmp";
-			strDarkGreyDirtyColor = "Dark_Grey_Dirty_Color.bmp";
-			strKneeTexture = "Knee_Texture.bmp";
-			strBlacKColor = "black.bmp";
-			strRobotArmJoint = "Robot_Arm_Joint.bmp";
-			strHead_1 = "head_1.bmp";
-			strHead_2 = "head_2.bmp";
-			strHead_3 = "head_3.bmp";
-			strHead_4 = "head_4.bmp";
-			strHead_5 = "head_5.bmp";
-			strHead_6 = "head_6.bmp";
-			strHead_7 = "head_7.bmp";
-			strHead_8 = "head_8.bmp";
-			strHead_9 = "head_9.bmp";
-			strShield_1 = "Shield_1.bmp";
-			strShield_2 = "Shield_2.bmp";
-			strShield_3 = "Shield_3.bmp";
 		}
 
 		if (isTextureBackground) {
@@ -989,6 +1028,45 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else {
 			strBackground = "dayTime.bmp";
+		}
+
+		if (isLightOn) {
+			//Move light up (y-axis)
+			if (wParam == '8' || wParam == VK_NUMPAD8) {
+				if (posA[1] <= 1.0f && posD[1] <= 1.0f) {
+					posD[1] += 0.1f;
+				}
+			}
+			//Move light down (y-axis)
+			if (wParam == '2' || wParam == VK_NUMPAD2) {
+				if (posA[1] >= -1.0f && posD[1] >= -1.0f) {
+					posD[1] -= 0.1f;
+				}
+			}
+			//Move light left (x-axis)
+			if (wParam == '4' || wParam == VK_NUMPAD4) {
+				if (posA[0] >= -1.0f && posD[0] >= -1.0f) {
+					posD[0] -= 0.1f;
+				}
+			}
+			//Move light right (x-axis)
+			if (wParam == '6' || wParam == VK_NUMPAD6) {
+				if (posA[0] <= 1.0f && posD[0] <= 1.0f) {
+					posD[0] += 0.1f;
+				}
+			}
+			//Move light near (z-axis)
+			if (wParam == '7' || wParam == VK_NUMPAD7) {
+				if (posA[2] >= -1.0f && posD[2] >= -1.0f) {
+					posD[2] -= 0.1f;
+				}
+			}
+			//Move light far (z-axis)
+			if (wParam == '9' || wParam == VK_NUMPAD9) {
+				if (posA[2] <= 1.0f && posD[2] <= 1.0f) {
+					posD[2] += 0.1f;
+				}
+			}
 		}
 		break;
 
@@ -1097,29 +1175,6 @@ void display()
 					glPopMatrix();
 				}
 
-				//Weapon - bazooka
-				glPushMatrix();
-					glTranslatef(0.0f, 0.15f, -0.05f);
-
-					glPushMatrix();
-						glTranslatef(0.0f, -0.1f, 0.0f);
-						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-						glTranslatef(0.0f, 0.1f, 0.0f);
-
-						drawBazooka();
-					glPopMatrix();
-				glPopMatrix();
-
-				//weapon - right light sword
-				glPushMatrix();
-					drawLightSword('L');
-				glPopMatrix();
-
-				//weapon - left light sword
-				glPushMatrix();
-					drawLightSword('R');
-				glPopMatrix();
-
 				//head
 				glPushMatrix();
 					glTranslatef(-0.08,0.7,0.0);
@@ -1153,6 +1208,29 @@ void display()
 						glScalef(0.5f, 0.5f, 0.5f);
 						drawRobotRightHand();
 					glPopMatrix();
+				glPopMatrix();
+
+				//Weapon - bazooka
+				glPushMatrix();
+					glTranslatef(0.0f, 0.15f, -0.05f);
+
+					glPushMatrix();
+						glTranslatef(0.0f, -0.1f, 0.0f);
+						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+						glTranslatef(0.0f, 0.1f, 0.0f);
+
+						drawBazooka();
+					glPopMatrix();
+				glPopMatrix();
+
+				//weapon - right light sword
+				glPushMatrix();
+					drawLightSword('L');
+				glPopMatrix();
+
+				//weapon - left light sword
+				glPushMatrix();
+					drawLightSword('R');
 				glPopMatrix();
 
 			glPopMatrix();
@@ -1220,6 +1298,7 @@ void lighting() {
 
 	else
 		glDisable(GL_LIGHTING);
+
 	//Light 1 - greem color diffuse light at pos(4, 0, 0) above sphere
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
 	glLightfv(GL_LIGHT1, GL_POSITION, posA);
@@ -1235,16 +1314,12 @@ void lighting() {
 //Draw Background
 void drawBackground() {
 
-	GLuint texture;
-
-	texture = loadTexture(strBackground.c_str());
-	
+	textures = loadTexture(strBackground.c_str());
 	drawCube(3.0);
-
-	glDeleteTextures(1,&texture);
-
-
+	glDeleteTextures(1,&textures);
+	glDisable(GL_TEXTURE_2D);
 }
+
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
 	//Back
@@ -1761,6 +1836,13 @@ void drawCircle(float xPoint, float yPoint, float radius) {
 	glVertex2f(xPoint, yPoint);
 
 	for (float angle = 0; angle <= 360; angle += 0.1) {
+		if (xPoint / 4 == 0) {
+			glTexCoord2f(0.0f, 0.0f);
+		}
+		else {
+			glTexCoord2f(0.0f, 1.0f);
+		}
+
 		glVertex2f(xPoint + radius * cos(angle), yPoint + radius * sin(angle));
 	}
 	glEnd();
@@ -2541,18 +2623,10 @@ void adjustFingerMove(float translateX, float translateY, float translateZ, floa
 void drawBody() {
 	glPushMatrix();
 
-		if (initialBodyRotate > 90.0f && initialBodyRotate < 270.0f || initialBodyRotate < -90.0f && initialBodyRotate > -270.0f) {
-			drawOverallBody();
+		drawOverallBody();
 		
-			//Back Pack
-			drawBackPack();
-		}
-		else {
-			//Back Pack
-			drawBackPack();
-
-			drawOverallBody();
-		}
+		//Back Pack
+		drawBackPack();
 
 	glPopMatrix();
 }
@@ -2567,63 +2641,23 @@ void drawOverallBody() {
 		//middle
 		drawTrapeziumTexture_3Var(-0.475f, 0.175f, -0.5f, 0.2f, 1.0f, 1.0f, 1.4f, 1.4f, 0.015f, 0.185f, 0.015f, 0.35f, strRedDirtyColor, strRedDirtyColor, strGreyDirtyColor);
 
-		if (initialBodyRotate < 0.0f) {
-			//connect right hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
+		//connect right hand
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-			//Top
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
+		//Top
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
-			//connect left hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-		}
-		else if (initialBodyRotate > 0.0f) {
-			//connect left hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-
-			//Top
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-
-			//connect right hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-		}
-		else {
-			//connect right hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.75f, -0.475f, -0.75f, -0.5f, 1.775f, 1.775f, 1.525f, 1.4f, 0.015f, 0.185f, 0.015f, 0.25f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-
-			//Top
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(-0.5f, 0.2f, -0.475f, 0.175f, 1.4f, 1.4f, 1.75f, 1.75f, 0.015f, 0.35f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-
-			//connect left hand
-			textures = loadTexture(strRedDirtyColor.c_str());
-			drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
-			glDeleteTextures(1, &textures);
-			glDisable(GL_TEXTURE_2D);
-		}
+		//connect left hand
+		textures = loadTexture(strRedDirtyColor.c_str());
+		drawTrapeziumTexture(0.2f, 0.45f, 0.175f, 0.45f, 1.4f, 1.525f, 1.775f, 1.775f, 0.015f, 0.25f, 0.015f, 0.185f);
+		glDeleteTextures(1, &textures);
+		glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -3569,7 +3603,7 @@ void drawBazooka() {
 		glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.6f);
 			textures = loadTexture(strBlacKColor.c_str());
-			drawCylinder(0.04f, 0.04f, 1.0f, 20, 20);
+			drawCoverCylinder(0.04f, 0.04f, 1.0f, 20, 20);
 			glDeleteTextures(1, &textures);
 			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
