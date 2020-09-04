@@ -1141,7 +1141,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//need to deactivate before space
 		if (isAttactMode) {
-
 			isShield = true;
 
 			if (isShield) {
