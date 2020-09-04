@@ -487,6 +487,7 @@ void drawBackground();
 
 //isAttactMode
 bool isAttactMode = false;
+bool isShieldBlock = false;
 
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -759,7 +760,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			initialBeamSize = 0.0f;
 			initialBeamFireTranslate = 0.0f;
 			beamFireTranslateSpeed = 0.0f;
+			isRifle = false;
 
+			//Shield
+			isAttactMode = false;
+			isShieldBlock = false;
+			isShield = false;
 		}
 		//'H' - activate upper arm (left and right)
 		else if (wParam == 0x48) {
@@ -870,11 +876,13 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//'N' - to move head to left
 		else if (wParam == 'N') {
 
-			rotateHX = 0.0f;
-			rotateHY = 0.5f;
-			rotateHZ = 0.0f;
-			rotateHMaxAngle = 45.0f;
-			rotateHMinAngle = 0.0f;
+			if (rotateH == 0.0f) {
+				rotateHX = 0.0f;
+				rotateHY = 0.5f;
+				rotateHZ = 0.0f;
+				rotateHMaxAngle = 45.0f;
+				rotateHMinAngle = 0.0f;
+			}
 
 			if (rotateH == 0.0f) {
 
@@ -888,11 +896,15 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		//'M' to move head to right
 		else if (wParam == 'M') {
-			rotateHX = 0.0f;
-			rotateHY = -0.5f;
-			rotateHZ = 0.0f;
-			rotateHMaxAngle = 45.0f;
-			rotateHMinAngle = 0.0f;
+
+			if (rotateH == 0.0f) {
+				rotateHX = 0.0f;
+				rotateHY = -0.5f;
+				rotateHZ = 0.0f;
+				rotateHMaxAngle = 45.0f;
+				rotateHMinAngle = 0.0f;
+
+			}
 
 			if (rotateH == 0.0f) {
 
@@ -981,8 +993,21 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		// to activate shield and Rifle
 		else if (wParam == VK_F1) {
-			isShield = !isShield;
 			isRifle = !isRifle;
+
+			//To prevent shield gone after press VK_F8
+			if (isAttactMode) {
+				isShield = true;
+			}
+			else {
+				//the isRifle is taking previous rifle
+				if (isRifle) {
+					isShield = true;
+				}
+				else {
+					isShield = false;
+				}
+			}
 
 			if (isShield && isRifle) {
 				fingerMove = fingerSpeed;
@@ -1010,6 +1035,15 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		else if (wParam == VK_F8) {
 			isAttactMode = !isAttactMode;
+			isShield = !isShield;
+
+			if (!isAttactMode) {
+				lowerLeftArmSpeed = -speed;
+			}
+		}
+		//'B' - move shield up down to block attack
+		else if (wParam == 'B' && isAttactMode) {
+			isShieldBlock = !isShieldBlock;
 		}
 		//for finger moving
 		if (activate == 1.0f) {
@@ -1139,9 +1173,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				beamFireTranslateSpeed = -0.01f;
 			}
 		}
+
 		//need to deactivate before space
-		if (isAttactMode) {
-			isShield = true;
+		if (isAttactMode && initialLeftLowerArmSpeed == 0.0f && isShieldBlock){
 
 			if (isShield) {
 				fingerMove = fingerSpeed;
@@ -1159,39 +1193,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerLeftArmSpeed = speed;
 
 			}
-			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
+				
+		}
+		else if(isAttactMode && initialLeftLowerArmSpeed == 90.0f && !isShieldBlock){
 
-				lowerLeftArmSpeed = -speed;
-
-			}
-			
-			}
-		else {
-		
-
-			lowerLeftArmMaxAngle = 90.0f;
-
-			if (initialLeftLowerArmSpeed == 0.0f) {
-
-				lowerLeftArmSpeed = speed;
-
-			}
-			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
-
-				lowerLeftArmSpeed = -speed;
-
-			}
-
-			isShield = false;
-
-			if (isShield) {
-				fingerMove = fingerSpeed;
-				thumbMove = thumbSpeed;
-			}
-			else {
-				fingerMove = -fingerSpeed;
-				thumbMove = -thumbSpeed;
-			}
+			lowerLeftArmSpeed = -speed;
 
 		}
 		break;
