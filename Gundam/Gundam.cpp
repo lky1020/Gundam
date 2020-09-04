@@ -1162,6 +1162,34 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				lowerLeftArmSpeed = -speed;
 
 			}
+			
+			}
+		else {
+		
+
+			lowerLeftArmMaxAngle = 90.0f;
+
+			if (initialLeftLowerArmSpeed == 0.0f) {
+
+				lowerLeftArmSpeed = speed;
+
+			}
+			if (initialLeftLowerArmSpeed == lowerLeftArmMaxAngle) {
+
+				lowerLeftArmSpeed = -speed;
+
+			}
+
+			isShield = false;
+
+			if (isShield) {
+				fingerMove = fingerSpeed;
+				thumbMove = thumbSpeed;
+			}
+			else {
+				fingerMove = -fingerSpeed;
+				thumbMove = -thumbSpeed;
+			}
 
 		}
 		break;
@@ -2227,6 +2255,7 @@ void arm(float* initialUpperArmSpeed, float* initialLowerArmSpeed, float* move_i
 	glPushMatrix();
 
 	if (direction == 'L' && isAttactMode) {
+
 		glTranslatef(0.0, 0.1, 0.1);
 		glRotatef(50, 0.1f, 0.0f, 0.0f); //control upper arm
 		glTranslatef(0.0, -0.1, -0.1);
