@@ -1163,10 +1163,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				strBackground = "Spring.bmp";
 			}
 			else if (wParam == '2' || wParam == VK_NUMPAD2) {
-				strBackground = "Summer.bmp";
+				strBackground = "B1.bmp";
 			}
 			else if (wParam == '3' || wParam == VK_NUMPAD3) {
-				strBackground = "autumn.bmp";
+				strBackground = "B2.bmp";
 			}
 			else if (wParam == '4' || wParam == VK_NUMPAD4) {
 				strBackground = "winter.bmp";
@@ -1549,6 +1549,7 @@ void drawBackground() {
 
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
+
 	//Back
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0, 0.0);
@@ -1620,6 +1621,7 @@ void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, f
 		glTexCoord2f(1.0, 1.0);
 		glVertex3f(maxX, maxY, maxZ);
 	glEnd();
+
 }
 void drawTrapeziumTexture(float minXBottom, float maxXBottom, float minXTop, float maxXTop, float minYBottom, float maxYBottom, float minYTop, float maxYTop, float minZBottom, float maxZBottom, float minZTop, float maxZTop) {
 	//Back
@@ -2167,6 +2169,7 @@ void drawCircle(float xPoint, float yPoint, float radius) {
 			glVertex2f(xPoint + radius * cos(angle), yPoint + radius * sin(angle));
 		}
 	glEnd();
+
 }
 void drawSquareLineLoop(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
 	glBegin(GL_LINE_LOOP);
