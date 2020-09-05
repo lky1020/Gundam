@@ -306,6 +306,7 @@ GLfloat diff[] = { 1.0f, 1.0f, 1.0f };
 GLfloat posD[] = { 0.0f, 1.0f, 0.0f };
 
 float ambM[] = { 1, 0, 0 }; //red color ambient material
+float c1 = 0.0f, c2 = 0.0f, c3 = 0.0f;
 
 //Draw Shape
 void drawRectangle(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
@@ -486,6 +487,7 @@ void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 
 //Robot BackGround
 void drawBackground();
+bool orthoBackground = true;
 
 //isAttactMode
 bool isAttactMode = false;
@@ -1070,6 +1072,40 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_F11) {
 			zoomBackground = !zoomBackground;
 		}
+		else if (wParam == VK_F3) {
+
+			orthoBackground = !orthoBackground;
+		}
+		if (orthoBackground) {
+			if (isOrtho) {
+
+				if (wParam == '0' || wParam == VK_NUMPAD0) {
+					c1 = 0.6;
+					c2 = 0.851;
+					c3 = 0.92;
+				}
+				else if (wParam == '1' || wParam == VK_NUMPAD1) {
+					c1 = 0.753;
+					c2 = 0.753;
+					c3 = 0.753;
+				}
+				else if (wParam == '2' || wParam == VK_NUMPAD2) {
+					c1 = 0.0;
+					c2 = 0.0;
+					c3 = 0.0;
+				}
+				else if (wParam == '3' || wParam == VK_NUMPAD3) {
+					c1 = 1.0;
+					c2 = 1.0;
+					c3 = 1.0;
+				}
+				else {
+					c1 = 0.0;
+					c2 = 0.0;
+					c3 = 0.0;
+				}
+			}
+		}
 		//'B' - move shield up down to block attack
 		else if (wParam == 'B' && isAttactMode) {
 			isShieldBlock = !isShieldBlock;
@@ -1280,6 +1316,9 @@ void display()
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (isOrtho) {
+		glClearColor(c1,c2,c3,0.0);
+	}
 	lighting();
 
 
@@ -1296,10 +1335,11 @@ void display()
 
 			glTranslatef(0.0, 0.0, -0.5f);
 			glTranslatef(0.0, 0.0, tbz);
-
+			drawBackground();
 		}
 
-			drawBackground();
+
+		
 		glPopMatrix();
 
 		if (isOrtho) {
