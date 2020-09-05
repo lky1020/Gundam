@@ -1489,7 +1489,7 @@ void projection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	//Translate Viewport (left, right, up, down)
+	///Translate Viewport (left, right, up, down)
 	glTranslatef(Tx, Ty, 0.0f);
 
 	if (isOrtho)
