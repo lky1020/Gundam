@@ -286,14 +286,11 @@ string strBlackLine = "London_Black_Line.bmp";
 string strFire = "London_Fire.bmp";
 
 //projection
-float tz = 1.75, tSpeed = 0.05f;
-float tbz = -1.0f;
-bool zoomBackground = false;
+float tz = 0.25f, tSpeed = 0.05f;
 bool isOrtho = true;
 float Ry = 0.0, rSpeed = 1.5;
 float Tx = 0.0, TxSpeed = 0.01;
 float Ty = 0.0, TySpeed = 0.01;
-//int x = 0.0, y = 0.0, z = 0.0;
 
 //lightning
 void lighting();
@@ -695,7 +692,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if (wParam == VK_SPACE) {
 			//Projection
 			//isOrtho = true;
-			tz = 1.75f;
+			tz = 0.25f;
 			Ry = 0.0f;
 			Tx = 0.0f;
 			Ty = 0.0f;
@@ -947,35 +944,10 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			isOrtho = !isOrtho;
 			orthoBackground = false;
 		}
-		else if (wParam == VK_F11) {
-			zoomBackground = !zoomBackground;
-		}
-		else if (wParam == VK_ADD) {
-
-			if (zoomBackground) {
-				if (!isOrtho) {
-					if (tbz > -1.0) {
-						tbz -= tSpeed;
-					}
-				}
-			}
-			
-		}
-		else if (wParam == VK_SUBTRACT) {
-
-			if (zoomBackground) {
-				if (!isOrtho) {
-					if (tbz < 1.5) {
-						tbz += tSpeed;
-					}
-				}
-			}
-
-		}
 		//zoom out (robot)
 		else if ((wParam == '2' || wParam == VK_NUMPAD2) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (!isOrtho) {
-				if (tz < 2.0f) {
+				if (tz < 6.0f) {
 					tz += tSpeed;
 				}
 			}
@@ -984,7 +956,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		else if ((wParam == '8' || wParam == VK_NUMPAD8) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			
 			if (!isOrtho) {
-				if (tz > 0.3f) {
+				if (tz > -0.5f) {
 					tz -= tSpeed;
 				}
 			}
@@ -1071,9 +1043,6 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			if (!isAttactMode) {
 				lowerLeftArmSpeed = -speed;
 			}
-		}
-		else if (wParam == VK_F11) {
-			zoomBackground = !zoomBackground;
 		}
 		else if (wParam == VK_F3) {
 
@@ -1322,8 +1291,8 @@ void display()
 	if (isOrtho) {
 		glClearColor(c1,c2,c3,1.0);
 	}
-	lighting();
 
+	lighting();
 
 	glPushMatrix();
 		projection();
@@ -1331,17 +1300,18 @@ void display()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		if (isOrtho) {
-			glTranslatef(0.0, 0.0, 1.0);
-		}
-
 		if (!isOrtho) {
+
 			glTranslatef(0.0, 0.0, tz);
+
+		}
+		else {
+			glTranslatef(0.0, 0.0, 1.0f);
 		}
 
 		glPushMatrix();
 			
-		//to prevent robot been shown when sphere smaller
+			/*//to prevent robot been shown when sphere smaller
 			if (!isOrtho) {
 				if (tbz <= 0.5f) {
 					glScalef(1.0f, 1.0f, 1.0f);
@@ -1349,7 +1319,7 @@ void display()
 				else {
 					glScalef(0.5f, 0.5f, 0.5f);
 				}
-			}
+			}*/
 
 			//move robot a little bit downward
 			glTranslatef(0.0f, -0.1f, 0.0f);
@@ -1366,6 +1336,15 @@ void display()
 				}
 				else if (initialBodyRotate <= -360.0f) {
 					initialBodyRotate = 0.0f;
+				}
+
+				//background
+				if (tz < 1.95f) {
+					glPushMatrix();
+						glDisable(GL_DEPTH_TEST);
+						drawBackground();
+						glEnable(GL_DEPTH_TEST);
+					glPopMatrix();
 				}
 
 				//Walking animation (activated only in perspective view)
@@ -1449,14 +1428,13 @@ void display()
 
 		glPopMatrix();
 
-		glPushMatrix();
-			if (!isOrtho) {
-				glTranslatef(0.0, 0.0, -0.5f);
-				glTranslatef(0.0, 0.0, tbz);
+		if (tz >= 1.95f) {
+			glPushMatrix();
+				glDisable(GL_DEPTH_TEST);
 				drawBackground();
-			}
-
-		glPopMatrix();
+				glEnable(GL_DEPTH_TEST);
+			glPopMatrix();
+		}
 
 	glPopMatrix();
 
@@ -1499,15 +1477,19 @@ void projection() {
 	//Translate Viewport (left, right, up, down)
 	glTranslatef(Tx, Ty, 0.0f);
 
-	if (isOrtho) {
+	if (isOrtho)
+	{
 		//rotate Viewport
-		glRotatef(Ry, 0.0, 1.0, 0.0);
-		glTranslatef(0.0,0.0,1.0);
-		glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+		glTranslatef(0.0f, 0.0f, -0.5f);
+			glRotatef(Ry, 0.0, 1.0, 0.0);
+		glTranslatef(0.0f, 0.0f, 0.5f);
+
+		glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
 	}
-	else {
+	else
+	{
 		gluPerspective(20.0, 1.0, -1.0, 1.0);
-		glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 3.0);
+		glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 5.0);
 	}
 
 }
@@ -1535,7 +1517,7 @@ void lighting() {
 //Draw Background
 void drawBackground() {
 	textures = loadTexture(strBackground.c_str());
-	drawSphere(1.0f);
+	drawSphere(3.0f);
 	glDeleteTextures(1,&textures);
 	glDisable(GL_TEXTURE_2D);
 }
