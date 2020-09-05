@@ -287,7 +287,7 @@ string strFire = "London_Fire.bmp";
 
 //projection
 float tz = 1.75, tSpeed = 0.05f;
-float tbz = 0.0f;
+float tbz = -1.0f;
 bool zoomBackground = false;
 bool isOrtho = true;
 float Ry = 0.0, rSpeed = 1.5;
@@ -487,7 +487,7 @@ void bird(float lineX1, float lineY1, float lineX2, float lineY2);
 
 //Robot BackGround
 void drawBackground();
-bool orthoBackground = true;
+bool orthoBackground = false;
 
 //isAttactMode
 bool isAttactMode = false;
@@ -699,6 +699,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			Ry = 0.0f;
 			Tx = 0.0f;
 			Ty = 0.0f;
+
+			//Ortho Background
+			orthoBackground = false;
 
 			//Body Rotate
 			initialBodyRotate = 0.0f;
@@ -942,6 +945,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//projection
 		else if (wParam == VK_F2) {
 			isOrtho = !isOrtho;
+			orthoBackground = false;
 		}
 		else if (wParam == VK_F11) {
 			zoomBackground = !zoomBackground;
@@ -961,62 +965,61 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 			if (zoomBackground) {
 				if (!isOrtho) {
-					if (tbz < 2.5) {
+					if (tbz < 1.5) {
 						tbz += tSpeed;
 					}
 				}
 			}
-			
 
 		}
 		//zoom out (robot)
-		else if (wParam == '2' || wParam == VK_NUMPAD2 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '2' || wParam == VK_NUMPAD2) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (!isOrtho) {
-				if (tz < 30.0) {
+				if (tz < 2.0f) {
 					tz += tSpeed;
 				}
 			}
 		}
 		//zoom in (robot)
-		else if (wParam == '8' || wParam == VK_NUMPAD8 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '8' || wParam == VK_NUMPAD8) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			
 			if (!isOrtho) {
-				if (tz > 1.25) {
+				if (tz > 0.3f) {
 					tz -= tSpeed;
 				}
 			}
 		}
 		//move view left
-		else if (wParam == '4' || wParam == VK_NUMPAD4 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '4' || wParam == VK_NUMPAD4) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (Tx > -1.0) {
 				Tx -= TxSpeed;
 			}
 
 		}
 		//move view right
-		else if (wParam == '6' || wParam == VK_NUMPAD6 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '6' || wParam == VK_NUMPAD6) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (Tx < 1.0) {
 				Tx += TxSpeed;
 			}
 		}
 		//move view up
-		else if (wParam == '5' || wParam == VK_NUMPAD5 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '5' || wParam == VK_NUMPAD5) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (Ty > -1.0) {
 				Ty -= TySpeed;
 			}
 		}
 		//move view down
-		else if (wParam == '0' || wParam == VK_NUMPAD0 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '0' || wParam == VK_NUMPAD0) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			if (Ty < 1.0) {
 				Ty += TySpeed;
 			}
 		}
 		//rotate view left
-		else if (wParam == '7' || wParam == VK_NUMPAD7 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '7' || wParam == VK_NUMPAD7) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			Ry += rSpeed;
 		}
 		//rotate view right
-		else if (wParam == '9' || wParam == VK_NUMPAD9 && !isTextureChange && !isTextureBackground && !isLightOn) {
+		else if ((wParam == '9' || wParam == VK_NUMPAD9) && !isTextureChange && !isTextureBackground && !isLightOn && !orthoBackground) {
 			Ry -= rSpeed;
 		}
 		// to activate shield and Rifle
@@ -1078,31 +1081,31 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		if (orthoBackground) {
 			if (isOrtho) {
-
-				if (wParam == '0' || wParam == VK_NUMPAD0) {
+				//Not using VK_NUMPAD, to prevent duplicate with lightOn
+				if (wParam == '0') {
 					c1 = 0.6;
 					c2 = 0.851;
 					c3 = 0.92;
 				}
-				else if (wParam == '1' || wParam == VK_NUMPAD1) {
+				else if (wParam == '1') {
 					c1 = 0.753;
 					c2 = 0.753;
 					c3 = 0.753;
 				}
-				else if (wParam == '2' || wParam == VK_NUMPAD2) {
+				else if (wParam == '2') {
 					c1 = 0.0;
 					c2 = 0.0;
 					c3 = 0.0;
 				}
-				else if (wParam == '3' || wParam == VK_NUMPAD3) {
+				else if (wParam == '3') {
 					c1 = 1.0;
 					c2 = 1.0;
 					c3 = 1.0;
 				}
 				else {
-					c1 = 0.0;
+					/*c1 = 0.0;
 					c2 = 0.0;
-					c3 = 0.0;
+					c3 = 0.0;*/
 				}
 			}
 		}
@@ -1317,7 +1320,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (isOrtho) {
-		glClearColor(c1,c2,c3,0.0);
+		glClearColor(c1,c2,c3,1.0);
 	}
 	lighting();
 
@@ -1327,20 +1330,6 @@ void display()
 	
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-	
-	
-
-		glPushMatrix();
-		if (!isOrtho) {
-
-			glTranslatef(0.0, 0.0, -0.5f);
-			glTranslatef(0.0, 0.0, tbz);
-			drawBackground();
-		}
-
-
-		
-		glPopMatrix();
 
 		if (isOrtho) {
 			glTranslatef(0.0, 0.0, 1.0);
@@ -1352,6 +1341,15 @@ void display()
 
 		glPushMatrix();
 			
+		//to prevent robot been shown when sphere smaller
+			if (!isOrtho) {
+				if (tbz <= 0.5f) {
+					glScalef(1.0f, 1.0f, 1.0f);
+				}
+				else {
+					glScalef(0.5f, 0.5f, 0.5f);
+				}
+			}
 
 			//move robot a little bit downward
 			glTranslatef(0.0f, -0.1f, 0.0f);
@@ -1448,6 +1446,15 @@ void display()
 				glPopMatrix();
 
 			glPopMatrix();
+
+		glPopMatrix();
+
+		glPushMatrix();
+			if (!isOrtho) {
+				glTranslatef(0.0, 0.0, -0.5f);
+				glTranslatef(0.0, 0.0, tbz);
+				drawBackground();
+			}
 
 		glPopMatrix();
 
