@@ -694,7 +694,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//'Space' - Reset all
 		else if (wParam == VK_SPACE) {
 			//Projection
-			isOrtho = true;
+			//isOrtho = true;
 			tz = 1.75f;
 			Ry = 0.0f;
 			Tx = 0.0f;
