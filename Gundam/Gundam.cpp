@@ -1068,16 +1068,19 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			activateBridge = !activateBridge;
 
 		}
+		//Texture Background
 		else if (wParam == VK_F6) {
 
 			isTextureBackground = !isTextureBackground;
 
 		}
+		//Lighting
 		else if (wParam == VK_F7) {
 
 			isLightOn = !isLightOn;
 
 		}
+		//Attack Mode(Shield)
 		else if (wParam == VK_F8) {
 
 			isAttactMode = !isAttactMode;
