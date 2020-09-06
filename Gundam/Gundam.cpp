@@ -1340,11 +1340,11 @@ void display()
 			glTranslatef(0.0f, -0.1f, 0.0f);
 			
 			glPushMatrix();
-				if (isOrtho && !activateBridge) {
-					glTranslatef(0.0f, -0.1f, 0.14f);
+				if (isOrtho) {
+					glTranslatef(0.0f, -0.1f, -0.25f);
 					glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
 					initialBodyRotate += bodyRotate;
-					glTranslatef(0.0f, 0.1f, -0.14f);
+					glTranslatef(0.0f, 0.1f, 0.25f);
 				}
 				else {
 					glTranslatef(0.0f, -0.1f, 0.0f);
@@ -1364,6 +1364,12 @@ void display()
 				//background
 				if (tz < 1.95f) {
 					glPushMatrix();
+						
+						if (isOrtho) {
+							glLoadIdentity();
+							glTranslatef(0.0f, 0.0f, -1.0f);
+						}
+						
 						glDisable(GL_DEPTH_TEST);
 						drawBackground();
 						glEnable(GL_DEPTH_TEST);
@@ -1392,7 +1398,7 @@ void display()
 					glPushMatrix();
 						if (isOrtho) {
 							glScalef(1.15f, 1.15f, 1.15f);
-							glTranslatef(0.0f, 0.0f, 0.25f);
+							glTranslatef(0.0f, 0.0f, 0.0f);
 						}
 
 						glTranslatef(0.0f, 0.0f, -0.5f);
@@ -1405,6 +1411,7 @@ void display()
 
 					if (isOrtho) {
 						glScalef(1.25f, 1.3f, 1.25f);
+						glTranslatef(0.0f, 0.0f, -0.25f);
 					}
 
 					//head
