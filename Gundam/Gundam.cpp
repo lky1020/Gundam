@@ -1341,10 +1341,10 @@ void display()
 			
 			glPushMatrix();
 				if (isOrtho && !activateBridge) {
-					glTranslatef(0.0f, -0.1f, 0.25f);
+					glTranslatef(0.0f, -0.1f, 0.14f);
 					glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
 					initialBodyRotate += bodyRotate;
-					glTranslatef(0.0f, 0.1f, -0.25f);
+					glTranslatef(0.0f, 0.1f, -0.14f);
 				}
 				else {
 					glTranslatef(0.0f, -0.1f, 0.0f);
