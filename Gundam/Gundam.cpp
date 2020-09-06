@@ -1367,7 +1367,7 @@ void display()
 						
 						if (isOrtho) {
 							glLoadIdentity();
-							glTranslatef(0.0f, 0.0f, -1.0f);
+							glTranslatef(0.0f, 0.0f, 1.0f);
 						}
 						
 						glDisable(GL_DEPTH_TEST);
@@ -1534,7 +1534,7 @@ void projection() {
 		//rotate Viewport
 		glTranslatef(0.0f, 0.0f, -0.5f);
 			glRotatef(Ry, 0.0, 1.0, 0.0);
-		glTranslatef(0.0f, 0.0f, 0.5f);
+		glTranslatef(0.0f, 0.f, 0.5f);
 
 		glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
 	}
