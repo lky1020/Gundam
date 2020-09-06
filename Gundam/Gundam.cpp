@@ -1362,7 +1362,13 @@ void display()
 				//Walking animation (activated only in perspective view)
 				if (isWalking) {
 
-					glTranslatef(0.0f, 0.0f, initialRobotWalk);
+					if (initialBodyRotate == 0.0f) {
+						glTranslatef(0.0f, 0.0f, -initialRobotWalk);
+					}
+					else {
+						glTranslatef(0.0f, 0.0f, initialRobotWalk);
+					}
+					
 
 					if (initialRobotWalk <= maxWalkDistance) {
 						initialRobotWalk += walkSpeed;
