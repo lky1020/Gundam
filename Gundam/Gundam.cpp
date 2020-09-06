@@ -986,16 +986,16 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		//move view left
 		else if ((wParam == '4' || wParam == VK_NUMPAD4) && !isTextureChange && !isTextureBackground && !isLightOn) {
 
-			if (Tx > -1.0) {
-				Tx -= TxSpeed;
+			if (Tx < 1.0) {
+				Tx += TxSpeed;
 			}
 
 		}
 		//move view right
 		else if ((wParam == '6' || wParam == VK_NUMPAD6) && !isTextureChange && !isTextureBackground && !isLightOn) {
-
-			if (Tx < 1.0) {
-				Tx += TxSpeed;
+			
+			if (Tx > -1.0) {
+				Tx -= TxSpeed;
 			}
 
 		}
@@ -1327,7 +1327,7 @@ void display()
 		}
 		else {
 
-			glTranslatef(0.0, 0.0, 1.5f);
+			glTranslatef(0.0, 0.0, 1.0f);
 
 		}
 
