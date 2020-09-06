@@ -1404,8 +1404,7 @@ void display()
 				glPushMatrix();
 
 					if (isOrtho) {
-						glScalef(1.5f, 1.5f, 1.5f);
-						glTranslatef(0.0f, 0.0f, 0.25f);
+						glScalef(1.25f, 1.3f, 1.25f);
 					}
 
 					//head
