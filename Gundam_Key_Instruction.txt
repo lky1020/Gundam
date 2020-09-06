@@ -1,0 +1,122 @@
+Demo - Gundam
+
+1. Whole Robot
+'W' - Walking Animation (front, left right)
+'S' - Stand
+VK_LEFT - Rotate Robot to Left
+VK_RIGHT - Rotate Robot to Right
+VK_TAB - Stop the Action of the Robot
+VK_SPACE - Reset All Settings
+
+2. Robot Head
+‘N’ - Move the Robot Head to Left and Back to Origin
+'M' - Move the Robot Head to Right and Back to Origin
+
+
+3. Robot Arm
+‘H’ - Perform Both (Left && Right) Arm Movement
+‘K’ - Move Left Arm Up and Down
+‘P’ - Move Right Arm Up and Down
+‘V’ - Move Left Lower Arm Up and Down
+‘Z’ - Move Right Lower Arm Up and Down
+
+
+4. Robot Finger
+‘F’ - Activate/Deactivate Finger
+VK_UP - To Close the Finger
+VK_DOWN - Open the Finger
+
+
+5. Robot Leg
+VK_SHIFT - Move Left Leg Up
+VK_CTRL - Move Left Leg Down
+VK_UP - Move Right Leg Up
+VK_DOWN - Move Right Leg Down
+
+
+6. Weapon
+VK_F1 - Activate/Deactivate Weapon and Shield
+‘G’ - Do Preparation for Fire
+‘F’ - First Time - To Accumulate Beam
+      Second Time - To Fire Beam
+
+
+7. Shield
+VK_F8 - Activate Attack Mode (Shield Shown)
+‘B’ - Move Shield Up and Down (in Attack Mode)
+
+
+8. London Bridge
+VK_F9 - Activate/Deactivate London Bridge
+‘W’ - Move Middle Bridge Up
+‘S’ - Move Middle Bridge Down
+
+
+9. Projection - Space will not reset this to another view 
+	     (eg. Space in Perspective will remain Rerspective)
+VK_F2 - To Change View between glOrtho or gluPerspective
+‘2’ / VK_NUMPAD2 - Zoom Out the View (gluPerspective view only)
+‘8’ / VK_NUMPAD8 - Zoom In the View  (gluPerspective view only)
+‘4’ / VK_NUMPAD4 - Move View to Left (both view)
+‘6’ / VK_NUMPAD6 - Move View to Right (both view)
+‘5’ / VK_NUMPAD5 - Move View Up (both view)
+‘0’ / VK_NUMPAD0 - Move View Down (both view)
+‘7’ / VK_NUMPAD7 - Rotate View to Left (glOrtho view only)
+‘9’ / VK_NUMPAD9 - Rotate View to Right (glOrtho view only)
+
+
+10. Texture Changing
+VK_F5 - Activate/Deactivate Change Robot Texture
+Number Key From 1 to 9 - Change Robot’s Texture
+VK_F6 - Activate/Deactivate Change Background Texture
+Number Key From 1 to 6 - Change Background's Texture
+
+Extra: Activate F5 and F6 - Robot and Background's texture change
+Number Key From 1 to 6 - different texture and different background
+Number Key From 7 to 9 - different texture and same background
+
+
+11. Lightning
+VK_F7 - Control Light On / Off
+‘8’ / VK_NUMPAD8 - Move Light Up
+‘2’ / VK_NUMPAD2 - Move Light Down
+‘4’ / VK_NUMPAD4 - Move Light Left
+‘6’ / VK_NUMPAD6 - Move Light Right
+‘7’ / VK_NUMPAD7 - Move Light Near
+‘9’ / VK_NUMPAD9 - Move Light Far
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

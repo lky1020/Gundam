@@ -1340,11 +1340,19 @@ void display()
 			glTranslatef(0.0f, -0.1f, 0.0f);
 			
 			glPushMatrix();
-				glTranslatef(0.0f, -0.1f, 0.0f);
+				if (isOrtho && !activateBridge) {
+					glTranslatef(0.0f, -0.1f, 0.25f);
 					glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
 					initialBodyRotate += bodyRotate;
-				glTranslatef(0.0f, 0.1f, 0.0f);
-
+					glTranslatef(0.0f, 0.1f, -0.25f);
+				}
+				else {
+					glTranslatef(0.0f, -0.1f, 0.0f);
+					glRotatef(initialBodyRotate, 0.0f, 0.5f, 0.0f);
+					initialBodyRotate += bodyRotate;
+					glTranslatef(0.0f, 0.1f, 0.0f);
+				}
+				
 				//set limit to prevent angle more/less than 360.0f/-360.0f
 				if (initialBodyRotate >= 360.0f) {
 					initialBodyRotate = 0.0f;
@@ -1382,68 +1390,82 @@ void display()
 				if (activateBridge) {
 					//London Bridge
 					glPushMatrix();
+						if (isOrtho) {
+							glScalef(1.15f, 1.15f, 1.15f);
+							glTranslatef(0.0f, 0.0f, 0.25f);
+						}
+
 						glTranslatef(0.0f, 0.0f, -0.5f);
 						glScalef(0.325f, 0.325f, 0.325f);
 						drawFinalBridge();
 					glPopMatrix();
 				}
 
-				//head
 				glPushMatrix();
-					glTranslatef(-0.08,0.7,0.0);
-					drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
-				glPopMatrix();
 
-				glPushMatrix();
-					//translate whole body (combine with head)
-					glTranslatef(0.0, -0.3, 0.0);
+					if (isOrtho) {
+						glScalef(1.5f, 1.5f, 1.5f);
+						glTranslatef(0.0f, 0.0f, 0.25f);
+					}
+
+					//head
+					glPushMatrix();
+						glTranslatef(-0.08,0.7,0.0);
+						drawRobotHead(&rotateH, &rotateHX, &rotateHY, &rotateHZ, &rotateHSpeed, &rotateHMaxAngle, &rotateHMinAngle);
+					glPopMatrix();
+
+					glPushMatrix();
+						//translate whole body (combine with head)
+						glTranslatef(0.0, -0.3, 0.0);
 	
-					//hand
-					glPushMatrix();
-						glScalef(0.5f, 0.5f, 0.5f);
-						drawRobotLeftHand();
-					glPopMatrix();
+						//hand
+						glPushMatrix();
+							glScalef(0.5f, 0.5f, 0.5f);
+							drawRobotLeftHand();
+						glPopMatrix();
 	
-					//leg
-					glPushMatrix();
-						glScalef(0.5f, 0.5f, 0.5f);
-						constructleg();
+						//leg
+						glPushMatrix();
+							glScalef(0.5f, 0.5f, 0.5f);
+							constructleg();
+						glPopMatrix();
+
+						//Body
+						glPushMatrix();
+							glScalef(0.5f, 0.5f, 0.5f);
+							drawBody();
+						glPopMatrix();
+
+						//hand
+						glPushMatrix();
+							glScalef(0.5f, 0.5f, 0.5f);
+							drawRobotRightHand();
+						glPopMatrix();
 					glPopMatrix();
 
-					//Body
+					//Weapon - bazooka
 					glPushMatrix();
-						glScalef(0.5f, 0.5f, 0.5f);
-						drawBody();
+						glTranslatef(0.0f, 0.15f, -0.05f);
+
+						glPushMatrix();
+							glTranslatef(0.0f, -0.1f, 0.0f);
+							glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
+							glTranslatef(0.0f, 0.1f, 0.0f);
+
+							drawBazooka();
+						glPopMatrix();
 					glPopMatrix();
 
-					//hand
+					//weapon - right light sword
 					glPushMatrix();
-						glScalef(0.5f, 0.5f, 0.5f);
-						drawRobotRightHand();
+						drawLightSword('L');
 					glPopMatrix();
-				glPopMatrix();
 
-				//Weapon - bazooka
-				glPushMatrix();
-					glTranslatef(0.0f, 0.15f, -0.05f);
-
+					//weapon - left light sword
 					glPushMatrix();
-						glTranslatef(0.0f, -0.1f, 0.0f);
-						glRotatef(90.0f, 0.0f, 0.1f, 0.0f);
-						glTranslatef(0.0f, 0.1f, 0.0f);
-
-						drawBazooka();
+						drawLightSword('R');
 					glPopMatrix();
-				glPopMatrix();
 
-				//weapon - right light sword
-				glPushMatrix();
-					drawLightSword('L');
-				glPopMatrix();
-
-				//weapon - left light sword
-				glPushMatrix();
-					drawLightSword('R');
 				glPopMatrix();
 
 			glPopMatrix();
