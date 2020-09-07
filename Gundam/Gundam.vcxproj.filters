@@ -77,5 +77,68 @@
     <Image Include="black.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="green.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="indigo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_blue.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_grey.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_indigo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_orange.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_purple.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_red.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_white.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="joint_yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="orange.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="purple.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="dayTime.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Spring.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="winter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="night.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="circle_1.bmp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="circle_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="B1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="B2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

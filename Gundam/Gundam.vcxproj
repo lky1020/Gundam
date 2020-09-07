@@ -126,9 +126,15 @@
     <ClCompile Include="Gundam.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="B1.bmp" />
+    <Image Include="B2.bmp" />
     <Image Include="black.bmp" />
     <Image Include="Blue_Dirty_Color.bmp" />
+    <Image Include="circle_1.bmp" />
+    <Image Include="circle_1.bmp.png" />
     <Image Include="Dark_Grey_Dirty_Color.bmp" />
+    <Image Include="dayTime.bmp" />
+    <Image Include="green.bmp" />
     <Image Include="Grey_Dirty_Color.bmp" />
     <Image Include="head_1.bmp" />
     <Image Include="head_2.bmp" />
@@ -139,12 +145,27 @@
     <Image Include="head_7.bmp" />
     <Image Include="head_8.bmp" />
     <Image Include="head_9.bmp" />
+    <Image Include="indigo.bmp" />
+    <Image Include="joint_black.bmp" />
+    <Image Include="joint_blue.bmp" />
+    <Image Include="joint_grey.bmp" />
+    <Image Include="joint_indigo.bmp" />
+    <Image Include="joint_orange.bmp" />
+    <Image Include="joint_purple.bmp" />
+    <Image Include="joint_red.bmp" />
+    <Image Include="joint_white.bmp" />
+    <Image Include="joint_yellow.bmp" />
     <Image Include="Knee_Texture.bmp" />
+    <Image Include="night.bmp" />
+    <Image Include="orange.bmp" />
+    <Image Include="purple.bmp" />
     <Image Include="Red_Dirty_Color.bmp" />
     <Image Include="Robot_Arm_Joint.bmp" />
     <Image Include="Shield_1.bmp" />
     <Image Include="Shield_2.bmp" />
     <Image Include="Shield_3.bmp" />
+    <Image Include="Spring.bmp" />
+    <Image Include="winter.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
