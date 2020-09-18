@@ -1,29 +1,17 @@
 ﻿  Gundam.cpp
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(293,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(294,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(457,30): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1413,33): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1419,34): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2190,51): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2198,52): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2198,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2434,30): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2436,32): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3139,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3139,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3784,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3887,35): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4109,104): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4547,51): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4556,52): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4556,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4812,45): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4814,53): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4814,23): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4864,43): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4866,53): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4866,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4878,44): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4880,54): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(4880,22): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(53,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(54,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,7): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(55,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(748,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(754,32): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1394,50): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1395,51): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(1395,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2312,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2312,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(2945,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3051,34): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\User\Documents\GitHub\Gundam\Gundam\Gundam.cpp(3241,103): warning C4305: 'argument': truncation from 'double' to 'float'
   Gundam.vcxproj -> C:\Users\User\Documents\GitHub\Gundam\x64\Debug\Gundam.exe
